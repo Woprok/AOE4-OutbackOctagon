@@ -18,6 +18,7 @@ AGS_TOURNAMENT_NOMAD_BALANCE_MONGOL_WOOD = 100
 AGS_TOURNAMENT_NOMAD_BALANCE_ENGLISH_WOOD = 50
 AGS_TOURNAMENT_NOMAD_BALANCE_OTTOMAN_STONE = 50
 AGS_TOURNAMENT_NOMAD_BALANCE_OTTOMAN_WOOD = 50
+AGS_TOURNAMENT_NOMAD_BALANCE_KING_POP = 50
 
 ---------------------------------------------------------------------------------------------------
 -- Delegates:
@@ -39,11 +40,13 @@ end
 
 function AGS_TournamentNomadBalance_OnPlay()
 	AGS_Print("AGS_TournamentNomadBalance_OnPlay")
+	Rule_AddGlobalEvent(AGS_TournamentNomadBalance_OnEntityKilled, GE_EntityKilled)
 	Rule_AddGlobalEvent(AGS_TournamentNomadBalance_OnConstructionComplete, GE_ConstructionComplete)
 end
 
 function AGS_TournamentNomadBalance_OnGameOver()
 	AGS_Print("AGS_TournamentNomadBalance_OnGameOver")
+	Rule_RemoveGlobalEvent(AGS_TournamentNomadBalance_OnEntityKilled)
 	Rule_RemoveGlobalEvent(AGS_TournamentNomadBalance_OnConstructionComplete)
 end
 
@@ -69,31 +72,54 @@ function AGS_TournamentNomadBalance_OnConstructionComplete(context)
 	end
 end
 
+function AGS_TournamentNomadBalance_OnEntityKilled(context)
+	-- We need context and we need killer that is a remaining player
+	if context == nil or context.killer == nil or World_OwnsEntity(context.killer) then
+		return
+	end
+	-- We need victim entity to check if it is a king
+	if context.victim == nil or not Entity_IsOfType(context.victim, AGS_BP_KING) then
+		return
+	end
+	-- Add bonus
+	AGS_TournamentNomadBalance_KillBonus(context.killer)
+end
+
+function AGS_TournamentNomadBalance_KillBonus(context_killer)
+	AGS_Print("Killed a king for 50")
+	local killer_owner = Core_GetPlayersTableEntry(Entity_GetPlayerOwner(context_killer))
+	AGS_TournamentNomadBalance_AddMaxCapPopulation(killer_owner, AGS_TOURNAMENT_NOMAD_BALANCE_KING_POP)
+end
+
 ---------------------------------------------------------------------------------------------------
 -- Functions:
 ---------------------------------------------------------------------------------------------------
---
+function AGS_TournamentNomadBalance_ApplyResourceBalance(player)
+	-- Increase starting resources based on what is missing from "low"
+	if player.raceName == AGS_CIV_MONGOL then
+		Player_GiftResource(player.id, RT_Wood, AGS_TOURNAMENT_NOMAD_BALANCE_MONGOL_WOOD)
+	end
+	
+	if player.raceName == AGS_CIV_ENGLISH then
+		Player_GiftResource(player.id, RT_Wood, AGS_TOURNAMENT_NOMAD_BALANCE_ENGLISH_WOOD)
+	end
+			
+	if player.raceName == AGS_CIV_OTTOMAN then
+		Player_GiftResource(player.id, RT_Stone, AGS_TOURNAMENT_NOMAD_BALANCE_OTTOMAN_STONE)
+		Player_GiftResource(player.id, RT_Wood, AGS_TOURNAMENT_NOMAD_BALANCE_OTTOMAN_WOOD)
+	end
+end
+
 function AGS_TournamentNomadBalance_ApplyBalance()
 	for _, player in pairs(PLAYERS) do			
-		-- Increase starting resources based on what is missing from "low"
-		if player.raceName == AGS_CIV_MONGOL then
-			Player_GiftResource(player.id, RT_Wood, AGS_TOURNAMENT_NOMAD_BALANCE_MONGOL_WOOD)
-		end
-		
-		if player.raceName == AGS_CIV_ENGLISH then
-			Player_GiftResource(player.id, RT_Wood, AGS_TOURNAMENT_NOMAD_BALANCE_ENGLISH_WOOD)
-		end
-				
-		if player.raceName == AGS_CIV_OTTOMAN then
-			Player_GiftResource(player.id, RT_Stone, AGS_TOURNAMENT_NOMAD_BALANCE_OTTOMAN_STONE)
-			Player_GiftResource(player.id, RT_Wood, AGS_TOURNAMENT_NOMAD_BALANCE_OTTOMAN_WOOD)
-		end
+		-- AGS_TournamentNomadBalance_ApplyResourceBalance(player)
 		
 		if player.raceName == AGS_CIV_CHINESE then
 			-- Nerf TC build time
 			local ebp = AGS_GetCivilizationEntity(player.raceName, AGS_BP_TC_CAPITAL)
 			AGS_TournamentNomadBalance_Nerf(player.id, "cost_ticks_modifier", 2, ebp)
 		end
+		Player_SetStateModelBool(player.id, "player_can_construct_structures", true)	
 		-- Block outpost
 		Player_SetEntityProductionAvailability(player.id, AGS_GetCivilizationEntity(player.raceName, AGS_BP_OUTPOST), ITEM_LOCKED)
 	end
@@ -102,3 +128,6 @@ end
 function AGS_TournamentNomadBalance_Nerf(player_id, modifier_type, modifier_value, modifier_ebp)
 	Modifier_ApplyToPlayer(Modifier_Create(MAT_EntityType, modifier_type, MUT_Multiplication, false, modifier_value, modifier_ebp), player_id, 0.0)
 end	
+function AGS_TournamentNomadBalance_AddMaxCapPopulation(player, value)
+	Modifier_ApplyToPlayer(Modifier_Create(MAT_Player, "max_personnel_cap_player_modifier", MUT_Addition, false, value, ""), player.id, 0)
+end

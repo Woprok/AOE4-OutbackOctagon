@@ -31,6 +31,7 @@ function AGS_Tournament_Nomad_AdjustSettings()
 	--AGS_GLOBAL_SETTINGS.StartingVillagers = 3 --Is ignored as the Prefab is active.
 	-- Winconditions:
 	AGS_GLOBAL_SETTINGS.Regicide = true
+	AGS_GLOBAL_SETTINGS.RegicideSettings.KillDeadPlayerKings = false
 	--AGS_GLOBAL_SETTINGS.StartingKings = 1 -- Is ignored as the Prefab is active. But it will still be set by Regicide to 1.
 	AGS_GLOBAL_SETTINGS.TournamentNomadBalance = true
 	-- Remove single player functions:
@@ -38,7 +39,7 @@ function AGS_Tournament_Nomad_AdjustSettings()
 	-- Treaty Required:
 	AGS_GLOBAL_SETTINGS.PlayerColors.IsEnforcing = true
 	AGS_GLOBAL_SETTINGS.Treaty = true
-	AGS_GLOBAL_SETTINGS.TreatySettings.Timer = 3
+	AGS_GLOBAL_SETTINGS.TreatySettings.Timer = 1
 	-- FFA settings:
 	AGS_GLOBAL_SETTINGS.TeamVictory = AGS_GS_TEAM_VICTORY_FFA
 	AGS_GLOBAL_SETTINGS.TeamVision = AGS_GS_TEAM_VISION_ALWAYS -- Doesn't matter in current ruleset as FFA are not allowed to share vision.

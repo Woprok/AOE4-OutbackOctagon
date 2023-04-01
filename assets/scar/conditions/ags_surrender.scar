@@ -32,6 +32,8 @@ function AGS_Surrender_OnPlay()
 	-- Registers surrender event.
 	Network_RegisterEvent("AGS_Surrender_Notify")
 	AGS_Surrender_CreateObjective()	
+	
+	AGS_Surrender_OnObjectiveToggle(false)
 end
 
 function AGS_Surrender_TreatyStarted()

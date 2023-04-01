@@ -94,7 +94,9 @@ AGS_GLOBAL_SETTINGS = {
 	EliminationSettings = {
 		EnableAITakeover = false, -- This will prevent disconnected player to be eliminated. Results not tested.
 	},
-	
+	RegicideSettings = {
+		KillDeadPlayerKings = true,
+	},
 	ConquestSettings = {
 		Capital = true,
 		Landmarks = true,
@@ -176,8 +178,8 @@ AGS_GLOBAL_SETTINGS = {
 	EnableUtilities = true, -- undefined
 	AllowLoserSpectation = true, -- undefined
 	UsingPrefabStart = true, -- undefined, is related to .rdo file starting conditions
-	UsingPrefabNomadStartAndArmy = true, --undefined, is relared to .rdo file starting conditions
-	
+	UsingPrefabNomadStartAndArmy = false, --undefined, is relared to .rdo file starting conditions
+		
 	PlayerColors = {
 		IsEnforcing = false,
 	},

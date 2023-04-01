@@ -13,6 +13,7 @@ import("conditions/conditiondata/ags_regicide_data.scar")
 AGS_REGICIDE_MODULE = "AGS_Regicide"
 AGS_REGICIDE_OBJECTIVE = nil
 AGS_REGICIDE_ACTIVE = true
+AGS_REGICIDE_KILL_KING = true
 
 ---------------------------------------------------------------------------------------------------
 -- Delegates:
@@ -31,7 +32,9 @@ function AGS_Regicide_UpdateModuleSettings()
 	AGS_Print("AGS_Regicide_UpdateModuleSettings")
 	if not AGS_GLOBAL_SETTINGS.Regicide then
 		Core_UnregisterModule(AGS_REGICIDE_MODULE)
-	end
+		return
+	end		
+	AGS_REGICIDE_KILL_KING = AGS_GLOBAL_SETTINGS.RegicideSettings.KillDeadPlayerKings
 end
 
 function AGS_Regicide_OnPlay()
@@ -148,7 +151,7 @@ end
 -- Marks all kings as dead and kills them in the world.
 function AGS_Regicide_KillAllKings(player)
 	for _, king in pairs(player.AGS_Kings) do
-		if king.is_alive then
+		if AGS_REGICIDE_KILL_KING and king.is_alive then
 			king.is_alive = false
 			if king.squad ~= nil and Squad_IsAlive(king.squad) then
 				Squad_Kill(king.squad)

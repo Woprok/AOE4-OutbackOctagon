@@ -50,6 +50,8 @@ function AGS_Annihilation_OnPlay()
 	Rule_AddGlobalEvent(AGS_Annihilation_OnConstructionComplete, GE_ConstructionComplete)
 	Rule_AddGlobalEvent(AGS_Annihilation_OnDamageReceived, GE_DamageReceived)
 	AGS_Annihilation_CreateObjective()	
+	
+	AGS_Annihilation_OnObjectiveToggle(false)
 end
 
 function AGS_Annihilation_TreatyStarted()

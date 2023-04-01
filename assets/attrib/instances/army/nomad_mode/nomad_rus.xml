@@ -12,7 +12,7 @@
 			<instance_reference name="squad" value="sbps\races\rus\unit_king_1_rus" List.ItemID="-1148574052" List.ListAction="Append" />
 		</list>
 		<template_reference name="starting_units_spawner" value="options\spawn\scatter" overrideParent="True">
-			<float name="spawn_radius" value="75" overrideParent="True" />
+			<float name="spawn_radius" value="150" overrideParent="True" />
 			<int name="spawn_position_attempts" value="100" />
 		</template_reference>
 	</group>
