@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LayoutRoot>
+  <RootPanel Orientation="Vertical">
+    <LayoutPanel Orientation="Horizontal">
+      <LayoutAnchorablePaneGroup Orientation="Horizontal" DockWidth="280" FloatingWidth="300" FloatingHeight="800" FloatingLeft="200" FloatingTop="200">
+        <LayoutAnchorablePane DockHeight="200" FloatingWidth="300" FloatingHeight="800" FloatingLeft="200" FloatingTop="200">
+          <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Asset Explorer" IsSelected="True" ContentId="EssenceEditor.AssetExplorer" FloatingLeft="200" FloatingTop="200" FloatingWidth="300" FloatingHeight="800" LastActivationTimeStamp="04/01/2023 12:46:10" />
+        </LayoutAnchorablePane>
+      </LayoutAnchorablePaneGroup>
+      <LayoutPanel Orientation="Vertical">
+        <LayoutDocumentPaneGroup Orientation="Horizontal">
+          <LayoutDocumentPane Id="23dee6d3-35d0-4ced-9b34-eeda7e5c7fee" DockWidth="0.961366610635979*">
+            <LayoutDocument Title="ags_annihilation_data.scar" IsSelected="True" IsLastFocusedDocument="True" ContentId="FileName|Script|assets\scar\conditions\conditiondata\ags_annihilation_data.scar" ToolTip="E:\Mods\Age of Empires IV\AOE4-OutbackOctagonBundle\assets\scar\conditions\conditiondata\ags_annihilation_data.scar" LastActivationTimeStamp="04/01/2023 12:46:12" />
+          </LayoutDocumentPane>
+        </LayoutDocumentPaneGroup>
+      </LayoutPanel>
+    </LayoutPanel>
+    <LayoutAnchorablePane Id="e44d34b5-b1e5-455b-8daf-f82552b55711" Name="anchorablesPane" DockHeight="228">
+      <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Find References Results 1" IsSelected="True" ContentId="FindReferencesResults1" LastActivationTimeStamp="01/28/2023 00:49:25" />
+    </LayoutAnchorablePane>
+    <LayoutAnchorablePane Id="c47e7669-679a-4ac3-999b-0557bcf54dbb" DockHeight="190">
+      <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Output" ContentId="Output" LastActivationTimeStamp="05/07/2022 18:53:56" />
+      <LayoutAnchorable AutoHideHeight="229" AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Error List" IsSelected="True" ContentId="ErrorList" LastActivationTimeStamp="05/08/2022 20:33:07" />
+      <LayoutAnchorable AutoHideHeight="266" AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Object Browser" ContentId="ScenarioEditor.ObjectBrowser" LastActivationTimeStamp="04/13/2022 13:49:45" />
+      <LayoutAnchorable AutoHideHeight="442" AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Type Browser" ContentId="ScenarioEditor.ReflectTypeBrowser" LastActivationTimeStamp="04/13/2022 13:48:02" />
+    </LayoutAnchorablePane>
+  </RootPanel>
+  <TopSide />
+  <RightSide>
+    <LayoutAnchorGroup>
+      <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Playback" ContentId="EssenceEditor.Playback" FloatingLeft="200" FloatingTop="200" FloatingWidth="300" FloatingHeight="100" LastActivationTimeStamp="11/27/2015 11:24:02" />
+    </LayoutAnchorGroup>
+    <LayoutAnchorGroup Id="2548db53-601d-4bc5-a122-1f7d04458881">
+      <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Properties" ContentId="EssenceEditor.Properties" FloatingLeft="200" FloatingTop="200" FloatingWidth="300" FloatingHeight="800" LastActivationTimeStamp="04/08/2022 19:32:36" />
+    </LayoutAnchorGroup>
+  </RightSide>
+  <LeftSide />
+  <BottomSide />
+  <FloatingWindows>
+    <LayoutAnchorableFloatingWindow>
+      <LayoutAnchorablePaneGroup Orientation="Horizontal" DockHeight="401" FloatingWidth="1205" FloatingHeight="680" FloatingLeft="952" FloatingTop="341">
+        <LayoutAnchorablePane Id="8650acdb-d657-4216-85a9-24709482ba39" DockHeight="401" FloatingWidth="1205" FloatingHeight="680" FloatingLeft="952" FloatingTop="341" />
+      </LayoutAnchorablePaneGroup>
+    </LayoutAnchorableFloatingWindow>
+  </FloatingWindows>
+  <Hidden>
+    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Console" IsSelected="True" ContentId="Console" LastActivationTimeStamp="04/01/2023 12:45:21" />
+    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Globals" IsSelected="True" ContentId="Globals" LastActivationTimeStamp="04/01/2023 12:45:21" PreviousContainerId="e44d34b5-b1e5-455b-8daf-f82552b55711" PreviousContainerIndex="0" />
+    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Locals" IsSelected="True" ContentId="Locals" LastActivationTimeStamp="04/01/2023 12:45:21" PreviousContainerId="e44d34b5-b1e5-455b-8daf-f82552b55711" PreviousContainerIndex="0" />
+    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Call Stack" IsSelected="True" ContentId="CallStack" LastActivationTimeStamp="04/01/2023 12:45:21" PreviousContainerId="e44d34b5-b1e5-455b-8daf-f82552b55711" PreviousContainerIndex="0" />
+    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Blueprint List" IsSelected="True" ContentId="ScenarioEditor.AssetBlueprint" LastActivationTimeStamp="04/01/2023 12:45:21" PreviousContainerId="e44d34b5-b1e5-455b-8daf-f82552b55711" PreviousContainerIndex="1" />
+    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Painter" IsSelected="True" ContentId="ScenarioEditor.Painter" FloatingLeft="200" FloatingTop="200" FloatingWidth="300" FloatingHeight="800" LastActivationTimeStamp="04/01/2023 12:45:21" PreviousContainerId="2548db53-601d-4bc5-a122-1f7d04458881" PreviousContainerIndex="1" />
+    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Transformation" IsSelected="True" ContentId="ScenarioEditor.Transformation" FloatingLeft="200" FloatingTop="200" FloatingWidth="250" FloatingHeight="300" LastActivationTimeStamp="04/01/2023 12:45:21" PreviousContainerId="e44d34b5-b1e5-455b-8daf-f82552b55711" PreviousContainerIndex="0" />
+    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Find Results 1" IsSelected="True" ContentId="FindResults" FloatingLeft="952" FloatingTop="341" FloatingWidth="1205" FloatingHeight="680" LastActivationTimeStamp="04/01/2023 12:45:21" PreviousContainerId="8650acdb-d657-4216-85a9-24709482ba39" PreviousContainerIndex="0" />
+  </Hidden>
+</LayoutRoot>

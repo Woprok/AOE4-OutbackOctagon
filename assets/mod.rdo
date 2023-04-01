@@ -1,0 +1,28 @@
+<DataWarehouse>
+	<!--AOE4-OutbackOctagonBundle/-->
+	<DataObject Name="AOE4-OutbackOctagonBundle" Type="Mod" Id="4721786836760597353" Version="1">
+		<DataProperty Name="m_description" Type="Object">
+			<DataValue Name="util::ReflectLocString">3376114440956237756</DataValue>
+			<!--AOE4-OutbackOctagonBundle/util::ReflectLocString/-->
+			<DataObject Name="" Type="util::ReflectLocString" Id="3376114440956237756" OwnerId="4721786836760597353">
+				<DataProperty Name="m_modPart2" Type="UInt32" Value="897181592"/>
+				<DataProperty Name="m_modPart3" Type="UInt32" Value="3932834702"/>
+				<DataProperty Name="m_modPart0" Type="UInt32" Value="535996680"/>
+				<DataProperty Name="m_modPart1" Type="UInt32" Value="1129110174"/>
+				<DataProperty Name="m_locStringKey" Type="Int32" Value="2"/>
+			</DataObject>
+		</DataProperty>
+		<DataProperty Name="m_name" Type="Object">
+			<DataValue Name="util::ReflectLocString">11982361929029524527</DataValue>
+			<!--AOE4-OutbackOctagonBundle/util::ReflectLocString/-->
+			<DataObject Name="" Type="util::ReflectLocString" Id="11982361929029524527" OwnerId="4721786836760597353">
+				<DataProperty Name="m_modPart2" Type="UInt32" Value="897181592"/>
+				<DataProperty Name="m_modPart3" Type="UInt32" Value="3932834702"/>
+				<DataProperty Name="m_modPart0" Type="UInt32" Value="535996680"/>
+				<DataProperty Name="m_modPart1" Type="UInt32" Value="1129110174"/>
+				<DataProperty Name="m_locStringKey" Type="Int32" Value="1"/>
+			</DataObject>
+		</DataProperty>
+	</DataObject>
+</DataWarehouse>
+

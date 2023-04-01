@@ -1,0 +1,635 @@
+---------------------------------------------------------------------------------------------------
+-- Authors:
+-- Relic
+-- Woprock
+--
+-- Description:
+-- Religious win condition.
+-- Players (or Teams) use Monks to capture Holy Sites around the map.
+-- When the player or team captures all Holy Sites, they must defend them for a period of time to win the match.
+---------------------------------------------------------------------------------------------------
+
+import("conditions/conditiondata/ags_religious_data.scar")
+AGS_RELIGIOUS_MODULE = "AGS_Religious"
+AGS_RELIGIOUS_ACTIVE = true
+AGS_RELIGIOUS_OBJECTIVE = nil
+AGS_RELIGIOUS_SACRED_SITE_OBJECTIVES = { }
+AGS_RELIGIOUS_VICTORY_TIME = 10 * 60
+AGS_RELIGIOUS_REFRESH_TIME = 1 * 60
+AGS_RELIGIOUS_TIMER = "capture_victory_timer"
+AGS_RELIGIOUS_OBJECTIVE_IS_TIMER = false
+-- Holds group that contains all sites, used only during initialization.
+AGS_RELIGIOUS_SACRED_SITE_EGROUP = nil
+-- One frame is 0.125, this should be defined in frame count.
+AGS_RELIGIOUS_CHECK_FREQUENCY = 0.125
+-- Player that last captured all sites.
+AGS_RELIGIOUS_LAST_CAPTURER = nil
+-- Radius for capturing or decapturing site.
+AGS_RELIGIOUS_CONVERSION_RADIUS = 10.0
+AGS_RELIGIOUS_VISION_RADIUS = 12
+AGS_RELIGIOUS_PROGRESS_MIN = 0.00
+AGS_RELIGIOUS_PROGRESS_MAX = 1.00
+
+---------------------------------------------------------------------------------------------------
+-- Delegates:
+---------------------------------------------------------------------------------------------------
+
+Core_RegisterModule(AGS_RELIGIOUS_MODULE)	
+
+function AGS_Religious_UpdateModuleSettings()
+	AGS_Print("AGS_Religious_UpdateModuleSettings")
+	if not AGS_GLOBAL_SETTINGS.Religious then
+		Core_UnregisterModule(AGS_RELIGIOUS_MODULE)
+		return
+	end
+	AGS_RELIGIOUS_VICTORY_TIME = AGS_GLOBAL_SETTINGS.ReligiousSettings.Timer * 60
+	AGS_RELIGIOUS_REFRESH_TIME = AGS_GLOBAL_SETTINGS.ReligiousSettings.RefreshTimer * 60
+end
+
+function AGS_Religious_PresetFinalize()
+	AGS_Print("AGS_Religious_PresetFinalize")
+	-- Create new group and allocate all sacred sites to it. If group is empty unload this module.
+	AGS_RELIGIOUS_SACRED_SITE_EGROUP = EGroup_CreateUnique()
+	World_GetBlueprintEntities(AGS_GetNeutralEntity(AGS_BP_SACRED_SITE), AGS_RELIGIOUS_SACRED_SITE_EGROUP)	
+	if EGroup_CountSpawned(AGS_RELIGIOUS_SACRED_SITE_EGROUP) == 0 then
+		Core_UnregisterModule(AGS_RELIGIOUS_MODULE)
+		return	
+	end
+end
+
+function AGS_Religious_OnPlay()
+	AGS_Print("AGS_Religious_OnPlay")
+	AGS_Religious_InitializeSacredSites()
+	Rule_AddGlobalEvent(AGS_Religious_OnStrategicPointChanged, GE_StrategicPointChanged)
+	AGS_Religious_CreateObjective()
+	AGS_Religious_UpdateObjective()
+	-- Timers and time checks are initialized last.
+	Rule_AddInterval(AGS_Religious_OnTimerTick, AGS_RELIGIOUS_CHECK_FREQUENCY)
+end
+
+function AGS_Religious_TreatyStarted()
+	AGS_Print("AGS_Religious_TreatyStarted")
+	AGS_RELIGIOUS_ACTIVE = false
+	AGS_Religious_EnableSacredSitesCapture(AGS_RELIGIOUS_ACTIVE)
+end
+
+function AGS_Religious_TreatyEnded()
+	AGS_Print("AGS_Religious_TreatyEnded")
+	AGS_RELIGIOUS_ACTIVE = true
+	AGS_Religious_EnableSacredSitesCapture(AGS_RELIGIOUS_ACTIVE)
+end
+
+function AGS_Religious_OnPlayerDefeated(player, reason)
+	AGS_Print("AGS_Religious_OnPlayerDefeated")
+	if reason == AGS_WR_RELIGIOUS then 
+		AGS_Notifications_Eliminated(player, AGS_NOTIFICATIONS_RELIGIOUS)
+		AGS_Religious_TryDeclareWinners()
+	end
+end
+
+function AGS_Religious_OnRelationshipChanged(observer_id, target_id)
+	AGS_Print("AGS_Religious_OnRelationshipChanged")
+	if AGS_RELIGIOUS_OBJECTIVE == nil then
+		return
+	end
+	if AGS_RELIGIOUS_OBJECTIVE_IS_TIMER then
+		local title = AGS_Religious_GetSacredSiteTimerContestTitle(AGS_RELIGIOUS_LAST_CAPTURER)
+		AGS_Objectives_SetTitle(AGS_RELIGIOUS_OBJECTIVE, title)
+	end
+	AGS_Religious_UpdateObjective()
+end
+
+function AGS_Religious_OnGameOver()
+	AGS_Print("AGS_Religious_OnGameOver")
+	Rule_Remove(AGS_Religious_OnTimerTick)
+	Rule_RemoveGlobalEvent(AGS_Religious_OnStrategicPointChanged)
+	AGS_Religious_DeactivateTimer()
+	AGS_Religious_RemoveObjective()
+end
+
+---------------------------------------------------------------------------------------------------
+-- Callbacks:
+---------------------------------------------------------------------------------------------------
+
+function AGS_Religious_OnStrategicPointChanged(context)
+	-- Check if squad is nil and exit function if there is no instigating squad, except for changeType CT_StartedRevertingCooldown (7)
+	-- since that change type doesn't require a squad, and the squad can be nil when a squad dies within the capture radius.
+	if context.instigatorSquad == nil and not context.changeType == 7 then
+		print(string.format("Nil Squad for Holy Site Change Type %d", context.changeType))
+		return
+	end
+	-- Sacred site changing owneship. (Note: this is too long resolution, so it will be at the end of file.)
+	AGS_Religious_OnHolySiteChange(context)
+end
+
+function AGS_Religious_OnTimerTick()
+	-- Determine current objective progress.
+	AGS_Religious_UpdateSacredSiteObjectives()
+	-- Update objectives
+	AGS_Religious_UpdateObjective()
+	-- Refresh objectives to reflect current status.
+	if AGS_Religious_AreSitesUniformlyControlled() then
+		AGS_Religious_ProgressTimer()
+	else
+		AGS_Religious_TerminateTimer()
+	end	
+	-- Update objectives
+	AGS_Religious_UpdateObjective()
+end
+
+---------------------------------------------------------------------------------------------------
+-- Functions:
+---------------------------------------------------------------------------------------------------
+
+function AGS_Religious_InitializeSacredSites()
+	AGS_Religious_CreateSiteData()	
+	
+	for _, player in pairs(PLAYERS) do
+		player.AGS_SacredSites = {
+			objective_remaining_time = AGS_RELIGIOUS_VICTORY_TIME,
+			notifications = { }
+		}
+		AGS_Religious_CreateTimerNotifications(player)
+	end	
+end
+
+function AGS_Religious_CreateSiteData()
+	for i = 1, EGroup_CountSpawned(AGS_RELIGIOUS_SACRED_SITE_EGROUP) do
+		local site = {
+			entity_uwid = Entity_GetID(EGroup_GetSpawnedEntityAt(AGS_RELIGIOUS_SACRED_SITE_EGROUP, i)),
+			entity = EGroup_GetSpawnedEntityAt(AGS_RELIGIOUS_SACRED_SITE_EGROUP, i),
+			pos = Entity_GetPosition(EGroup_GetSpawnedEntityAt(AGS_RELIGIOUS_SACRED_SITE_EGROUP, i)),
+			player_last_capturing = nil,
+			color_last_capturing = nil,
+			progress = AGS_RELIGIOUS_PROGRESS_MIN,
+			objective = nil,
+			flash = nil,
+		}
+		table.insert(AGS_RELIGIOUS_SACRED_SITE_OBJECTIVES, site)
+	end
+end
+
+function AGS_Religious_EnableSacredSitesCapture(is_enabled)
+	for _, site in pairs(AGS_RELIGIOUS_SACRED_SITE_OBJECTIVES) do 
+		Entity_EnableStrategicPoint(site.entity, is_enabled) 
+	end
+end
+-- Stop active timer and return remaining time if it was active.
+function AGS_Religious_DeactivateTimer()
+	local remaining_time = nil
+	if Timer_Exists(AGS_RELIGIOUS_TIMER) then
+		remaining_time = Timer_GetRemaining(AGS_RELIGIOUS_TIMER)
+		Timer_End(AGS_RELIGIOUS_TIMER)
+	end
+	return remaining_time
+end
+-- Even through we have multiple objectives, we will consider them as one whenever we talk about them.
+function AGS_Religious_CreateObjective() 
+	AGS_RELIGIOUS_OBJECTIVE = AGS_Objectives_Create(AGS_OBJECTIVES_RELIGIOUS, AGS_GS_LOCAL_PLAYER)
+	AGS_Objectives_Set(AGS_RELIGIOUS_OBJECTIVE, OS_Incomplete, true, true, COUNTER_CountUpTo)
+	AGS_RELIGIOUS_OBJECTIVE_IS_TIMER = false
+	-- Create secondary from main objective template.
+	local secondary_objective = AGS_Objectives_CreateFromCore(AGS_OBJECTIVES_RELIGIOUS, AGS_OBJECTIVES_RELIGIOUS_SECONDARY)
+	for index, site in pairs(AGS_RELIGIOUS_SACRED_SITE_OBJECTIVES) do		
+		site.objective = AGS_Objectives_Create(secondary_objective, AGS_GS_LOCAL_PLAYER, index, AGS_RELIGIOUS_OBJECTIVE)
+		AGS_Objectives_Set(site.objective, OS_Incomplete, true, true)
+	end
+end
+
+function AGS_Religious_UpdateObjective()
+	if AGS_RELIGIOUS_OBJECTIVE_IS_TIMER then		
+		AGS_Objectives_Progress(AGS_RELIGIOUS_OBJECTIVE, nil, nil, nil, Timer_GetRemaining(AGS_RELIGIOUS_TIMER))
+	else
+		local sacred_count = #AGS_RELIGIOUS_SACRED_SITE_OBJECTIVES
+		local sacred_team_count = AGS_Religious_CountSitesControlledTeam(AGS_GS_LOCAL_PLAYER)
+		AGS_Objectives_Progress(AGS_RELIGIOUS_OBJECTIVE, sacred_team_count, sacred_count, sacred_team_count / sacred_count)
+	end	
+end
+-- This updates progress of all sites to match owning/capturing player color. Decapturing is not registred.
+function AGS_Religious_UpdateSacredSiteObjectives()
+	for _, site in pairs(AGS_RELIGIOUS_SACRED_SITE_OBJECTIVES) do
+		-- This once iterated over every player... but it doesn't make sense unless this method lies.
+		-- Only one team has progress higher than 0, so everyone else should have negative.  
+		site.progress = Player_GetStrategicPointCaptureProgress(AGS_GS_LOCAL_PLAYER.id, site.entity)
+		local state = nil
+		if site.progress == -1 and AGS_Objectives_GetCurrentState(site.objective) == OS_Incomplete then 
+			state = OS_Failed
+		elseif site.progress == 1 and AGS_Objectives_GetCurrentState(site.objective) == OS_Incomplete then
+			state = OS_Complete
+		elseif site.progress == 0 then
+			state = OS_Incomplete
+		end			
+		AGS_Objectives_SetColorProgress(site.objective, state, site.color_last_capturing, math.abs(site.progress))		
+	end	
+end
+
+function AGS_Religious_RemoveObjective()
+	AGS_Objectives_Set(AGS_RELIGIOUS_OBJECTIVE, nil, false)
+	for _, site in pairs(AGS_RELIGIOUS_SACRED_SITE_OBJECTIVES) do	
+		AGS_Objectives_Set(site.objective, nil, false)
+	end
+end
+
+-- Religious victory was triggered by a religious timer finishing.
+function AGS_Religious_VictoryTriggered()
+	-- Stop the music.
+	Music_PersistentStop()
+	
+	-- Eliminate all players that are not in his valid team.
+	local losers = AGS_Teams_GetAllCurrentOpponents(AGS_RELIGIOUS_LAST_CAPTURER)
+	if #losers > 0 then
+		AGS_SetPlayerGroupDefeated(
+			losers,
+			AGS_Presentations_LossReligious, 
+			AGS_WR_RELIGIOUS,
+			AGS_Objectives_PresentWrap(
+				AGS_RELIGIOUS_OBJECTIVE, 
+				OS_Failed, 
+				AGS_OBJECTIVES_RELIGIOUS.title_neutralize))
+	else
+		AGS_Religious_TryDeclareWinners()
+	end
+end
+
+function AGS_Religious_TryDeclareWinners()
+	AGS_Conditions_CheckVictory(AGS_RELIGIOUS_ACTIVE, AGS_Presentations_VictoryReligious, AGS_WR_RELIGIOUS,
+		AGS_Objectives_PresentWrap(
+			AGS_RELIGIOUS_OBJECTIVE, 
+			OS_Complete, 
+			AGS_OBJECTIVES_RELIGIOUS.title_defend))
+end
+
+---------------------------------------------------------------------------------------------------
+-- Timer Functions:
+---------------------------------------------------------------------------------------------------
+
+-- Tries to progress the timer.
+function AGS_Religious_ProgressTimer()
+	-- Disables attempts to tick during treaties.
+	if not AGS_RELIGIOUS_ACTIVE then
+		return
+	end
+	-- Create timer and switch counter to timer.
+	if not Timer_Exists(AGS_RELIGIOUS_TIMER) then
+		if AGS_GLOBAL_SETTINGS.ReligiousSettings.ResumableTimer then
+			local time = AGS_RELIGIOUS_LAST_CAPTURER.AGS_SacredSites.objective_remaining_time
+			-- This might be revisited later to intruduce refreshed notifications and prolonged time.
+			Timer_Start(AGS_RELIGIOUS_TIMER, time)
+		else
+			AGS_Religious_CreateTimerNotifications(AGS_RELIGIOUS_LAST_CAPTURER)
+			Timer_Start(AGS_RELIGIOUS_TIMER, AGS_RELIGIOUS_VICTORY_TIME)
+		end
+		AGS_Religious_SwitchToTimer(AGS_RELIGIOUS_LAST_CAPTURER)
+	end	
+	-- Update progress
+	Player_SetStateModelFloat(AGS_RELIGIOUS_LAST_CAPTURER.id, "religious_timer", Timer_GetRemaining(AGS_RELIGIOUS_TIMER))
+	AGS_Religious_TimerProgressNotification(AGS_RELIGIOUS_LAST_CAPTURER)
+	AGS_Religious_UpdateObjective()
+	
+	if Timer_GetRemaining(AGS_RELIGIOUS_TIMER) == 0 then
+		AGS_Religious_VictoryTriggered()
+	end	
+end
+-- Ends the timer and switches timer to counter.
+function AGS_Religious_TerminateTimer()
+	if Timer_Exists(AGS_RELIGIOUS_TIMER) then
+		-- Save timer as we might need it for resumeable condition
+		local remains = Timer_GetRemaining(AGS_RELIGIOUS_TIMER)
+		
+		if AGS_GLOBAL_SETTINGS.ReligiousSettings.Refresh and remains < AGS_RELIGIOUS_REFRESH_TIME then
+			remains = AGS_RELIGIOUS_REFRESH_TIME	
+		end
+		
+		AGS_RELIGIOUS_LAST_CAPTURER.AGS_SacredSites.objective_remaining_time = remains
+		for _, ally in pairs(AGS_RELIGIOUS_LAST_CAPTURER.AGS_Team.allies) do
+			ally.AGS_SacredSites.objective_remaining_time = remains
+		end
+		Timer_End(AGS_RELIGIOUS_TIMER)
+		Player_SetStateModelFloat(AGS_RELIGIOUS_LAST_CAPTURER.id, "religious_timer", 0)
+		AGS_Religious_SwitchToCounter(AGS_RELIGIOUS_LAST_CAPTURER)
+	end
+end
+
+function AGS_Religious_SwitchToCounter(actor)
+	local relation = AGS_GetRelation(actor)
+	AGS_Notifications_SoundCue(actor, AGS_NOTIFICATIONS_RELIGIOUS_INTERRUPTED)
+	local title = AGS_OBJECTIVES_RELIGIOUS.title_capture
+	if relation == AGS_SAE_ENEMY then
+		Sound_Play2D("mus_shared_victory_countdown_mix_event_reset")		
+	end	
+	Music_UnlockIntensity()
+	ResetMinimumIntensityMusicUnforced()
+	AGS_Objectives_Set(AGS_RELIGIOUS_OBJECTIVE, nil, nil, nil, COUNTER_CountUpTo)
+	AGS_Objectives_SetTitle(AGS_RELIGIOUS_OBJECTIVE, title)
+	AGS_RELIGIOUS_OBJECTIVE_IS_TIMER = false
+	-- Create objective presentation for changed objective.
+	AGS_Objectives_Present(AGS_RELIGIOUS_OBJECTIVE, nil, title)
+end
+
+function AGS_Religious_SwitchToTimer(actor)
+	AGS_Notifications_SoundCue(actor, AGS_NOTIFICATIONS_RELIGIOUS_STARTED)
+	local title = AGS_Religious_GetSacredSiteTimerContestTitle(actor)
+	AGS_Objectives_Set(AGS_RELIGIOUS_OBJECTIVE, nil, nil, nil, COUNTER_TimerDecreasing)
+	AGS_Objectives_SetTitle(AGS_RELIGIOUS_OBJECTIVE, title)
+	AGS_RELIGIOUS_OBJECTIVE_IS_TIMER = true
+	-- Create objective presentation for changed objective.
+	AGS_Objectives_Present(AGS_RELIGIOUS_OBJECTIVE, nil, title)
+end
+-- Creates list of untriggered notifications.
+function AGS_Religious_CreateTimerNotifications(player)
+	player.AGS_SacredSites.notifications = { }
+	for i = 1, #AGS_NOTIFICATIONS_COUNTDOWN do
+		table.insert(player.AGS_SacredSites.notifications, { triggered = false, }) 
+	end
+end
+-- Fires all untriggered notifications based on timer.
+function AGS_Religious_TimerProgressNotification(player)	
+	for i = 1, #player.AGS_SacredSites.notifications do
+		-- If threshold notification has not been triggered AND timer is in threshold window
+		if not player.AGS_SacredSites.notifications[i].triggered and 
+			AGS_NOTIFICATIONS_COUNTDOWN[i].time >= Timer_GetRemaining(AGS_RELIGIOUS_TIMER) then 
+			-- Mark as triggered.
+			player.AGS_SacredSites.notifications[i].triggered = true
+			
+			AGS_Notifications_CountdownNotification(player, i, AGS_NOTIFICATIONS_RELIGIOUS_COUNTDOWN)
+		end
+	end	
+end
+
+---------------------------------------------------------------------------------------------------
+-- Helper Functions:
+---------------------------------------------------------------------------------------------------
+
+function AGS_Religious_GetSacredSiteTimerContestTitle(actor)
+	local relation = AGS_GetRelation(actor)	
+	if relation == AGS_SAE_ENEMY then
+		return AGS_OBJECTIVES_RELIGIOUS.title_neutralize		
+	end	
+    return AGS_OBJECTIVES_RELIGIOUS.title_defend
+end
+-- Returns true if all sites are controlled by same team.
+function AGS_Religious_AreSitesUniformlyControlled()
+	for _, player in pairs(PLAYERS) do
+		if AGS_Religious_CountSitesControlledTeam(player) >= #AGS_RELIGIOUS_SACRED_SITE_OBJECTIVES then
+			return true	
+		end			
+	end
+	return false
+end
+-- Return count of sites under single team.
+function AGS_Religious_CountSitesControlledTeam(player)
+	local controlled = AGS_Religious_CountSitesControlled(player)
+	for _, ally in pairs(AGS_Teams_GetAllCurrentTeammates(player)) do
+		controlled = controlled + AGS_Religious_CountSitesControlled(ally)
+	end
+	return controlled	
+end
+-- Returns all sites owned by an player.
+function AGS_Religious_CountSitesControlled(player)
+	local controlled = 0
+	for _, site in pairs(AGS_RELIGIOUS_SACRED_SITE_OBJECTIVES) do
+		if not World_OwnsEntity(site.entity) and Entity_GetPlayerOwner(site.entity) == player.id then
+			controlled = controlled + 1
+		end
+	end	
+	return controlled	
+end
+-- Pings all Holy Sites (can be called at interval)
+function AGS_Religious_HolySiteMinimapBlips()
+	if Timer_Exists(AGS_RELIGIOUS_TIMER) then
+		for _, site in pairs(AGS_RELIGIOUS_SACRED_SITE_OBJECTIVES) do
+			-- Triggers a blip that corresponds to Holy Site owner's colour, so we verify that its owned by a player.
+			if not World_OwnsEntity(site.entity) then
+				UI_CreateMinimapBlipOnPosFrom(Entity_GetPlayerOwner(site.entity), site.pos, 5, "objective_holy_site")
+			end
+		end
+	else
+		Rule_RemoveMe()
+	end	
+end
+-- Flashes all Holy Sites
+function AGS_Religious_FlashAllHolySites()
+	if Timer_Exists(AGS_RELIGIOUS_TIMER) then
+		for _, site in pairs(AGS_RELIGIOUS_SACRED_SITE_OBJECTIVES) do
+			AGS_Religious_SetSiteFlash(site, true)
+		end		
+	else
+		for _, site in pairs(AGS_RELIGIOUS_SACRED_SITE_OBJECTIVES) do
+			AGS_Religious_SetSiteFlash(site, false)
+		end
+		Rule_RemoveMe()
+	end
+end
+-- Change site flashing on or off.
+function AGS_Religious_SetSiteFlash(site, flashing)
+	if flashing and not site.flash then		
+		site.flash = UI_FlashObjectiveIcon(site.objective, true)
+		UI_SetEntityDataContext(site.entity, {is_flashing = flashing})		
+	else
+		UI_StopFlashing(site.flash)
+		site.flash = nil
+		UI_SetEntityDataContext(site.entity, {is_flashing = flashing})		
+	end
+end
+-- Determines if selected holy site position has monks nearby.
+function AGS_Religious_HasContestingMonk(holy_site_pos)
+	local sg_nearby = SGroup_CreateUnique()
+	for _, player in pairs(PLAYERS) do
+		World_GetSquadsNearPoint(player.id, sg_nearby, holy_site_pos, AGS_RELIGIOUS_CONVERSION_RADIUS, OT_Player)
+		SGroup_Filter(sg_nearby, { AGS_BP_MONK }, FILTER_KEEP)
+		if SGroup_Count(sg_nearby) > 0 then
+			return true
+		end
+	end		
+end
+---------------------------------------------------------------------------------------------------
+-- Sacred Site Resolve Functions:
+---------------------------------------------------------------------------------------------------
+function AGS_Religious_OnHolySiteChange(context)	
+	-- Get Holy Site position
+	local holy_site_pos = Entity_GetPosition(context.strategicPointEntity)
+	-- Get Holy Site progress - 0 to 1 for player/allies, 0 to -1 for enemies
+	local holy_site_progress = Player_GetStrategicPointCaptureProgress(AGS_GS_LOCAL_PLAYER.id, context.strategicPointEntity)
+	-- Get instigating player
+	local instigating_player = nil 
+	if context.instigatorSquad ~= nil then
+		-- This checks verifies that squad is owned by player, e.g. in case of surrender to avoid crash.
+		if not World_OwnsSquad(context.instigatorSquad) then
+			instigating_player = Core_GetPlayersTableEntry(Squad_GetPlayerOwner(context.instigatorSquad))
+		else
+			return
+		end
+	end
+	local site_entity_id = context.strategicPointEntity
+	
+	-- CT_Captured: If captured
+	if context.changeType == 0 then
+		AGS_Religious_OnHolySiteChangeTypeCapture(instigating_player, holy_site_pos)
+	-- CT_Reverting: If owned Holy Site is being neutralized
+	elseif context.changeType == 1 then
+		AGS_Religious_OnHolySiteChangeTypeNeutralizing(instigating_player, site_entity_id, holy_site_progress, holy_site_pos, context.strategicPointOwner)
+	-- Currently not used CT_Secured: if secured.
+	-- elseif context.changeType == 2 then
+	-- CT_UnCaptured: If Holy Site is neutralized
+	elseif context.changeType == 3 then
+		AGS_Religious_OnHolySiteChangeTypeNeutralized(instigating_player, site_entity_id, holy_site_pos, context.strategicPointOwner)
+	-- Currently not used CT_Seized: if siezed (triggered briefly between Uncaptured and StartedCapture)
+	-- elseif context.changeType == 4 then
+	-- CT_StartedCapture: If capture started/resuming
+	elseif context.changeType == 5 then
+		AGS_Religious_OnHolySiteChangeTypeContinue(instigating_player, site_entity_id, holy_site_progress, holy_site_pos)
+	-- CT_StartedCooldown: If started cooldown (e.g. progress decrementing to 0 if Monk exits prior to capture)
+	elseif context.changeType == 6 then
+		AGS_Religious_OnHolySiteChangeTypeCooldown(site_entity_id)
+	-- CT_StartedRevertingCooldown: If started reverting cooldown (e.g. enemy begins reverting and exits proximity)
+	elseif context.changeType == 7 then
+		AGS_Religious_OnHolySiteChangeTypeResume(site_entity_id)
+	-- CT_Halted: If progress halted (e.g. enemy enters proximity while you are present)
+	elseif context.changeType == 8 then
+		AGS_Religious_OnHolySiteChangeTypeContested(instigating_player, site_entity_id, holy_site_progress, holy_site_pos)
+	end	
+end
+
+function AGS_Religious_OnHolySiteChangeTypeResume(site_entity_id)
+	for _, site in pairs(AGS_RELIGIOUS_SACRED_SITE_OBJECTIVES) do
+		if site.entity == site_entity_id then
+			AGS_Religious_SetSiteFlash(site, false)
+		end
+	end
+	if Timer_Exists(AGS_RELIGIOUS_TIMER) then
+		Timer_Resume(AGS_RELIGIOUS_TIMER)
+	end		
+end
+
+function AGS_Religious_OnHolySiteChangeTypeCooldown(site_entity_id)
+	for _, site in pairs(AGS_RELIGIOUS_SACRED_SITE_OBJECTIVES) do
+		if site.entity == site_entity_id then
+			AGS_Religious_SetSiteFlash(site, false)
+		end
+	end
+end
+
+function AGS_Religious_OnHolySiteChangeTypeContinue(instigating_player, site_entity_id, holy_site_progress, holy_site_pos)
+	for _, site in pairs(AGS_RELIGIOUS_SACRED_SITE_OBJECTIVES) do
+		if site.entity == site_entity_id then
+			site.player_last_capturing = instigating_player.id
+			-- Changed from original if to simply always be specific player color instead of merging.
+			site.color_last_capturing = Player_GetUIColour(instigating_player.id)
+			if not site.is_revealed then
+				FOW_RevealArea(holy_site_pos, AGS_RELIGIOUS_VISION_RADIUS, -1)
+				site.is_revealed = true
+			end
+			-- Stop flashing.
+			AGS_Religious_SetSiteFlash(site, false)
+			-- Trigger a blip that matches colour of instigator
+			UI_CreateMinimapBlipOnPosFrom(instigating_player.id, holy_site_pos, 5, "objective_holy_site_spin")
+		end
+	end	
+
+	if holy_site_progress == 0 then
+		local selected_relation = AGS_GetRelation(instigating_player)
+		-- Simply based on relation to instigator
+		AGS_Notifications_ObjectiveActionSelectable(instigating_player, AGS_NOTIFICATIONS_RELIGIOUS_CAPTURING, selected_relation)
+		-- Just why is this here ?
+		if selected_relation == AGS_SAE_SELF then
+			Game_SendCustomChallengeEvent(AGS_GS_LOCAL_PLAYER.id, CE_ACHIEVBEGINSACREDSITECAPTURE, 1)				
+		end
+	end
+end
+
+function AGS_Religious_OnHolySiteChangeTypeContested(instigating_player, site_entity_id, holy_site_progress, holy_site_pos)
+	
+	if holy_site_progress ~= 0 then
+		local selected_relation = AGS_SAE_ALLY
+		-- positive progress is bad for us as enemy is taking it
+		if holy_site_progress > 0 then
+			selected_relation = AGS_SAE_ENEMY
+		-- negative progress is bad for enemy as local and his ally is taking it
+		elseif holy_site_progress < 0 and instigating_player == AGS_GS_LOCAL_PLAYER then
+			selected_relation = AGS_SAE_SELF
+		end
+		AGS_Notifications_ObjectiveActionSelectable(instigating_player, AGS_NOTIFICATIONS_RELIGIOUS_CONTESTING,	selected_relation)	
+	end
+	for _, site in pairs(AGS_RELIGIOUS_SACRED_SITE_OBJECTIVES) do
+		if site.entity == site_entity_id then
+			AGS_Religious_SetSiteFlash(site, true)
+			-- Trigger a blip that corresponds to the instigating player progress colour
+			UI_CreateMinimapBlipOnPosFrom(site.player_last_capturing, holy_site_pos, 5, "objective_holy_site")
+		end
+	end
+end
+
+function AGS_Religious_OnHolySiteChangeTypeNeutralized(instigating_player, site_entity_id, holy_site_pos, owning_player)
+	for _, site in pairs(AGS_RELIGIOUS_SACRED_SITE_OBJECTIVES) do
+		if site.entity == site_entity_id then
+			AGS_Religious_SetSiteFlash(site, false)
+		end
+	end
+	
+	-- If no players have monks in range of Holy Site (note: this ensures that the neutralized/lost 
+	-- cues do not overlap with the capture started cues if an enemy Monk is in range)
+	if not AGS_Religious_HasContestingMonk(holy_site_pos) then
+		local selected_relation = AGS_SAE_ALLY
+		local is_owner_relation = AGS_GetRelation(Core_GetPlayersTableEntry(owning_player))
+		-- Owner side gets this
+		if is_owner_relation ~= AGS_SAE_ENEMY then
+			selected_relation = AGS_SAE_ENEMY
+		-- Local instigator gets this
+		elseif instigating_player == AGS_GS_LOCAL_PLAYER then
+			selected_relation = AGS_SAE_SELF
+		end
+		AGS_Notifications_ObjectiveActionSelectable(instigating_player, AGS_NOTIFICATIONS_RELIGIOUS_NEUTRALIZED, selected_relation)
+	end
+	
+	-- Trigger a blip that matches colour of instigator
+	UI_CreateMinimapBlipOnPosFrom(instigating_player.id, holy_site_pos, 5, "objective_holy_site_spin")
+end
+
+function AGS_Religious_OnHolySiteChangeTypeNeutralizing(instigating_player, site_entity_id, holy_site_progress, holy_site_pos, owning_player)
+	for _, site in pairs(AGS_RELIGIOUS_SACRED_SITE_OBJECTIVES) do
+		if site.entity == site_entity_id then
+			AGS_Religious_SetSiteFlash(site, true)
+		end
+	end
+	
+	if math.abs(holy_site_progress) == 1 then
+		local instigator_relation = AGS_GetRelation(instigating_player)
+		local is_owner_relation = AGS_GetRelation(Core_GetPlayersTableEntry(owning_player))
+		-- For self or ally instigation do this
+		if instigator_relation ~= AGS_SAE_ENEMY then
+			AGS_Notifications_ObjectiveActionSelectable(instigating_player, AGS_NOTIFICATIONS_RELIGIOUS_NEUTRALIZING, instigator_relation)
+		-- For enemy owner do this
+		elseif is_owner_relation == AGS_SAE_SELF then 
+			AGS_Notifications_ObjectiveActionSelectable(instigating_player, AGS_NOTIFICATIONS_RELIGIOUS_NEUTRALIZING, AGS_SAE_SELF)
+		end
+	end	
+	
+	-- Trigger a blip that matches colour of instigator
+	UI_CreateMinimapBlipOnPosFrom(instigating_player.id, holy_site_pos, 5, "objective_holy_site_spin")
+	-- Pause timer, if it's running
+	if Timer_Exists(AGS_RELIGIOUS_TIMER) then
+		Timer_Pause(AGS_RELIGIOUS_TIMER)
+	end		
+end
+
+function AGS_Religious_OnHolySiteChangeTypeCapture(instigating_player, holy_site_pos)
+	AGS_RELIGIOUS_LAST_CAPTURER = instigating_player
+	local instigator_relation = AGS_GetRelation(instigating_player)
+	if AGS_Religious_AreSitesUniformlyControlled() then
+		-- pass normally in this case, but execute additional actions after it.
+		AGS_Notifications_ObjectiveActionSelectable(instigating_player, AGS_NOTIFICATIONS_RELIGIOUS_APPROACH, instigator_relation)
+		if instigator_relation ~= AGS_SAE_ENEMY then
+			-- Trigger a blip that matches colour of instigator
+			UI_CreateMinimapBlipOnPosFrom(instigating_player.id, holy_site_pos, 5, "objective_holy_site")
+		else
+			-- Initiate minimap blips
+			Rule_AddInterval(AGS_Religious_HolySiteMinimapBlips, 5)
+			-- Flash Holy Sites
+			Rule_AddInterval(AGS_Religious_FlashAllHolySites, 1)
+		end
+	else 
+		AGS_Notifications_ObjectiveActionSelectable(instigating_player, AGS_NOTIFICATIONS_RELIGIOUS_CAPTURED, instigator_relation)
+		-- Trigger a blip that matches colour of instigator
+		UI_CreateMinimapBlipOnPosFrom(instigating_player.id, holy_site_pos, 5, "objective_holy_site")
+	end
+end

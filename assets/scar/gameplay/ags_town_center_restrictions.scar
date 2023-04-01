@@ -1,0 +1,53 @@
+---------------------------------------------------------------------------------------------------
+-- Authors:
+-- Relic
+-- Woprock
+--
+-- Description:
+-- Restricts the ability to construct additional TCs.
+---------------------------------------------------------------------------------------------------
+
+AGS_TOWN_CENTER_RESTICTIONS_MODULE = "AGS_TownCenterRestrictions"
+
+---------------------------------------------------------------------------------------------------
+-- Delegates:
+---------------------------------------------------------------------------------------------------
+
+Core_RegisterModule(AGS_TOWN_CENTER_RESTICTIONS_MODULE)	
+
+function AGS_TownCenterRestrictions_UpdateModuleSettings()
+	AGS_Print("AGS_TownCenterRestrictions_UpdateModuleSettings")
+	if AGS_GLOBAL_SETTINGS.TownCenterRestrictions == AGS_GS_TC_RESTRICTIONS_NONE then
+		Core_UnregisterModule(AGS_TOWN_CENTER_RESTICTIONS_MODULE)
+	end
+end
+
+function AGS_TownCenterRestrictions_PresetFinalize()
+	AGS_Print("AGS_TownCenterRestrictions_PresetFinalize")
+	if AGS_GLOBAL_SETTINGS.TownCenterRestrictions == AGS_GS_TC_RESTRICTIONS_NONE then
+		return
+	elseif AGS_GLOBAL_SETTINGS.TownCenterRestrictions == AGS_GS_TC_RESTRICTIONS_NORMAL then
+		AGS_TownCenterRestrictions_RestrictNormal()		
+	elseif AGS_GLOBAL_SETTINGS.TownCenterRestrictions == AGS_GS_TC_RESTRICTIONS_LANDMARKS then
+		AGS_TownCenterRestrictions_RestrictNormal()		
+		AGS_TownCenterRestrictions_RestrictLandmarks()
+	end	
+end
+
+---------------------------------------------------------------------------------------------------
+-- Functions:
+---------------------------------------------------------------------------------------------------
+
+function AGS_TownCenterRestrictions_RestrictNormal()
+	for _, player in pairs(PLAYERS) do
+		Player_SetEntityProductionAvailability(player.id, AGS_GetCivilizationEntity(player.raceName, AGS_BP_TC), ITEM_REMOVED)
+	end
+end
+
+function AGS_TownCenterRestrictions_RestrictLandmarks()
+	for _, player in pairs(PLAYERS) do
+		if player.raceName == AGS_CIV_ENGLISH or player.raceName == AGS_CIV_HRE then
+			Player_SetEntityProductionAvailability(player.id, AGS_GetCivilizationEntity(player.raceName, AGS_BP_TC_LANDMARK), ITEM_REMOVED)
+		end
+	end
+end

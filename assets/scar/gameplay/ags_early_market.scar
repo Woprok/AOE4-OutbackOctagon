@@ -1,0 +1,38 @@
+---------------------------------------------------------------------------------------------------
+-- Authors:
+-- Relic
+-- Woprock
+--
+-- Description:
+-- Enables market in any age.
+---------------------------------------------------------------------------------------------------
+
+AGS_EARLY_MARKET_MODULE = "AGS_EarlyMarket"
+
+---------------------------------------------------------------------------------------------------
+-- Delegates:
+---------------------------------------------------------------------------------------------------
+
+Core_RegisterModule(AGS_EARLY_MARKET_MODULE)	
+
+function AGS_EarlyMarket_UpdateModuleSettings()
+	AGS_Print("AGS_EarlyMarket_UpdateModuleSettings")
+	if not AGS_GLOBAL_SETTINGS.EarlyMarket then
+		Core_UnregisterModule(AGS_EARLY_MARKET_MODULE)
+	end
+end
+
+function AGS_EarlyMarket_PresetFinalize()
+	AGS_Print("AGS_EarlyMarket_PresetFinalize")
+	AGS_EarlyMarket_Unlock()
+end
+
+---------------------------------------------------------------------------------------------------
+-- Functions:
+---------------------------------------------------------------------------------------------------
+
+function AGS_EarlyMarket_Unlock()
+	for _, player in pairs(PLAYERS) do
+		Player_SetEntityProductionAvailability(player.id, AGS_GetCivilizationEntity(player.raceName, AGS_BP_MARKET), ITEM_UNLOCKED)
+	end
+end

@@ -1,0 +1,108 @@
+---------------------------------------------------------------------------------------------------
+-- Authors:
+-- Relic
+-- Woprock
+-- jackelpobelope (inspiration for current scattered villagers)
+--
+-- Description:
+-- Spawns villagers randomly on the map.
+---------------------------------------------------------------------------------------------------
+
+AGS_SCATTERED_MODULE = "AGS_Scattered"
+AGS_SCATTERED_RADIUS = 1
+AGS_SCATTERED_TUNING = 1.9
+AGS_SCATTERED_WOOD = 400
+AGS_SCATTERED_STONE = 350
+
+---------------------------------------------------------------------------------------------------
+-- Delegates:
+---------------------------------------------------------------------------------------------------
+
+Core_RegisterModule(AGS_SCATTERED_MODULE)	
+
+function AGS_Scattered_AdjustSettings()
+	AGS_Print("AGS_Scattered_AdjustSettings")
+	if AGS_GLOBAL_SETTINGS.StartingVillagers == 0 then
+		AGS_GLOBAL_SETTINGS.StartingVillagers = 1
+	end
+end
+
+function AGS_Scattered_UpdateModuleSettings()
+	AGS_Print("AGS_Scattered_UpdateModuleSettings")
+	if AGS_GLOBAL_SETTINGS.Settlement ~= AGS_GS_SETTLEMENT_SCATTERED then
+		Core_UnregisterModule(AGS_SCATTERED_MODULE)
+	end
+end
+
+function AGS_Scattered_EarlyInitializations()
+	AGS_Print("AGS_Scattered_EarlyInitializations")
+	if AGS_GLOBAL_SETTINGS.UsingPrefabStart then
+		AGS_Scattered_DestroySpawn()
+	end
+end
+
+function AGS_Scattered_PresetInitialize()
+	AGS_Print("AGS_Scattered_PresetInitialize")
+	-- Tune villager spawn out from the middle of the map.
+	AGS_SCATTERED_RADIUS = math.max(World_GetWidth(), World_GetLength())/AGS_SCATTERED_TUNING 
+	Camera_MoveTo(World_Pos(0,World_GetHeightAt(0,0),0))
+end
+
+function AGS_Scattered_PresetExecute()
+	AGS_Print("AGS_Scattered_PresetExecute")
+	AGS_Scattered_CreateSpawn()
+end
+
+function AGS_Scattered_OnStarting()
+	AGS_Print("AGS_Scattered_OnStarting")
+	for _, player in pairs(PLAYERS) do	
+		-- Insist that player do not have capital.
+		Player_SetStateModelFloat(player.id, "has_capital", 0)	
+		-- Player should be able to build structures.
+		Player_SetStateModelBool(player.id, "player_can_construct_structures", true)	
+		if AGS_GLOBAL_SETTINGS.UsingPrefabStart then
+			FOW_UnExploreAll()
+		end
+		
+		-- Increase starting resources to cover cost of building an TC
+		if player.raceName ~= AGS_CIV_MONGOL then
+			Player_GiftResource(player.id, RT_Stone, AGS_SCATTERED_STONE)
+		end
+		Player_GiftResource(player.id, RT_Wood, AGS_SCATTERED_WOOD)
+		
+		Core_CallDelegateFunctions("AdjustAIPlayers", AGS_AI_ADJUSTREASON_NOMAD, player)
+	end
+end
+---------------------------------------------------------------------------------------------------
+-- Functions:
+---------------------------------------------------------------------------------------------------
+-- Removing prefab start.
+function AGS_Scattered_DestroySpawn()
+	AGS_Print("AGS_Scattered_DestroySpawn")
+	for _, player in pairs(PLAYERS) do	
+		EGroup_DestroyAllEntities(Player_GetEntities(player.id))
+		SGroup_DestroyAllSquads(Player_GetSquads(player.id))
+	end
+end
+-- Get spawn dimensions and initial squad location.
+function AGS_Scattered_GetScatterPosition()
+	local x = World_GetRand(0 - AGS_SCATTERED_RADIUS, AGS_SCATTERED_RADIUS)
+	local z = World_GetRand(0 - AGS_SCATTERED_RADIUS, AGS_SCATTERED_RADIUS)
+	local y = World_GetHeightAt(x, z)
+	return World_Pos(x, y, z)
+end
+-- Distributes all players all units randomly around the map.
+function AGS_Scattered_CreateSpawn()	
+	for _, player in pairs(PLAYERS) do		
+		-- Get Villager BP and spawn them at random location, then ask to create artificial home for AI.
+		local sbp_vil = AGS_GetCivilizationUnit(player.raceName, AGS_BP_VILLAGER)
+		local snameVIL = AGS_SGroupName(player.id, AGS_BP_VILLAGER)
+		local squad_group = SGroup_CreateIfNotFound(snameVIL)		
+		for i=1,AGS_GLOBAL_SETTINGS.StartingVillagers do
+			local spawn_pos = AGS_Scattered_GetScatterPosition()
+			UnitEntry_DeploySquads(player.id, squad_group, {{sbp = sbp_vil, numSquads = 1 }}, spawn_pos)
+		end		
+		
+		Core_CallDelegateFunctions("UnitsSpawned", player.id, nil, squad_group)			
+	end
+end	

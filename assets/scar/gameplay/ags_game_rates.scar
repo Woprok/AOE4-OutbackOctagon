@@ -1,0 +1,55 @@
+---------------------------------------------------------------------------------------------------
+-- Authors:
+-- Relic
+-- Woprock
+--
+-- Description:
+-- Alters all production and gathering rates.
+---------------------------------------------------------------------------------------------------
+
+AGS_GAME_RATES_MODULE = "AGS_GameRates"
+AGS_GAME_RATES_MODIFIERS = { }
+
+---------------------------------------------------------------------------------------------------
+-- Delegates:
+---------------------------------------------------------------------------------------------------
+
+Core_RegisterModule(AGS_GAME_RATES_MODULE)	
+
+function AGS_GameRates_UpdateModuleSettings()
+	AGS_Print("AGS_GameRates_UpdateModuleSettings")
+	if AGS_GLOBAL_SETTINGS.GameRates == 1.00 then
+		Core_UnregisterModule(AGS_GAME_RATES_MODULE)
+	end
+end
+
+function AGS_GameRates_PresetFinalize()	
+	AGS_Print("AGS_GameRates_PresetFinalize")
+	AGS_GameRates_ApplyBonus(BP_GetEntityBlueprintsWithType(AGS_BP_BUILDING))	
+	AGS_GameRates_ApplyBonus(BP_GetEntityBlueprintsWithType(AGS_BP_UNIT_CLASS))	
+end
+
+---------------------------------------------------------------------------------------------------
+-- Functions:
+---------------------------------------------------------------------------------------------------
+
+function AGS_GameRates_ApplyBonus(bps)
+	for _, ebp in pairs(bps) do 
+		if AGS_GAME_RATES_MODIFIERS[ebp.PropertyBagGroupID] == nil then
+			AGS_GAME_RATES_MODIFIERS[ebp.PropertyBagGroupID] = true
+			for _, player in pairs(PLAYERS) do	
+				AGS_GameRates_ApplyModifier(player.id, ebp, "production_speed_modifier", AGS_GLOBAL_SETTINGS.GameRates)
+				AGS_GameRates_ApplyModifier(player.id, ebp, "resource_entity_harvest_rate_food", AGS_GLOBAL_SETTINGS.GameRates)
+				AGS_GameRates_ApplyModifier(player.id, ebp, "resource_entity_harvest_rate_wood", AGS_GLOBAL_SETTINGS.GameRates)
+				AGS_GameRates_ApplyModifier(player.id, ebp, "resource_entity_harvest_rate_gold", AGS_GLOBAL_SETTINGS.GameRates)
+				AGS_GameRates_ApplyModifier(player.id, ebp, "resource_entity_harvest_rate_stone", AGS_GLOBAL_SETTINGS.GameRates)
+				AGS_GameRates_ApplyModifier(player.id, ebp, "construction_rate", AGS_GLOBAL_SETTINGS.GameRates)
+				AGS_GameRates_ApplyModifier(player.id, ebp, "repair_rate_modifier", AGS_GLOBAL_SETTINGS.GameRates)
+			end
+		end
+	end
+end
+-- Apply function.
+function AGS_GameRates_ApplyModifier(player_id, modifier_ebp, modifier_type, modifier_value)
+	Modifier_ApplyToPlayer(Modifier_Create(MAT_EntityType, modifier_type, MUT_Multiplication, false, modifier_value, modifier_ebp), player_id, 0.0)
+end	

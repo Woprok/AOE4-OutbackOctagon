@@ -1,0 +1,382 @@
+---------------------------------------------------------------------------------------------------
+-- Authors:
+-- Relic
+-- Woprock
+--
+-- Description:
+-- Provides option to hide objectives, show objectives and about button.
+---------------------------------------------------------------------------------------------------
+
+AGS_MATCH_UI_MODULE = "AGS_MatchUI"
+AGS_MATCH_UI_OBJECTIVE_VISIBILITY = true
+AGS_MATCH_UI_CONTEXT = {
+	ui = "AGS_MatchUI",
+	is_ui_created = false,
+	data_context = {
+		is_ui_visible = true,
+		is_dropdown_visible = false,
+		match_settings_icon = "pack://application:,,,/WPFGUI;component/images/fe/taskbar_settings.png",
+						
+		core = {
+			about_title = Loc_FormatText("$64c5019a145c4e4da448dbd3adeea61e:318"),
+			toggle_title = Loc_FormatText("$64c5019a145c4e4da448dbd3adeea61e:316"),
+			toggle_icon = "pack://application:,,,/WPFGUI;component/icons/races/sultanate/upgrades/all_seeing_eye.png",
+			toggle_tooltip = Loc_FormatText("$64c5019a145c4e4da448dbd3adeea61e:317"),
+			info_title = Loc_FormatText("$64c5019a145c4e4da448dbd3adeea61e:320"),
+			github_title = Loc_FormatText("$64c5019a145c4e4da448dbd3adeea61e:319"),
+			github_url = "https:/".. "/github.com/" .. "W" .. "o" .. "p" .. "r" .. "o" .. "k" .. "/AOE4-AdvancedGameSettings",
+		},	
+		info = {
+			title_version = Loc_FormatText("$64c5019a145c4e4da448dbd3adeea61e:321"),
+		},
+		
+		command = {
+			toggle_dropdown = UI_CreateCommand("AGS_MatchUI_ToggleDropdown"),
+			toggle_objectives = UI_CreateCommand("AGS_MatchUI_ToggleObjectives"),
+		},
+	},
+}
+
+---------------------------------------------------------------------------------------------------
+-- Delegates:
+---------------------------------------------------------------------------------------------------
+
+Core_RegisterModule(AGS_MATCH_UI_MODULE)
+
+function AGS_MatchUI_UpdateModuleSettings()	
+	AGS_Print("AGS_MatchUI_UpdateModuleSettings")
+	if not AGS_GLOBAL_SETTINGS.MatchUI or UI_IsReplay() then
+		Core_UnregisterModule(AGS_MATCH_UI_MODULE)
+	end
+end
+
+function AGS_MatchUI_EarlyInitializations()
+	AGS_Print("AGS_MatchUI_EarlyInitializations")
+	AGS_MatchUI_CreateDataContext()
+end
+
+function AGS_MatchUI_OnPlay()	
+	AGS_Print("AGS_MatchUI_OnPlay")
+	AGS_MatchUI_CreateAndUpdateUI()
+end
+
+function AGS_MatchUI_OnGameRestore()
+	AGS_Print("AGS_MatchUI_OnGameRestore")
+	AGS_MATCH_UI_CONTEXT.is_ui_created = false	
+	AGS_MatchUI_CreateAndUpdateUI()
+end
+
+function AGS_MatchUI_OnGameOver()	
+	AGS_Print("AGS_MatchUI_OnGameOver")
+	AGS_MatchUI_Show(false)
+end
+
+function AGS_MatchUI_OnPlayerDefeated(player, reason)
+	AGS_Print("AGS_MatchUI_OnPlayerDefeated")
+	if player.isLocal then 
+		AGS_MatchUI_Show(false)
+	end
+end
+
+---------------------------------------------------------------------------------------------------
+-- Functions:
+---------------------------------------------------------------------------------------------------
+
+function AGS_MatchUI_CreateDataContext()		
+	AGS_MATCH_UI_CONTEXT.data_context.info.version = AGS_GLOBAL_SETTINGS_BUILD
+	-- doing this is time consuming and it cant be one long string as game will crash...
+end
+
+---------------------------------------------------------------------------------------------------
+-- Update Functions:
+---------------------------------------------------------------------------------------------------
+
+function AGS_MatchUI_Update()
+	if AGS_MATCH_UI_CONTEXT ~= nil and AGS_MATCH_UI_CONTEXT.data_context ~= nil and AGS_MATCH_UI_CONTEXT.is_ui_created then 
+		UI_SetDataContext(AGS_MATCH_UI_CONTEXT.ui, AGS_MATCH_UI_CONTEXT.data_context)	
+	end
+end
+
+---------------------------------------------------------------------------------------------------
+-- UI Functions:
+---------------------------------------------------------------------------------------------------
+
+function AGS_MatchUI_Show(show_ui)
+	if AGS_MATCH_UI_CONTEXT.is_ui_created then 
+		AGS_MATCH_UI_CONTEXT.data_context.is_ui_visible = show_ui
+		UI_SetDataContext(AGS_MATCH_UI_CONTEXT.ui, AGS_MATCH_UI_CONTEXT.data_context)		
+	end
+end
+
+function AGS_MatchUI_CreateAndUpdateUI()	
+	AGS_MatchUI_CreateUI()
+	
+end
+
+function AGS_MatchUI_CreateUI()	
+	if not AGS_MATCH_UI_CONTEXT.is_ui_created then
+		
+		local xaml = 
+[[<Grid xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:esControls="clr-namespace:WPFGUI.Shared.Controls;assembly=EngineUI"
+		xmlns:esUtility="clr-namespace:WPFGUI.Shared.Utility;assembly=EngineUI"
+		xmlns:wm="clr-namespace:WPFGUI.Shared.MarkupExtensions;assembly=EngineUI"
+		HorizontalAlignment="Right" 
+		VerticalAlignment="Top" 
+		SnapsToDevicePixels="True"
+		Margin="0,13,13,0"
+		Visibility="{Binding [is_ui_visible], Converter={StaticResource BoolToVis}}">
+		<Grid.Resources>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="pack://application:,,,ui/Resources/HUDResources.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+			<!-- Tribute tooltip style -->
+			<Style x:Key="TributeToolTipStyle" TargetType="{x:Type ToolTip}">
+	            <Setter Property="HasDropShadow" Value="True" />
+				<Setter Property="SnapsToDevicePixels" Value="true" />
+	            <Setter Property="OverridesDefaultStyle" Value="True" />
+	            <Setter Property="Template">
+	                <Setter.Value>
+	                    <ControlTemplate TargetType="{x:Type ToolTip}">
+	                        <ContentPresenter />
+	                    </ControlTemplate>
+	                </Setter.Value>
+	            </Setter>
+	        </Style>
+			<!-- Resource button style - a clone of HUDBaseButtonStyle but IsEnabled setter changes Opacity instead of Visibility of background -->
+			<Style x:Key="DiplomacyResourceButtonStyle" TargetType="Button">
+		        <Setter Property="SnapsToDevicePixels" Value="true" />
+		        <Setter Property="OverridesDefaultStyle" Value="true" />
+		        <Setter Property="HorizontalAlignment" Value="Left" />
+		        <Setter Property="Width" Value="47" />
+		        <Setter Property="Height" Value="47" />
+				<Setter Property="esUtility:AudioAttachedProperty.PreviewMouseLeftButtonUpSound"
+		                Value="sfx_ui_hud_inGame_button_play" />
+		        <Setter Property="Template">
+		            <Setter.Value>
+		                <ControlTemplate TargetType="Button">
+		                    <Border Name="ResourceButton">
+		                        <Grid>
+									<Border Background="{DynamicResource TertiaryColorLightBrush}">
+										<Border>
+											<Border.Background>
+												<RadialGradientBrush Center="0.5,0" GradientOrigin="0.5,0" RadiusX="0.7" RadiusY="0.6">
+											        <GradientStop Offset="0" Color="{DynamicResource TertiaryColorExtraLight}" />
+											        <GradientStop Offset="1" Color="{DynamicResource TertiaryColorExtraLightTransparent}" />
+											    </RadialGradientBrush>
+											</Border.Background>
+										</Border>
+	                                </Border>
+									
+		                            <Rectangle Name="Base" Fill="#33505050" />
+		                            
+									<Rectangle Name="Rollover" Fill="{StaticResource ButtonHighlightBrush}" Visibility="Collapsed" />
+		                            
+									<Rectangle Name="Highlight" Fill="#FF93BED7" Visibility="Collapsed" />
+									
+		                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+		                        </Grid>
+		                    </Border>
+		                    <ControlTemplate.Triggers>
+		                        <Trigger Property="IsMouseOver" Value="true">
+		                            <Setter TargetName="Rollover" Property="Visibility" Value="Visible" />
+		                        </Trigger>
+		                        <Trigger Property="IsPressed" Value="true">
+		                            <Setter TargetName="Highlight" Property="Visibility" Value="Visible" />
+		                        </Trigger>
+		                        <Trigger Property="IsEnabled" Value="false">
+									 <Setter TargetName="ResourceButton" Property="Opacity" Value="{StaticResource ButtonDisabledOpacity}" />
+		                        </Trigger>
+		                    </ControlTemplate.Triggers>
+		                </ControlTemplate>
+		            </Setter.Value>
+		        </Setter>
+		    </Style>
+			<Style x:Key="DiplomacyHorizontalSeparatorStyle" TargetType="Rectangle">
+            	<Setter Property="Fill" Value="#616C8C"/>
+           	 	<Setter Property="Height" Value="1.2"/>
+            	<Setter Property="Margin" Value="0,2"/>
+        	</Style>
+		</Grid.Resources>
+	<Grid.RowDefinitions>
+	    <RowDefinition Height="Auto" />
+	    <RowDefinition Height="*" />
+	</Grid.RowDefinitions>
+	<Button Grid.Row="0" 		
+			HorizontalAlignment="Right"
+            VerticalAlignment="Top" Panel.ZIndex="2"
+            esControls:TagAdorner.AlignmentMode="Relative"
+            esControls:TagAdorner.ArrowDataTemplate="{StaticResource hudPage:TagArrowDataTemplate}"
+            esControls:TagAdorner.DataTemplate="{StaticResource TagDataTemplate}"
+            esControls:TagAdorner.HorizontalAnchor="Right" esControls:TagAdorner.HorizontalPlacement="Left"
+            esControls:TagAdorner.TargetDataTemplate="{StaticResource hudPage:EmptyTagDataTemplate}"
+            esControls:TagAdorner.VerticalAnchor="Top" esControls:TagAdorner.VerticalPlacement="Bottom"	
+			Style="{StaticResource DiplomacyResourceButtonStyle}"
+			Command="{Binding [command][toggle_dropdown]}"			
+            ToolTipService.InitialShowDelay="0" ToolTipService.ShowDuration="86400000"
+			MinWidth="34" MaxWidth="34" Width="34" Height="34"> 
+		<Button.Content>
+				<Image Source="{Binding [match_settings_icon]}" Width="34">
+				<Image.Effect>
+					<DropShadowEffect BlurRadius="6" Direction="-71.5"
+		                              Opacity="0.6" ShadowDepth="3"
+		                              Color="Black" />
+				</Image.Effect>
+				</Image>
+		</Button.Content>
+	</Button>
+	<Grid Grid.Row="1"
+		  Panel.ZIndex="1"
+			BorderBrush="Lime"
+		    Visibility="{Binding [is_dropdown_visible], Converter={StaticResource BoolToVis}}">
+		<ContentControl Template="{StaticResource CanvasTertiaryVerticalGradientBackgroundBox}">
+            <ContentControl Template="{StaticResource TexturedTertiaryThickDoubleBorders}">
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />		
+						<RowDefinition Height="Auto" />		
+						<RowDefinition Height="Auto" />		
+						<RowDefinition Height="Auto" />					
+					</Grid.RowDefinitions>
+					<!--  Header  -->
+                    <Grid Grid.Row="0">
+                       <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                       </Grid.ColumnDefinitions>	
+                       <esControls:Marquee Grid.Column="1" MarqueeType="Alternate" Speed="60">
+                  	  	 <TextBlock HorizontalAlignment="Center"
+                       	      	    Style="{StaticResource HUDPrimaryColorGradientVerticalSubtitleTextBlock14ptStyle}"
+                               	   Text="{Binding [core][about_title]}" />
+                       </esControls:Marquee>
+                    </Grid>
+				    <Rectangle Grid.Row="1" Style="{StaticResource DiplomacyHorizontalSeparatorStyle}" />
+                    <Grid Grid.Row="2">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="10" />
+							<ColumnDefinition Width="Auto" />
+						</Grid.ColumnDefinitions>
+                  	  		<TextBlock Grid.Column="0"  HorizontalAlignment="Left"
+									   VerticalAlignment="Center"
+                       	      	  	   Style="{StaticResource HUDPrimaryColorGradientVerticalSubtitleTextBlock14ptStyle}"
+                               	  	   Text="{Binding [core][toggle_title]}" />
+					
+							<Button Grid.Column="2" Command="{Binding [command][toggle_objectives]}"
+									ToolTipService.InitialShowDelay="0"
+									ToolTipService.ShowDuration="86400000"
+									ToolTipService.ShowOnDisabled="True"													
+									IsEnabled="{Binding [isChecked]}"						
+									Style="{StaticResource DiplomacyResourceButtonStyle}">
+								<Button.Content>
+									<Grid>
+										<Image Source="{Binding [core][toggle_icon]}" Width="32">
+											<Image.Effect>
+												<DropShadowEffect BlurRadius="6" Direction="-71.5"
+																  Opacity="0.6" ShadowDepth="3"
+																  Color="Black" />
+											</Image.Effect>
+										</Image>
+									</Grid>
+								</Button.Content>
+								<Button.ToolTip>
+									<ToolTip Style="{StaticResource TributeToolTipStyle}" 
+											Placement="Left"
+											Content="{Binding}" 
+											DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+										<ToolTip.ContentTemplate>
+											<DataTemplate>
+												<ContentControl Style="{StaticResource HUDTooltipBorderStyle}" Width="{StaticResource HUDTooltipMaxWidthSmall}">
+													<Grid>
+														<Grid.ColumnDefinitions>
+															<ColumnDefinition Width="{StaticResource HUDTooltipGutterWidthGridLength}" />
+															<ColumnDefinition Width="*" />
+														</Grid.ColumnDefinitions>											
+														<StackPanel Orientation="Vertical" Grid.Column="1">														
+															<TextBlock Text="{Binding [core][toggle_tooltip]}" 
+																	Style="{StaticResource HUDGray80ParagraphTextBlock14ptStyle}" 
+																	Margin="{StaticResource SmallMarginTop}" />
+														</StackPanel>
+													</Grid>
+												</ContentControl>													
+											</DataTemplate>
+										</ToolTip.ContentTemplate>
+									</ToolTip>
+								</Button.ToolTip>
+							</Button>
+					</Grid>
+				    <Rectangle Grid.Row="3" Style="{StaticResource DiplomacyHorizontalSeparatorStyle}" />
+					<!--  Data  -->
+                    <Grid Grid.Row="4">
+						<Grid.RowDefinitions>
+						    <RowDefinition Height="Auto" />
+						    <RowDefinition Height="Auto" />
+						    <RowDefinition Height="Auto" />
+						    <RowDefinition Height="Auto" />
+						</Grid.RowDefinitions>
+              	  		<TextBlock Grid.Row="0" HorizontalAlignment="Left"
+                   	      	  	   Style="{StaticResource HUDPrimaryColorGradientVerticalSubtitleTextBlock14ptStyle}"
+                           	  	   Text="{Binding [core][info_title]}" />					
+						<Grid>
+							<Grid.RowDefinitions>
+							    <RowDefinition Height="Auto"/>
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="5"/>
+								<ColumnDefinition Width="Auto"/>
+							</Grid.ColumnDefinitions>
+								<TextBlock Grid.Row="0"		Text="{Binding [info][title_version]}" Style="{StaticResource HUDGray80ParagraphTextBlock14ptStyle}" Margin="{StaticResource SmallMarginTop}"/>								
+								<TextBlock Grid.Row="0"		Grid.Column="2" Text="{Binding [info][version]}" Style="{StaticResource HUDGray80ParagraphTextBlock14ptStyle}" Margin="{StaticResource SmallMarginTop}"/>							
+						</Grid>				
+						<Grid Grid.Row="2">
+							<Grid.RowDefinitions>
+							    <RowDefinition Height="Auto" />
+							    <RowDefinition Height="Auto" />
+							</Grid.RowDefinitions>
+							<TextBlock Grid.Row="0" Text="{Binding [core][github_title]}" 
+									Style="{StaticResource HUDPrimaryColorGradientVerticalSubtitleTextBlock14ptStyle}" 
+									Margin="{StaticResource SmallMarginTop}" />
+							<TextBlock Grid.Row="1" Text="{Binding [core][github_url]}" 
+									Style="{StaticResource HUDPrimaryColorGradientVerticalSubtitleTextBlock14ptStyle}" 
+									Margin="{StaticResource SmallMarginTop}" />
+						</Grid>
+                    </Grid>					
+				</Grid>
+			</ContentControl>
+		</ContentControl>
+	</Grid>
+  </Grid>
+]]
+		
+		UI_AddChild("ScarDefault", "XamlPresenter", AGS_MATCH_UI_CONTEXT.ui, { IsHitTestVisible = true, Xaml = xaml, DataContext = UI_CreateDataContext(AGS_MATCH_UI_CONTEXT.data_context) })
+		AGS_MATCH_UI_CONTEXT.is_ui_created = true
+	end
+end
+
+
+function AGS_MatchUI_ToggleDropdown(context)
+	AGS_MATCH_UI_CONTEXT.data_context.is_dropdown_visible = not AGS_MATCH_UI_CONTEXT.data_context.is_dropdown_visible
+	UI_SetDataContext(AGS_MATCH_UI_CONTEXT.ui, AGS_MATCH_UI_CONTEXT.data_context)	
+	if(AGS_MATCH_UI_CONTEXT.data_context.is_dropdown_visible) then
+		UI_AddEventHandler("Scar", "HUDPageBase.Cancel", "AGS_MatchUI_HideDropdown")
+	else
+		UI_RemoveEventHandler("Scar", "HUDPageBase.Cancel", "AGS_MatchUI_HideDropdown")
+	end
+end
+
+-- Callback for ESC key to close this UI.
+function AGS_MatchUI_HideDropdown(context)
+	if(AGS_MATCH_UI_CONTEXT.data_context.is_dropdown_visible) then
+		AGS_MatchUI_ToggleDropdown()
+	end
+end
+
+function AGS_MatchUI_ToggleObjectives(context)
+	AGS_Print("AGS_MatchUI_ToggleObjectives")		
+	AGS_MATCH_UI_OBJECTIVE_VISIBILITY = not AGS_MATCH_UI_OBJECTIVE_VISIBILITY
+	Core_CallDelegateFunctions("OnObjectiveToggle", AGS_MATCH_UI_OBJECTIVE_VISIBILITY)
+end
