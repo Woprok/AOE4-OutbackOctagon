@@ -39,7 +39,7 @@ function AGS_Tournament_Nomad_AdjustSettings()
 	-- Treaty Required:
 	AGS_GLOBAL_SETTINGS.PlayerColors.IsEnforcing = true
 	AGS_GLOBAL_SETTINGS.Treaty = true
-	AGS_GLOBAL_SETTINGS.TreatySettings.Timer = 1
+	AGS_GLOBAL_SETTINGS.TreatySettings.Timer = 3
 	-- FFA settings:
 	AGS_GLOBAL_SETTINGS.TeamVictory = AGS_GS_TEAM_VICTORY_FFA
 	AGS_GLOBAL_SETTINGS.TeamVision = AGS_GS_TEAM_VISION_ALWAYS -- Doesn't matter in current ruleset as FFA are not allowed to share vision.

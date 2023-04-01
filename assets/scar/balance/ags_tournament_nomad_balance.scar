@@ -86,9 +86,13 @@ function AGS_TournamentNomadBalance_OnEntityKilled(context)
 end
 
 function AGS_TournamentNomadBalance_KillBonus(context_killer)
-	AGS_Print("Killed a king for 50")
 	local killer_owner = Core_GetPlayersTableEntry(Entity_GetPlayerOwner(context_killer))
+	
 	AGS_TournamentNomadBalance_AddMaxCapPopulation(killer_owner, AGS_TOURNAMENT_NOMAD_BALANCE_KING_POP)
+	
+	if killer_owner.raceName == AGS_CIV_MONGOL then
+		AGS_TournamentNomadBalance_AddMinPopulation(killer_owner, AGS_TOURNAMENT_NOMAD_BALANCE_KING_POP)
+	end
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -130,4 +134,7 @@ function AGS_TournamentNomadBalance_Nerf(player_id, modifier_type, modifier_valu
 end	
 function AGS_TournamentNomadBalance_AddMaxCapPopulation(player, value)
 	Modifier_ApplyToPlayer(Modifier_Create(MAT_Player, "max_personnel_cap_player_modifier", MUT_Addition, false, value, ""), player.id, 0)
+end
+function AGS_TournamentNomadBalance_AddMinPopulation(player, value)
+	Modifier_ApplyToPlayer(Modifier_Create(MAT_Player, "personnel_cap_player_modifier", MUT_Addition, false, value, ""), player.id, 0)
 end
