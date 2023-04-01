@@ -1,0 +1,21 @@
+<instance version="4" description="" template="army">
+	<group name="army_bag">
+		<list name="starting_buildings">
+			<group name="starting_building" List.ItemID="-2001661904" List.ParentItemID="-2001661904">
+				<instance_reference name="building" value="ebps\races\mongol\buildings\building_town_center_dummy_start" overrideParent="True" />
+			</group>
+		</list>
+		<list name="starting_units" removedIds="-1238250774, -500125344, 1056982643, 1979873547, 1546927302">
+			<instance_reference name="squad" value="sbps\races\chinese\unit_villager_1_chi" overrideParent="True" List.ItemID="-2090941458" List.ParentItemID="-2090941458" />
+			<instance_reference name="squad" value="sbps\races\chinese\unit_villager_1_chi" overrideParent="True" List.ItemID="46362655" List.ParentItemID="46362655" />
+			<instance_reference name="squad" value="sbps\races\chinese\unit_villager_1_chi" overrideParent="True" List.ItemID="-1712295898" List.ParentItemID="-1712295898" />
+			<instance_reference name="squad" value="sbps\races\chinese\unit_king_1_chi" List.ItemID="-249598747" List.ListAction="Append" />
+		</list>
+		<template_reference name="starting_units_spawner" value="options\spawn\scatter" overrideParent="True">
+			<float name="spawn_radius" value="75" overrideParent="True" />
+			<int name="spawn_position_attempts" value="100" />
+		</template_reference>
+	</group>
+	<uniqueid name="pbgid" value="2121059" />
+	<instance_reference name="parent_pbg" value="army\standard_mode\normal_chinese" />
+</instance>

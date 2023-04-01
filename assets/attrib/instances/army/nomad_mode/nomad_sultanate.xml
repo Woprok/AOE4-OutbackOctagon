@@ -1,0 +1,21 @@
+<instance version="4" description="" template="army">
+	<group name="army_bag">
+		<list name="starting_buildings">
+			<group name="starting_building" List.ItemID="192809260" List.ParentItemID="192809260">
+				<instance_reference name="building" value="ebps\races\mongol\buildings\building_town_center_dummy_start" overrideParent="True" />
+			</group>
+		</list>
+		<list name="starting_units" removedIds="1957507689, 1197165945, -995591850, -796159077, -1236624572">
+			<instance_reference name="squad" value="sbps\races\sultanate\unit_villager_1_sul" overrideParent="True" List.ItemID="-1668985805" List.ParentItemID="-1668985805" />
+			<instance_reference name="squad" value="sbps\races\sultanate\unit_villager_1_sul" overrideParent="True" List.ItemID="435779432" List.ParentItemID="435779432" />
+			<instance_reference name="squad" value="sbps\races\sultanate\unit_villager_1_sul" overrideParent="True" List.ItemID="535215855" List.ParentItemID="535215855" />
+			<instance_reference name="squad" value="sbps\races\sultanate\unit_king_1_sul" List.ItemID="-201396249" List.ListAction="Append" />
+		</list>
+		<template_reference name="starting_units_spawner" value="options\spawn\scatter" overrideParent="True">
+			<float name="spawn_radius" value="75" overrideParent="True" />
+			<int name="spawn_position_attempts" value="100" />
+		</template_reference>
+	</group>
+	<uniqueid name="pbgid" value="2121067" />
+	<instance_reference name="parent_pbg" value="army\standard_mode\normal_sultanate" />
+</instance>

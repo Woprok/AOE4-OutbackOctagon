@@ -1,0 +1,21 @@
+<instance version="4" description="" template="army">
+	<group name="army_bag">
+		<list name="starting_buildings">
+			<group name="starting_building" List.ItemID="2028807285" List.ParentItemID="2028807285">
+				<instance_reference name="building" value="ebps\races\mongol\buildings\building_town_center_dummy_start" comment="This is a dummy &quot;building&quot; (entity) since leaving this null causes issues. It has no visuals." overrideParent="True" />
+			</group>
+		</list>
+		<list name="starting_units" removedIds="1594092997, 1827033883, -295125512, 1410985975, 1371033057, 1766500749, 1726031097, 2015951910, -298254268, 1915885747">
+			<instance_reference name="squad" value="sbps\races\mongol\unit_villager_1_mon" List.ItemID="-710076638" List.ListAction="Append" />
+			<instance_reference name="squad" value="sbps\races\mongol\unit_villager_1_mon" List.ItemID="1417126969" List.ListAction="Append" />
+			<instance_reference name="squad" value="sbps\races\mongol\unit_villager_1_mon" List.ItemID="348749710" List.ListAction="Append" />
+			<instance_reference name="squad" value="sbps\races\mongol\unit_king_1_mon" List.ItemID="1816247356" List.ListAction="Append" />
+		</list>
+		<template_reference name="starting_units_spawner" value="options\spawn\scatter" overrideParent="True">
+			<float name="spawn_radius" value="75" overrideParent="True" />
+			<int name="spawn_position_attempts" value="100" />
+		</template_reference>
+	</group>
+	<uniqueid name="pbgid" value="2121064" />
+	<instance_reference name="parent_pbg" value="army\standard_mode\normal_mongol" />
+</instance>

@@ -58,6 +58,8 @@ end
 function AGS_MatchUI_OnPlay()	
 	AGS_Print("AGS_MatchUI_OnPlay")
 	AGS_MatchUI_CreateAndUpdateUI()
+	-- Hide objectives at the start of the game.
+	AGS_MatchUI_ToggleObjectives()
 end
 
 function AGS_MatchUI_OnGameRestore()

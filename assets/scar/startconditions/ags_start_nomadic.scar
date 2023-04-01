@@ -122,11 +122,11 @@ function AGS_Nomadic_ResetResources()
 		player.AGS_NomadicResources["Gold"] = Player_GetResource(player.id, RT_Gold)
 		
 		-- Adjust the differences needed for TC based on civilization.
-		local player_civ = Player_GetRaceName(player.id)
-		if player_civ ~= AGS_CIV_MONGOL then
-			player.AGS_NomadicResources["Stone"] = player.AGS_NomadicResources["Stone"] + AGS_NOMADIC_STONE
-		end
-		player.AGS_NomadicResources["Wood"] = player.AGS_NomadicResources["Wood"] + AGS_NOMADIC_WOOD
+		--local player_civ = Player_GetRaceName(player.id)
+		--if player_civ ~= AGS_CIV_MONGOL then
+		--	player.AGS_NomadicResources["Stone"] = player.AGS_NomadicResources["Stone"] + AGS_NOMADIC_STONE
+		--end
+		--player.AGS_NomadicResources["Wood"] = player.AGS_NomadicResources["Wood"] + AGS_NOMADIC_WOOD
 		
 		-- Reset resources.
 		Player_ResetResource(player.id, RT_Food)

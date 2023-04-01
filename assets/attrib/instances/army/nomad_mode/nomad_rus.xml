@@ -1,0 +1,21 @@
+<instance version="4" description="" template="army">
+	<group name="army_bag">
+		<list name="starting_buildings">
+			<group name="starting_building" List.ItemID="-671048611" List.ParentItemID="-671048611">
+				<instance_reference name="building" value="ebps\races\mongol\buildings\building_town_center_dummy_start" overrideParent="True" />
+			</group>
+		</list>
+		<list name="starting_units" removedIds="1241550755, -589607807, 1721318096, -1029288623, 928818283">
+			<instance_reference name="squad" value="sbps\races\rus\unit_villager_1_rus" overrideParent="True" List.ItemID="-246105067" List.ParentItemID="-246105067" />
+			<instance_reference name="squad" value="sbps\races\rus\unit_villager_1_rus" overrideParent="True" List.ItemID="272693195" List.ParentItemID="272693195" />
+			<instance_reference name="squad" value="sbps\races\rus\unit_villager_1_rus" overrideParent="True" List.ItemID="1517023522" List.ParentItemID="1517023522" />
+			<instance_reference name="squad" value="sbps\races\rus\unit_king_1_rus" List.ItemID="-1148574052" List.ListAction="Append" />
+		</list>
+		<template_reference name="starting_units_spawner" value="options\spawn\scatter" overrideParent="True">
+			<float name="spawn_radius" value="75" overrideParent="True" />
+			<int name="spawn_position_attempts" value="100" />
+		</template_reference>
+	</group>
+	<uniqueid name="pbgid" value="2121066" />
+	<instance_reference name="parent_pbg" value="army\standard_mode\normal_rus" />
+</instance>

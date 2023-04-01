@@ -22,22 +22,27 @@ Core_RegisterModule("AGS_Tournament_Nomad")
 function AGS_Tournament_Nomad_AdjustSettings()
 	AGS_Print("AGS_Tournament_Nomad_AdjustSettings")
 	-- Setting up everything that is not configurable for this mode.
+	-- Starting conditions:
 	AGS_GLOBAL_SETTINGS.UsingPrefabStart = false
-	AGS_GLOBAL_SETTINGS.RevealSpawn = false
-	-- Optimized only for 1v1 multiplayer experience.
-	AGS_GLOBAL_SETTINGS.IsAdjustingAI = false
-	AGS_GLOBAL_SETTINGS.PlayerColors.IsEnforcing = true
-	AGS_GLOBAL_SETTINGS.RevealFowOnElimination = true
-	AGS_GLOBAL_SETTINGS.StartingResources = AGS_GS_RESOURCES_LOW
-	AGS_GLOBAL_SETTINGS.TeamVision = AGS_GS_TEAM_VISION_ALWAYS
-	AGS_GLOBAL_SETTINGS.Tributes = true
-	AGS_GLOBAL_SETTINGS.Regicide = true
-	AGS_GLOBAL_SETTINGS.StartingKings = 1
-	AGS_GLOBAL_SETTINGS.Relations = true
+	AGS_GLOBAL_SETTINGS.UsingPrefabNomadStartAndArmy = true -- Transforms scattered nomad to Relic scattered version.
 	AGS_GLOBAL_SETTINGS.Settlement = AGS_GS_SETTLEMENT_SCATTERED
-	AGS_GLOBAL_SETTINGS.TeamVictory = AGS_GS_TEAM_VICTORY_FFA
+	AGS_GLOBAL_SETTINGS.RevealSpawn = false
+	AGS_GLOBAL_SETTINGS.StartingResources = AGS_GS_RESOURCES_NORMAL
+	--AGS_GLOBAL_SETTINGS.StartingVillagers = 3 --Is ignored as the Prefab is active.
+	-- Winconditions:
+	AGS_GLOBAL_SETTINGS.Regicide = true
+	--AGS_GLOBAL_SETTINGS.StartingKings = 1 -- Is ignored as the Prefab is active. But it will still be set by Regicide to 1.
+	AGS_GLOBAL_SETTINGS.TournamentNomadBalance = true
+	-- Remove single player functions:
+	AGS_GLOBAL_SETTINGS.IsAdjustingAI = false
+	-- Treaty Required:
+	AGS_GLOBAL_SETTINGS.PlayerColors.IsEnforcing = true
 	AGS_GLOBAL_SETTINGS.Treaty = true
 	AGS_GLOBAL_SETTINGS.TreatySettings.Timer = 3
-	AGS_GLOBAL_SETTINGS.StartingVillagers = 3
-	AGS_GLOBAL_SETTINGS.TournamentNomadBalance = true
+	-- FFA settings:
+	AGS_GLOBAL_SETTINGS.TeamVictory = AGS_GS_TEAM_VICTORY_FFA
+	AGS_GLOBAL_SETTINGS.TeamVision = AGS_GS_TEAM_VISION_ALWAYS -- Doesn't matter in current ruleset as FFA are not allowed to share vision.
+	AGS_GLOBAL_SETTINGS.RevealFowOnElimination = true
+	AGS_GLOBAL_SETTINGS.Tributes = true
+	AGS_GLOBAL_SETTINGS.Relations = true	
 end

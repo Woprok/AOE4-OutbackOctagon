@@ -17,7 +17,7 @@ Core_RegisterModule(AGS_STARTING_KING_MODULE)
 
 function AGS_StartingKing_UpdateModuleSettings()
 	AGS_Print("AGS_StartingKing_UpdateModuleSettings")
-	if AGS_GLOBAL_SETTINGS.StartingKings == 0 then
+	if AGS_GLOBAL_SETTINGS.StartingKings == 0 or AGS_GLOBAL_SETTINGS.UsingPrefabNomadStartAndArmy then
 		Core_UnregisterModule(AGS_STARTING_KING_MODULE)
 	end
 end
