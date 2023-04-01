@@ -12,7 +12,7 @@
 			<instance_reference name="squad" value="sbps\races\french\unit_king_1_fre" List.ItemID="-1239220361" List.ListAction="Append" />
 		</list>
 		<template_reference name="starting_units_spawner" value="options\spawn\scatter" overrideParent="True">
-			<float name="spawn_radius" value="512" overrideParent="True" />
+			<float name="spawn_radius" value="256" overrideParent="True" />
 			<int name="spawn_position_attempts" value="1" overrideParent="True" />
 		</template_reference>
 	</group>
