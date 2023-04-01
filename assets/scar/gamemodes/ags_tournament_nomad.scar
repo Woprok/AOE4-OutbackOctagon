@@ -36,6 +36,6 @@ function AGS_Tournament_Nomad_AdjustSettings()
 	AGS_GLOBAL_SETTINGS.TeamVictory = AGS_GS_TEAM_VICTORY_FFA
 	AGS_GLOBAL_SETTINGS.Treaty = true
 	AGS_GLOBAL_SETTINGS.TreatySettings.Timer = 3
-	AGS_GLOBAL_SETTINGS.StartingVillagers = 8
+	AGS_GLOBAL_SETTINGS.StartingVillagers = 3
 	AGS_GLOBAL_SETTINGS.TournamentNomadBalance = true
 end

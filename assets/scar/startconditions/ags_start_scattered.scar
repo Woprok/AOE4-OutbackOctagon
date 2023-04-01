@@ -65,12 +65,12 @@ function AGS_Scattered_OnStarting()
 		end
 		
 		-- Increase starting resources to cover cost of building an TC
-		if player.raceName ~= AGS_CIV_MONGOL then
-			Player_GiftResource(player.id, RT_Stone, AGS_SCATTERED_STONE)
-		end
-		Player_GiftResource(player.id, RT_Wood, AGS_SCATTERED_WOOD)
+		--if player.raceName ~= AGS_CIV_MONGOL then
+		--	Player_GiftResource(player.id, RT_Stone, AGS_SCATTERED_STONE)
+		--end
+		--Player_GiftResource(player.id, RT_Wood, AGS_SCATTERED_WOOD)
 		
-		Core_CallDelegateFunctions("AdjustAIPlayers", AGS_AI_ADJUSTREASON_NOMAD, player)
+		--Core_CallDelegateFunctions("AdjustAIPlayers", AGS_AI_ADJUSTREASON_NOMAD, player)
 	end
 end
 ---------------------------------------------------------------------------------------------------
