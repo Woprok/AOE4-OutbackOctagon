@@ -1,0 +1,285 @@
+---------------------------------------------------------------------------------------------------
+-- Authors:
+-- Relic
+-- Woprock
+--
+-- Description:
+-- Overwrites any cardinal inherited functions to ensure AGS functionality.
+-- Keep global knowledge of AGS focused here for easy reference.
+-- Calls all AGS delegates
+---------------------------------------------------------------------------------------------------
+
+-- Required for any gamemode to work.
+import("cardinal.scar")
+AGS_CARDINAL_MODULE = "AGS_Cardinal"
+---------------------------------------------------------------------------------------------------
+-- Delegates:
+---------------------------------------------------------------------------------------------------
+-- First to register, first to execute after original cardinal.
+Core_RegisterModule(AGS_CARDINAL_MODULE)	
+-- OnGameSetup is split for AGS to additional 3 phases.
+function AGS_Cardinal_OnGameSetup()
+	AGS_Print("AGS_Cardinal_OnGameSetup")
+	local options = { }
+	Setup_GetWinConditionOptions(options)
+		
+	Core_CallDelegateFunctions("SetupSettings", options)
+	Core_CallDelegateFunctions("AdjustSettings")
+	AGS_Print(AGS_GLOBAL_SETTINGS)
+	Core_CallDelegateFunctions("UpdateModuleSettings")
+end
+-- OnInit invokes custom handle for AGS modules.
+function AGS_Cardinal_OnInit()
+	AGS_Print("AGS_Cardinal_OnInit")
+	UI_AllTerritoryHide()
+	Core_CallDelegateFunctions("EarlyInitializations")	
+end
+-- OnInit invokes custom handle for AGS modules.
+function AGS_Cardinal_PostInit()
+	AGS_Print("AGS_Cardinal_PostInit")
+	Core_CallDelegateFunctions("LateInitializations")	
+end
+-- Preset is safe state for anything that should be done before start. Such as additional entities, vision etc.
+function AGS_Cardinal_Preset() 	
+	AGS_Print("AGS_Cardinal_Preset")
+	Core_CallDelegateFunctions("PresetInitialize")
+	Core_CallDelegateFunctions("PresetExecute")
+	Core_CallDelegateFunctions("PresetFinalize")
+end
+-- PreStart is followed by 1 frame delay with normal Start.
+function AGS_Cardinal_PreStart()
+	AGS_Print("AGS_Cardinal_PreStart")
+	Core_CallDelegateFunctions("PrepareStart")
+end
+-- PreStart is followed by 1 frame delay with normal Start.
+function AGS_Cardinal_Start()
+	AGS_Print("AGS_Cardinal_Start")
+	Core_CallDelegateFunctions("OnStarting")
+	-- OnPlay expects everything to be already spawned and preprared for a game. This is used by win conditions.
+	Core_CallDelegateFunctions("OnPlay")
+end
+
+---------------------------------------------------------------------------------------------------
+-- Imports:
+-- Order of imports can define oder of event handles. Beware of it when intruducing dependencies.
+---------------------------------------------------------------------------------------------------
+-- AGS Scripts require multiple helpers to operate:
+import("helpers/ags_blueprints.scar")
+import("helpers/ags_teams.scar")
+import("helpers/ags_starts.scar")
+import("coreconditions/ags_conditions.scar")
+-- AGS Scripts read settings from single configuration.
+import("ags_global_settings.scar")
+
+-- Start conditions are creating or destroying entities.
+import("startconditions/ags_start_settled.scar")
+import("startconditions/ags_start_fortified.scar")
+import("startconditions/ags_start_nomadic.scar")
+import("startconditions/ags_start_scattered.scar")
+import("startconditions/ags_starting_keep.scar")
+import("startconditions/ags_starting_king.scar")
+import("startconditions/ags_starting_scout.scar")
+
+-- Conditions based on expected priority.
+import("conditions/ags_treaty.scar") 
+-- Conditions that are necessary for a game to run.
+import("conditions/ags_surrender.scar")
+import("conditions/ags_elimination.scar") 
+-- Conditions that only decide the match outcome.
+import("conditions/ags_annihilation.scar") 
+import("conditions/ags_conquest.scar") 
+import("conditions/ags_religious.scar") 
+import("conditions/ags_wonder.scar") 
+import("conditions/ags_regicide.scar") 
+import("conditions/ags_score.scar") 
+import("conditions/ags_team_solidarity.scar") 
+
+-- AGS Version of diplomacy and tributes
+import("diplomacy/ags_diplomacy.scar")
+-- AGS supports AI with few adjustments.
+import("ai/ags_ai.scar")
+-- Gameplay options are loaded as last.
+import("gameplay/ags_color_maintainer.scar")
+import("gameplay/ags_ding.scar")
+import("gameplay/ags_early_market.scar")
+import("gameplay/ags_ending_age.scar")
+import("gameplay/ags_double_workers.scar")
+import("gameplay/ags_game_rates.scar")
+import("gameplay/ags_handicaps.scar")
+import("gameplay/ags_map_vision.scar")
+import("gameplay/ags_no_dock.scar")
+import("gameplay/ags_population_capacity.scar")
+import("gameplay/ags_house_modifier.scar")
+import("gameplay/ags_reveal_fow_on_elimination.scar")
+import("gameplay/ags_reveal_spawn.scar")
+import("gameplay/ags_score_visibility.scar")
+import("gameplay/ags_simulation_speed.scar")
+import("gameplay/ags_starting_age.scar")
+import("gameplay/ags_starting_resources.scar")
+import("gameplay/ags_team_balance.scar")
+import("gameplay/ags_team_vision.scar")
+import("gameplay/ags_treasures.scar")
+import("gameplay/ags_technology_age.scar")
+import("gameplay/ags_town_center_restrictions.scar")
+import("gameplay/ags_tree_bombardment.scar")
+import("gameplay/ags_unit_rates.scar")
+import("gameplay/ags_wonder_construction.scar")
+import("gameplay/ags_wonder_scale_cost.scar")
+import("gameplay/ags_site_limit.scar")
+import("gameplay/ags_military_sites.scar")
+import("balance/ags_tournament_nomad_balance.scar")
+
+-- Wrapper around all default match options, that will have minimal changes done to them.
+import("specials/ags_utilities.scar")
+-- Special container for testing and unfinished functionality.
+import("specials/ags_testing.scar")
+-- Additional UI elements
+import("specials/ags_match_ui.scar")
+-- Observer UI
+-- Disabled due to Caster Mode UI
+-- import("replay/ags_replay.scar")
+
+---------------------------------------------------------------------------------------------------
+-- AGS LIBRARY GUIDELINES AND INFORMATIONS
+---------------------------------------------------------------------------------------------------
+-- AGS Core_CallDelegateFunctions("<suffix>") Calls:
+---------------------------------------------------------------------------------------------------
+-- ENTITY & UNIT SPAWNED DURING PRESET EXECUTE
+-------------------------------------------------
+-- EntitySpawned({pbg = entity_blueprint, player = player_id, entity = spawned_entity}) 
+-- UnitsSpawned(player_id, position: home_position, sgroup: units)
+-------------------------------------------------
+-- AI PLAYER UPDATES ANYTIME DURING PRESTART
+-------------------------------------------------
+-- AdjustAIPlayers(ADJUSTREASON: reason, opt_specific: player)
+-------------------------------------------------
+-- SETTINGS & MODULE ADJUSTMENTS DURING ON GAME SETUP
+-------------------------------------------------
+-- SetupSettings(wincondition_options: options)
+-- AdjustSettings 
+-- ModuleSettings
+-------------------------------------------------
+-- INITIALIZATION DURING ONINIT (Primarily for UI)
+-------------------------------------------------
+-- EarlyInitializations
+-------------------------------------------------
+-- INITIALIZATION DURING POSTINIT
+-------------------------------------------------
+-- LateInitializations
+-------------------------------------------------
+-- INITIALIZATION DURING PRESET
+-------------------------------------------------
+-- PresetInitialize
+-- PresetExecute 
+-- PresetFinalize
+-------------------------------------------------
+-- CONDITION CONTROL RIGHT BEFORE THE START CALL
+-------------------------------------------------
+-- PrepareStart
+-------------------------------------------------
+-- CONDITION CONTROL AFTER THE START
+-------------------------------------------------
+-- TreatyStarted
+-- TreatyEnded
+-- OnPlayerEliminated preceeded by OnPlayerDefeated, used for group elimination to be not interfered by other win conditions.
+-- OnObjectiveToggle user clicked
+-- PointCaptured(player, entity) by Culture condition
+-- PointLost(entity) by Culture condition
+---------------------------------------------------------------------------------------------------
+-- Relic Core_CallDelegateFunctions("<suffix>") Calls:
+---------------------------------------------------------------------------------------------------
+-- INITIALIZATION IN ORDER
+-------------------------------------------------
+-- OnGameSetup			// Used for our setup
+-- OnGameRestore        //
+-- PreInit              //
+-- OnInit               // Used for certain UI initialization as these are better to be done before filling module data
+-- PostInit             // Somehow this is causing issues if age upgrades are not applied here.
+-- SetupVariables       //
+-- SetDifficulty        //
+-- SetRestrictions      //
+-- Preset               // Used for all initialization before the start of the game
+-- InitComplete         //
+-- PreStart             //
+-- Start                // Used for all initialization at the start of the game
+-- PreGameOver          //
+-- OnGameOver           // Used to cleanup all resouces and event handles
+-------------------------------------------------
+-- DIPLOMACY STATE
+-------------------------------------------------
+-- TributeEnabled
+-- OnTributeSent
+-- DiplomacyEnabled
+-- OnRelationshipChanged // due to non existing GE_RelationChanged
+-- OnTeamCreated		//! never used as the method that can invoke them is never called
+-- OnTeamRemoved        //! never used as the method that can invoke them is never called
+-- OnPlayerJoinedTeam   //! never used as the method that can invoke them is never called
+-- OnPlayerLeftTeam     //! never used as the method that can invoke them is never called
+-------------------------------------------------
+-- PLAYER MATCH STATE
+-------------------------------------------------
+-- OnLeaveGameMatchRequested //! does not look like ever invoked
+-- OnSurrenderMatchRequested 
+-- OnPlayerDefeated
+-- OnTeamDefeated //! never used as this was used only in combat mode
+-- OnPlayerAITakeover
+-------------------------------------------------
+-- IRRELEVANT
+-------------------------------------------------
+-- ActivateMenuItem
+-- StartWithCheat
+-- RegisterEncounterPlans
+-- UnitEntry_PreprocessDeployment
+-- UnitEntry_StartDeployment
+-- UnitEntry_EndDeployment
+-- UnitEntry_CreateUnit
+-- UnitEntry_SpawnUnit
+-- UnitEntry_SpawnUnit_Finish
+-- UnitEntry_RegisterEntryMethods
+-- OnConstructionComplete //! was invoked only be Relic StartConditions after TC was spawned.
+---------------------------------------------------------------------------------------------------
+-- Global events should be handled by OnEvent methods, here is list that is currently used.
+---------------------------------------------------------------------------------------------------
+-- GE_ConstructionComplete -> OnContructionComplete 
+-- GE_EntityKilled -> OnEntityKilled
+-- GE_SquadKilled -> OnSquadKilled
+-- GE_ProjectileFired -> OnProjectileFired
+-- GE_ProjectileLanded -> OnProjectileLanded
+-- GE_UpgradeComplete -> OnUpgradeComplete
+-- GE_PlayerNameChanged -> OnPlayerNameChanged
+-- GE_PlayerAddResource -> OnPlayerAddResource
+-- GE_PlayerTeamIdUpdated -> OnPlayerTeamIdUpdated 
+-- GE_EntityLandmarkDestroyed -> OnEntityLandmarkDestroyed 
+-- GE_LocalPlayerChanged -> OnLocalPlayerChanged
+-- GE_StrategicPointChanged -> OnStrategicPointChanged 
+-- GE_DamageReceived -> OnDamageReceived 
+-- GE_ConstructionStart -> OnConstructionStart
+---------------------------------------------------------------------------------------------------
+-- TODO:
+-- Go and organize Player_, Core_ methods better as Core_GetPlayersTableEntry is shortcut for Player_
+---------------------------------------------------------------------------------------------------
+-- Called function list for debug purposes during rework
+---------------------------------------------------------------------------------------------------
+-- Setup_GetWinConditionOptions, Core_CallDelegateFunctions, UI_AllTerritoryHide
+-- Rule_AddGlobalEvent, Rule_RemoveGlobalEvent, Rule_AddInterval, Rule_Exists, Rule_Remove, Rule_AddOneShot
+-- Game_GetLocalPlayer
+-- Misc_IsSGroupSelected, Misc_IsEGroupSelected
+-- Player_GetEntitiesFromType, Player_GetSquadsFromType
+-- Util_StartQuickIntel
+-- Player_SetEntityProductionAvailability
+-- FOW_ExploreAll, FOW_ForceRevealAllUnblockedAreas
+-- Modifier_ApplyToPlayer, Modifier_Create
+-- Game_GetSimRate, Game_SetSimRate
+-- Player_SetResource
+-- Player_GetUIColour
+---------------------------------------------------------------------------------------------------
+-- Additional Player Data can be found as:
+-- AGS_Team by team module
+-- AGS_Kings by regicide module
+-- AGS_NomadicResources by nomadic module
+-- AGS_Conquerables by conquest module
+-- AGS_Wonder by wonder module
+-- AGS_Score by score module
+-- AGS_TeamVisionAllowed by team vision module
+-- AGS_SacredSites by religious module
+-- AGS_Colors by color maintainer module

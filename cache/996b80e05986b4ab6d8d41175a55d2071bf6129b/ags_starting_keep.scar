@@ -1,0 +1,53 @@
+---------------------------------------------------------------------------------------------------
+-- Authors:
+-- Relic
+-- Woprock
+--
+-- Description:
+-- Spawn keep near default position.
+---------------------------------------------------------------------------------------------------
+
+AGS_STARTING_KEEP_MODULE = "AGS_StartingKeep"
+AGS_STARTING_KEEP_OFFSETS = {
+	World_Pos(15, 0, 15),
+	World_Pos(15, 0, 0),
+	World_Pos(15, 0, -15),
+	World_Pos(0, 0, 15),
+	World_Pos(0, 0, -15),
+	World_Pos(-15, 0, 15),
+	World_Pos(-15, 0, 0),
+	World_Pos(-15, 0, -15),
+}
+---------------------------------------------------------------------------------------------------
+-- Delegates:
+---------------------------------------------------------------------------------------------------
+
+Core_RegisterModule(AGS_STARTING_KEEP_MODULE)	
+
+function AGS_StartingKeep_UpdateModuleSettings()
+	AGS_Print("AGS_StartingKeep_UpdateModuleSettings")
+	if AGS_GLOBAL_SETTINGS.StartingKeeps == 0 then
+		Core_UnregisterModule(AGS_STARTING_KEEP_MODULE)
+	end
+end
+
+function AGS_StartingKeep_OnStarting()
+	AGS_Print("AGS_StartingKeep_OnStarting")
+	AGS_StartingKeep_Create()
+end
+
+---------------------------------------------------------------------------------------------------
+-- Functions:
+---------------------------------------------------------------------------------------------------
+-- Spawns a castle next to each player's expected Town Center position
+function AGS_StartingKeep_Create()
+	for _, player in pairs(PLAYERS) do		
+		local ebp_building = AGS_GetCivilizationEntity(player.raceName, AGS_BP_KEEP)		
+		local ename = AGS_EGroupName(player.id, AGS_BP_KEEP)		
+		
+		local start_adjusted_pos = AGS_Starts_GetStartPosition(player.id)		
+		center_pos = AGS_CalculateCenterOffset(start_adjusted_pos, 25, 25)	
+		
+		AGS_SpawnEntity(player.id, ename, ebp_building, center_pos, nil, false, true)
+	end
+end

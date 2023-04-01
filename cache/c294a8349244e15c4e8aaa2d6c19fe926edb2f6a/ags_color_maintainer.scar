@@ -1,0 +1,96 @@
+---------------------------------------------------------------------------------------------------
+-- Authors:
+-- Relic
+-- Woprock
+--
+-- Description:
+-- Keeps track of all player colors and ensures that it stays during the whole game set to same value.
+---------------------------------------------------------------------------------------------------
+
+AGS_COLOR_MAINTAINER_MODULE = "AGS_ColorMaintainer"
+-- Indices are 1 - 9, so it's 1:1 to default slot mapping.
+--AGS_COLOR_MAINTAINER_TABLE = {
+--	{ Color = AGS_GS_COLOR_BLUE },
+--	{ Color = AGS_GS_COLOR_RED },
+--	{ Color = AGS_GS_COLOR_YELLOW },
+--	{ Color = AGS_GS_COLOR_GREEN },
+--	{ Color = AGS_GS_COLOR_TURQUOISE },
+--	{ Color = AGS_GS_COLOR_PURPLE },
+--	{ Color = AGS_GS_COLOR_ORANGE },
+--	{ Color = AGS_GS_COLOR_PINK }, 
+--	{ Color = AGS_GS_COLOR_GREY },
+--}
+
+-- This needs to be fixed everytime they change colours...
+AGS_COLOR_MAINTAINER_TO_SLOT_TABLE = { -- Holds the slot index of each player colour
+	["#FF188CFF"] = 1,
+	["#FFFF3B30"] = 2,
+	["#FFEBD300"] = 3,
+	["#FF00C700"] = 4,
+	["#FF00E8E8"] = 5,
+	["#FFAE6BFF"] = 6,
+	["#FFFF8800"] = 7,
+	["#FFF65BB2"] = 8,
+	["#FF888888"] = 9
+}
+
+---------------------------------------------------------------------------------------------------
+-- Delegates:
+---------------------------------------------------------------------------------------------------
+Core_RegisterModule(AGS_COLOR_MAINTAINER_MODULE)	
+
+function AGS_ColorMaintainer_UpdateModuleSettings()
+	AGS_Print("AGS_ColorMaintainer_UpdateModuleSettings")
+	if not AGS_GLOBAL_SETTINGS.PlayerColors.IsEnforcing then
+		Core_UnregisterModule(AGS_COLOR_MAINTAINER_MODULE)
+	end
+end
+
+function AGS_ColorMaintainer_EarlyInitializations()
+	AGS_Print("AGS_ColorMaintainer_EarlyInitializations")
+	AGS_ColorMaintainer_CreateAutomaticSlots()
+	AGS_ColorMaintainer_RefreshSlots()
+end
+
+function AGS_ColorMaintainer_OnPlayerDefeated(player, reason)
+	AGS_Print("AGS_ColorMaintainer_OnPlayerDefeated")
+	AGS_ColorMaintainer_RefreshSlots()
+end		
+
+function AGS_ColorMaintainer_DiplomacyForcedAction()
+	AGS_Print("AGS_ColorMaintainer_DiplomacyForcedAction")
+	AGS_ColorMaintainer_RefreshSlots()
+end
+
+function AGS_ColorMaintainer_OnRelationshipChanged(observer_id, target_id)
+	AGS_Print("AGS_ColorMaintainer_OnRelationshipChanged")
+	AGS_ColorMaintainer_RefreshSlots()
+end	
+
+---------------------------------------------------------------------------------------------------
+-- Functions:
+---------------------------------------------------------------------------------------------------
+
+function AGS_ColorMaintainer_CreateAutomaticSlots()
+	for _, player in pairs(PLAYERS) do
+		player.AGS_Colors = {
+			Slot = AGS_COLOR_MAINTAINER_TO_SLOT_TABLE[UI_GetColourAsString(Player_GetUIColour(player.id))],
+		}
+	end
+	
+end
+
+function AGS_ColorMaintainer_RefreshSlots()
+	--PlayerColour_Disable()
+	PlayerColour_Enable()	
+	for _, player in pairs(PLAYERS) do
+		if not player.isEliminated then
+			AGS_ColorMaintainer_ForceColor(player, player.AGS_Colors.Slot)				
+		end
+	end	
+end
+
+function AGS_ColorMaintainer_ForceColor(player, slot)
+	Game_SetPlayerSlotColour(player.id, slot)
+	Game_SetPlayerUISlotColour(player.id, slot)
+end

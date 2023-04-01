@@ -2,8 +2,16 @@
 	<!--WinCondition/-->
 	<DataObject Name="" Type="WinCondition" Id="9649681318155485904">
 		<DataProperty Name="m_maxTeams" Type="Int32" Value="-1"/>
+		<DataProperty Name="m_startingCondition" Type="Object">
+			<DataValue Name="FamilyManagerEnum&lt;FamilyManager::FamilyType::TYP_StartingCondition,StdTraits&gt;">2523599269998418042</DataValue>
+			<!--WinCondition/FamilyManagerEnum<FamilyManager::FamilyType::TYP_StartingCondition,StdTraits>/-->
+			<DataObject Name="" Type="FamilyManagerEnum&lt;FamilyManager::FamilyType::TYP_StartingCondition,StdTraits&gt;" Id="2523599269998418042" OwnerId="9649681318155485904">
+				<DataProperty Name="m_enumName" Type="String" Value="standard"/>
+			</DataObject>
+		</DataProperty>
 		<DataProperty Name="m_gameModeType" Type="String" Value=""/>
 		<DataProperty Name="m_scarWinConditionFile" Type="String" Value="gamemodes\ags_tournament_nomad"/>
+		<DataProperty Name="m_feAllowSelectingStartingLocations" Type="Bool" Value="true"/>
 		<DataProperty Name="m_playerUpgrades" Type="Object"/>
 		<DataProperty Name="m_feIcon" Type="String" Value="images\illustrations\create_game\game_mode_tournament_selected"/>
 		<DataProperty Name="m_scarMissionFile" Type="String" Value=""/>
@@ -12,11 +20,11 @@
 			<DataValue Name="util::ReflectLocString">11877459139525647158</DataValue>
 			<!--WinCondition/util::ReflectLocString/-->
 			<DataObject Name="" Type="util::ReflectLocString" Id="11877459139525647158" OwnerId="9649681318155485904">
-				<DataProperty Name="m_modPart2" Type="UInt32" Value="3554363556"/>
-				<DataProperty Name="m_modPart3" Type="UInt32" Value="514256557"/>
-				<DataProperty Name="m_modPart0" Type="UInt32" Value="1690632602"/>
-				<DataProperty Name="m_modPart1" Type="UInt32" Value="1313674332"/>
-				<DataProperty Name="m_locStringKey" Type="Int32" Value="394"/>
+				<DataProperty Name="m_modPart2" Type="UInt32" Value="897181592"/>
+				<DataProperty Name="m_modPart3" Type="UInt32" Value="3932834702"/>
+				<DataProperty Name="m_modPart0" Type="UInt32" Value="535996680"/>
+				<DataProperty Name="m_modPart1" Type="UInt32" Value="1129110174"/>
+				<DataProperty Name="m_locStringKey" Type="Int32" Value="398"/>
 			</DataObject>
 		</DataProperty>
 		<DataProperty Name="m_startingBuildingReplacements" Type="Object">
@@ -253,11 +261,11 @@
 			<DataValue Name="util::ReflectLocString">6889023844203197455</DataValue>
 			<!--WinCondition/util::ReflectLocString/-->
 			<DataObject Name="" Type="util::ReflectLocString" Id="6889023844203197455" OwnerId="9649681318155485904">
-				<DataProperty Name="m_modPart2" Type="UInt32" Value="3554363556"/>
-				<DataProperty Name="m_modPart3" Type="UInt32" Value="514256557"/>
-				<DataProperty Name="m_modPart0" Type="UInt32" Value="1690632602"/>
-				<DataProperty Name="m_modPart1" Type="UInt32" Value="1313674332"/>
-				<DataProperty Name="m_locStringKey" Type="Int32" Value="393"/>
+				<DataProperty Name="m_modPart2" Type="UInt32" Value="897181592"/>
+				<DataProperty Name="m_modPart3" Type="UInt32" Value="3932834702"/>
+				<DataProperty Name="m_modPart0" Type="UInt32" Value="535996680"/>
+				<DataProperty Name="m_modPart1" Type="UInt32" Value="1129110174"/>
+				<DataProperty Name="m_locStringKey" Type="Int32" Value="397"/>
 			</DataObject>
 		</DataProperty>
 		<DataProperty Name="m_tuningModGUID" Type="String" Value=""/>
@@ -272,7 +280,138 @@
 			<DataValue Name="PrecacheList">3718866803008783347</DataValue>
 			<!--WinCondition/PrecacheList/-->
 			<DataObject Name="" Type="PrecacheList" Id="3718866803008783347" OwnerId="9649681318155485904">
-				<DataProperty Name="m_precacheItems" Type="Object"/>
+				<DataProperty Name="m_precacheItems" Type="Object">
+					<DataValue Name="SquadPrecacheItem">12287823697360682554</DataValue>
+					<DataValue Name="SquadPrecacheItem">8670009976991642550</DataValue>
+					<DataValue Name="SquadPrecacheItem">17225673761119446816</DataValue>
+					<DataValue Name="SquadPrecacheItem">6189867880719433398</DataValue>
+					<DataValue Name="SquadPrecacheItem">1070328987381744799</DataValue>
+					<DataValue Name="SquadPrecacheItem">5432341460728961975</DataValue>
+					<DataValue Name="SquadPrecacheItem">17349738098288801529</DataValue>
+					<DataValue Name="SquadPrecacheItem">9543627643879776857</DataValue>
+					<DataValue Name="SquadPrecacheItem">403589826054112443</DataValue>
+					<DataValue Name="SquadPrecacheItem">5576866290493591123</DataValue>
+					<!--WinCondition/PrecacheList/SquadPrecacheItem/-->
+					<DataObject Name="" Type="SquadPrecacheItem" Id="403589826054112443" OwnerId="3718866803008783347">
+						<DataProperty Name="#BaseTypes" Type="String" Value="IPrecacheItem#0|"/>
+						<DataProperty Name="m_blueprint" Type="Object">
+							<DataValue Name="ReflectPBG_SquadProperties">5984191883490279987</DataValue>
+							<!--WinCondition/PrecacheList/SquadPrecacheItem/ReflectPBG_SquadProperties/-->
+							<DataObject Name="" Type="ReflectPBG_SquadProperties" Id="5984191883490279987" OwnerId="403589826054112443">
+								<DataProperty Name="#BaseTypes" Type="String" Value="PropertyBagGroupReflectReference#0|Provider_PropertyBagGroup#0|"/>
+								<DataProperty Name="m_fileName" Type="String" Value="unit_king_1_eng"/>
+							</DataObject>
+						</DataProperty>
+					</DataObject>
+					<!--WinCondition/PrecacheList/SquadPrecacheItem/-->
+					<DataObject Name="" Type="SquadPrecacheItem" Id="1070328987381744799" OwnerId="3718866803008783347">
+						<DataProperty Name="#BaseTypes" Type="String" Value="IPrecacheItem#0|"/>
+						<DataProperty Name="m_blueprint" Type="Object">
+							<DataValue Name="ReflectPBG_SquadProperties">13000471981815317409</DataValue>
+							<!--WinCondition/PrecacheList/SquadPrecacheItem/ReflectPBG_SquadProperties/-->
+							<DataObject Name="" Type="ReflectPBG_SquadProperties" Id="13000471981815317409" OwnerId="1070328987381744799">
+								<DataProperty Name="#BaseTypes" Type="String" Value="PropertyBagGroupReflectReference#0|Provider_PropertyBagGroup#0|"/>
+								<DataProperty Name="m_fileName" Type="String" Value="unit_king_1_chi"/>
+							</DataObject>
+						</DataProperty>
+					</DataObject>
+					<!--WinCondition/PrecacheList/SquadPrecacheItem/-->
+					<DataObject Name="" Type="SquadPrecacheItem" Id="5432341460728961975" OwnerId="3718866803008783347">
+						<DataProperty Name="#BaseTypes" Type="String" Value="IPrecacheItem#0|"/>
+						<DataProperty Name="m_blueprint" Type="Object">
+							<DataValue Name="ReflectPBG_SquadProperties">16894707909220984030</DataValue>
+							<!--WinCondition/PrecacheList/SquadPrecacheItem/ReflectPBG_SquadProperties/-->
+							<DataObject Name="" Type="ReflectPBG_SquadProperties" Id="16894707909220984030" OwnerId="5432341460728961975">
+								<DataProperty Name="#BaseTypes" Type="String" Value="PropertyBagGroupReflectReference#0|Provider_PropertyBagGroup#0|"/>
+								<DataProperty Name="m_fileName" Type="String" Value="unit_king_1_rus"/>
+							</DataObject>
+						</DataProperty>
+					</DataObject>
+					<!--WinCondition/PrecacheList/SquadPrecacheItem/-->
+					<DataObject Name="" Type="SquadPrecacheItem" Id="5576866290493591123" OwnerId="3718866803008783347">
+						<DataProperty Name="#BaseTypes" Type="String" Value="IPrecacheItem#0|"/>
+						<DataProperty Name="m_blueprint" Type="Object">
+							<DataValue Name="ReflectPBG_SquadProperties">15366853843859888182</DataValue>
+							<!--WinCondition/PrecacheList/SquadPrecacheItem/ReflectPBG_SquadProperties/-->
+							<DataObject Name="" Type="ReflectPBG_SquadProperties" Id="15366853843859888182" OwnerId="5576866290493591123">
+								<DataProperty Name="#BaseTypes" Type="String" Value="PropertyBagGroupReflectReference#0|Provider_PropertyBagGroup#0|"/>
+								<DataProperty Name="m_fileName" Type="String" Value="unit_king_1_abb"/>
+							</DataObject>
+						</DataProperty>
+					</DataObject>
+					<!--WinCondition/PrecacheList/SquadPrecacheItem/-->
+					<DataObject Name="" Type="SquadPrecacheItem" Id="6189867880719433398" OwnerId="3718866803008783347">
+						<DataProperty Name="#BaseTypes" Type="String" Value="IPrecacheItem#0|"/>
+						<DataProperty Name="m_blueprint" Type="Object">
+							<DataValue Name="ReflectPBG_SquadProperties">316226348237312267</DataValue>
+							<!--WinCondition/PrecacheList/SquadPrecacheItem/ReflectPBG_SquadProperties/-->
+							<DataObject Name="" Type="ReflectPBG_SquadProperties" Id="316226348237312267" OwnerId="6189867880719433398">
+								<DataProperty Name="#BaseTypes" Type="String" Value="PropertyBagGroupReflectReference#0|Provider_PropertyBagGroup#0|"/>
+								<DataProperty Name="m_fileName" Type="String" Value="unit_king_1_sul"/>
+							</DataObject>
+						</DataProperty>
+					</DataObject>
+					<!--WinCondition/PrecacheList/SquadPrecacheItem/-->
+					<DataObject Name="" Type="SquadPrecacheItem" Id="8670009976991642550" OwnerId="3718866803008783347">
+						<DataProperty Name="#BaseTypes" Type="String" Value="IPrecacheItem#0|"/>
+						<DataProperty Name="m_blueprint" Type="Object">
+							<DataValue Name="ReflectPBG_SquadProperties">9913465226012251519</DataValue>
+							<!--WinCondition/PrecacheList/SquadPrecacheItem/ReflectPBG_SquadProperties/-->
+							<DataObject Name="" Type="ReflectPBG_SquadProperties" Id="9913465226012251519" OwnerId="8670009976991642550">
+								<DataProperty Name="#BaseTypes" Type="String" Value="PropertyBagGroupReflectReference#0|Provider_PropertyBagGroup#0|"/>
+								<DataProperty Name="m_fileName" Type="String" Value="unit_king_1_mal"/>
+							</DataObject>
+						</DataProperty>
+					</DataObject>
+					<!--WinCondition/PrecacheList/SquadPrecacheItem/-->
+					<DataObject Name="" Type="SquadPrecacheItem" Id="9543627643879776857" OwnerId="3718866803008783347">
+						<DataProperty Name="#BaseTypes" Type="String" Value="IPrecacheItem#0|"/>
+						<DataProperty Name="m_blueprint" Type="Object">
+							<DataValue Name="ReflectPBG_SquadProperties">1386373102780388603</DataValue>
+							<!--WinCondition/PrecacheList/SquadPrecacheItem/ReflectPBG_SquadProperties/-->
+							<DataObject Name="" Type="ReflectPBG_SquadProperties" Id="1386373102780388603" OwnerId="9543627643879776857">
+								<DataProperty Name="#BaseTypes" Type="String" Value="PropertyBagGroupReflectReference#0|Provider_PropertyBagGroup#0|"/>
+								<DataProperty Name="m_fileName" Type="String" Value="unit_king_1_fre"/>
+							</DataObject>
+						</DataProperty>
+					</DataObject>
+					<!--WinCondition/PrecacheList/SquadPrecacheItem/-->
+					<DataObject Name="" Type="SquadPrecacheItem" Id="12287823697360682554" OwnerId="3718866803008783347">
+						<DataProperty Name="#BaseTypes" Type="String" Value="IPrecacheItem#0|"/>
+						<DataProperty Name="m_blueprint" Type="Object">
+							<DataValue Name="ReflectPBG_SquadProperties">15204238185952820386</DataValue>
+							<!--WinCondition/PrecacheList/SquadPrecacheItem/ReflectPBG_SquadProperties/-->
+							<DataObject Name="" Type="ReflectPBG_SquadProperties" Id="15204238185952820386" OwnerId="12287823697360682554">
+								<DataProperty Name="#BaseTypes" Type="String" Value="PropertyBagGroupReflectReference#0|Provider_PropertyBagGroup#0|"/>
+								<DataProperty Name="m_fileName" Type="String" Value="unit_king_1_ott"/>
+							</DataObject>
+						</DataProperty>
+					</DataObject>
+					<!--WinCondition/PrecacheList/SquadPrecacheItem/-->
+					<DataObject Name="" Type="SquadPrecacheItem" Id="17225673761119446816" OwnerId="3718866803008783347">
+						<DataProperty Name="#BaseTypes" Type="String" Value="IPrecacheItem#0|"/>
+						<DataProperty Name="m_blueprint" Type="Object">
+							<DataValue Name="ReflectPBG_SquadProperties">218623981826493707</DataValue>
+							<!--WinCondition/PrecacheList/SquadPrecacheItem/ReflectPBG_SquadProperties/-->
+							<DataObject Name="" Type="ReflectPBG_SquadProperties" Id="218623981826493707" OwnerId="17225673761119446816">
+								<DataProperty Name="#BaseTypes" Type="String" Value="PropertyBagGroupReflectReference#0|Provider_PropertyBagGroup#0|"/>
+								<DataProperty Name="m_fileName" Type="String" Value="unit_king_1_hre"/>
+							</DataObject>
+						</DataProperty>
+					</DataObject>
+					<!--WinCondition/PrecacheList/SquadPrecacheItem/-->
+					<DataObject Name="" Type="SquadPrecacheItem" Id="17349738098288801529" OwnerId="3718866803008783347">
+						<DataProperty Name="#BaseTypes" Type="String" Value="IPrecacheItem#0|"/>
+						<DataProperty Name="m_blueprint" Type="Object">
+							<DataValue Name="ReflectPBG_SquadProperties">8745807739180627427</DataValue>
+							<!--WinCondition/PrecacheList/SquadPrecacheItem/ReflectPBG_SquadProperties/-->
+							<DataObject Name="" Type="ReflectPBG_SquadProperties" Id="8745807739180627427" OwnerId="17349738098288801529">
+								<DataProperty Name="#BaseTypes" Type="String" Value="PropertyBagGroupReflectReference#0|Provider_PropertyBagGroup#0|"/>
+								<DataProperty Name="m_fileName" Type="String" Value="unit_king_1_mon"/>
+							</DataObject>
+						</DataProperty>
+					</DataObject>
+				</DataProperty>
 			</DataObject>
 		</DataProperty>
 		<DataProperty Name="m_name" Type="String" Value="advanced_game_settings_tournament_nomad"/>

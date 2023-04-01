@@ -1,0 +1,470 @@
+---------------------------------------------------------------------------------------------------
+-- Authors:
+-- Relic
+-- Woprock
+--
+-- Description:
+-- Conquest win condition.
+-- A team is eliminated when all of its players have lost all their landmarks (including capital town center).
+-- The last team remaining is the victor.
+
+-- TODO add event filters
+-- Conquest
+-- Rule_AddEventFilter_EntityType(Conquest_OnDamageReceived, FC_Victim, FO_OR, { _conquest.types.landmark }, { _conquest.types.wonder })
+-- Rule_AddEventFilter_EntityType(Conquest_OnDamageReceived, FC_Victim, FO_OR, { "town_center_capital" }, {  })
+-- Rule_AddEventFilter_StateModelBool(Conquest_OnDamageReceived, FC_Victim, FO_OR, { "town_center_is_capital" }, {  })
+---------------------------------------------------------------------------------------------------
+
+import("conditions/conditiondata/ags_conquest_data.scar")
+AGS_CONQUEST_MODULE = "AGS_Conquest"
+AGS_CONQUEST_OBJECTIVE = nil
+AGS_CONQUEST_ACTIVE = true
+AGS_CONQUEST_PLAYERS_MIN_REQUIRED = 2
+AGS_CONQUEST_TICK_WAIT = 0.25 -- 0.125 is a single tick
+
+---------------------------------------------------------------------------------------------------
+-- Delegates:
+---------------------------------------------------------------------------------------------------
+
+Core_RegisterModule(AGS_CONQUEST_MODULE)	
+
+-- If Conquest setting for wonder is enabled in settings, force wonder construction if wonder victory is not.
+function AGS_Conquest_AdjustSettings()
+	AGS_Print("AGS_Conquest_AdjustSettings")
+	if AGS_GLOBAL_SETTINGS.Conquest and not AGS_GLOBAL_SETTINGS.Wonder and AGS_GLOBAL_SETTINGS.ConquestSettings.Wonder then
+		AGS_GLOBAL_SETTINGS.WonderConstruction = true
+	end
+end
+
+function AGS_Conquest_UpdateModuleSettings()
+	AGS_Print("AGS_Conquest_UpdateModuleSettings")
+	if not AGS_GLOBAL_SETTINGS.Conquest then
+		Core_UnregisterModule(AGS_CONQUEST_MODULE)
+	end
+end
+
+-- Disable this if there is noone else or nothing to conquer.
+function AGS_Conquest_EarlyInitializations()
+	AGS_Print("AGS_Conquest_EarlyInitializations")
+	if #PLAYERS < AGS_CONQUEST_PLAYERS_MIN_REQUIRED then
+		Core_UnregisterModule(AGS_CONQUEST_MODULE)
+	end
+	if not AGS_GLOBAL_SETTINGS.ConquestSettings.Capital and 
+		not AGS_GLOBAL_SETTINGS.ConquestSettings.Landmarks and
+		not AGS_GLOBAL_SETTINGS.ConquestSettings.TownCenters and 
+		not AGS_GLOBAL_SETTINGS.ConquestSettings.Keeps and
+		-- Wonder victory or construction must be enabled for this to work.
+		not (AGS_GLOBAL_SETTINGS.ConquestSettings.Wonder and (AGS_GLOBAL_SETTINGS.Wonder or AGS_GLOBAL_SETTINGS.WonderConstruction)) then
+		Core_UnregisterModule(AGS_CONQUEST_MODULE)
+	end	
+end
+
+function AGS_Conquest_OnPlay()
+	AGS_Print("AGS_Conquest_OnPlay")
+	AGS_Conquest_InitializeConquerables()
+	Rule_AddGlobalEvent(AGS_Conquest_OnConstructionComplete, GE_ConstructionComplete)
+	Rule_AddGlobalEvent(AGS_Conquest_OnDamageReceived, GE_DamageReceived)
+	Rule_AddGlobalEvent(AGS_Conquest_OnEntityKilled, GE_EntityKilled)
+	Rule_AddGlobalEvent(AGS_Conquest_OnEntityLandmarkDestroyed, GE_EntityLandmarkDestroyed)
+	AGS_Conquest_CreateObjective()
+	AGS_Conquest_UpdateObjective()
+end
+
+function AGS_Conquest_OnPlayerDefeated(player, reason)
+	AGS_Print("AGS_Conquest_OnPlayerDefeated")
+	if reason == AGS_WR_CONQUEST then 
+		AGS_Notifications_Eliminated(player, AGS_NOTIFICATIONS_CONQUEST)
+		AGS_Conditions_CheckVictory(AGS_CONQUEST_ACTIVE, AGS_Presentations_VictoryConquest, AGS_WR_CONQUEST,
+			AGS_Objectives_PresentWrap(
+				AGS_CONQUEST_OBJECTIVE, 
+				OS_Complete, 
+				AGS_OBJECTIVES_CONQUEST.title_victory))
+	else
+		AGS_Conquest_FinishOffConquest(player)
+	end
+	AGS_Conquest_UpdateObjective()
+end
+
+function AGS_Conquest_TreatyStarted()
+	AGS_Print("AGS_Conquest_TreatyStarted")
+	AGS_CONQUEST_ACTIVE = false
+end
+
+function AGS_Conquest_TreatyEnded()
+	AGS_Print("AGS_Conquest_TreatyEnded")
+	AGS_CONQUEST_ACTIVE = true
+end
+
+function AGS_Conquest_OnRelationshipChanged(observer_id, target_id)
+	AGS_Print("AGS_Conquest_OnRelationshipChanged")
+	AGS_Conquest_UpdateObjective()
+end
+
+function AGS_Conquest_OnObjectiveToggle(toggle)
+	AGS_Print("AGS_Conquest_OnObjectiveToggle")
+	if AGS_CONQUEST_OBJECTIVE ~= nil then
+		AGS_Objectives_Set(AGS_CONQUEST_OBJECTIVE, nil, toggle)	
+	end
+end
+
+function AGS_Conquest_OnGameOver()
+	AGS_Print("AGS_Conquest_OnGameOver")
+	Rule_RemoveGlobalEvent(AGS_Conquest_OnConstructionComplete)
+	Rule_RemoveGlobalEvent(AGS_Conquest_OnDamageReceived)
+	Rule_RemoveGlobalEvent(AGS_Conquest_OnEntityKilled)
+	Rule_RemoveGlobalEvent(AGS_Conquest_OnEntityLandmarkDestroyed)
+	AGS_Conquest_RemoveObjective()
+end
+
+---------------------------------------------------------------------------------------------------
+-- Callbacks:
+---------------------------------------------------------------------------------------------------
+-- Entity destroyed for all non-landmarks, but maybe one day this might fire for landmarks.
+function AGS_Conquest_OnEntityKilled(context)
+	if context.victimOwner == nil or context.victim == nil then
+		return
+	end
+	local player = Core_GetPlayersTableEntry(context.victimOwner)
+	local entity_id = context.victim
+	local killer = nil
+	if context.killer ~= nil and not World_OwnsEntity(entity_id) then
+		killer = Core_GetPlayersTableEntry(Entity_GetPlayerOwner(entity_id))
+	end
+	AGS_Conquest_ConquerableDestroyed(player, entity_id, killer)
+end
+-- Entity landmark destroyed
+function AGS_Conquest_OnEntityLandmarkDestroyed(context)
+	if context.landmarkOwner == nil or context.landmarkEntity == nil then
+		return
+	end
+	local player = Core_GetPlayersTableEntry(context.landmarkOwner)
+	local entity_id = context.landmarkEntity
+	AGS_Conquest_ConquerableDestroyed(player, entity_id)
+end
+-- Entity built must be registred as conquerable
+-- Track entity UWIDs since Mongol structures trigger a GE_ConstructionComplete
+-- event when unpacked as well as when constructed.
+function AGS_Conquest_OnConstructionComplete(context)
+	if context == nil or context.player == nil or context.entity == nil then 
+		return
+	end	
+	local new_context = {
+		player = Core_GetPlayersTableEntry(context.player),
+		entity_id = context.entity,
+		entity_uwid = Entity_GetID(context.entity),
+	}	
+	-- Eliminated players are not interesting for victory conditions.
+	if new_context.player == nil or new_context.player.isEliminated then
+		return
+	end
+	if AGS_Conquest_IsConquerable(new_context.entity_id) then
+		-- Delay processing this event by two frames so deferred data model updates can complete. 
+		Rule_AddOneShot(AGS_Conquest_OnPostConstructionComplete, AGS_CONQUEST_TICK_WAIT, new_context)	
+	end
+end
+-- Finally add new buildings to our tracking list.
+function AGS_Conquest_OnPostConstructionComplete(context, data)
+	if data.player == nil or data.entity_uwid == nil or data.player.isEliminated then
+		return
+	end	
+	if data.entity_id == nil or data.player.AGS_Conquerables[data.entity_uwid] ~= nil then
+		return
+	end
+	-- Save structure in tracker list for a player.
+	data.player.AGS_Conquerables[data.entity_uwid] = {
+		entity = data.entity_id,
+		is_alive = Entity_IsAlive(data.entity_id),
+		is_landmark = false,
+		is_landmark_active = false,
+	}	
+	-- Landmark and Capital are marked in second step.
+	if Entity_IsValid(data.entity_uwid) and (AGS_IsALandmark(data.entity_id) or AGS_IsACapital(data.entity_id)) then 
+		data.player.AGS_Conquerables[data.entity_uwid].is_landmark = true
+		data.player.AGS_Conquerables[data.entity_uwid].is_landmark_active = Entity_GetStateModelBool(data.entity_id, "landmark_active")
+		if not data.player.AGS_Conquerables[data.entity_uwid].is_landmark_active then
+			data.player.AGS_Conquerables[data.entity_uwid].is_alive = false
+		end
+	end
+	AGS_Conquest_UpdateObjective()
+end
+-- Deal with rebuilding of landmarks and notification about objective under attack.
+function AGS_Conquest_OnDamageReceived(context)	
+	-- Ignore nils and world owned entities
+	if context == nil  or context.victim == nil or World_OwnsEntity(context.victim) then
+		return 
+	end
+	-- Get building ID and owner
+	local entity_uwid = Entity_GetID(context.victim)
+	local owner = Core_GetPlayersTableEntry(Entity_GetPlayerOwner(context.victim))	
+	-- Excludes everythng that is not tracked by wincondition.
+	if not AGS_Conquest_IsConquerable(context.victim) then
+		return
+	end	
+	-- Owner must always have this landmark registered for us to do anything with it ?
+	if owner.AGS_Conquerables[entity_uwid] == nil then
+		return
+	end
+	
+	-- This resolves edge case when mongol landmark unit is present
+	if context.currentHealth ~= nil and context.currentHealth <= 1.0 and AGS_IsThisSpecialMobileBuildingDead(context.victim) then
+		AGS_Conquest_ConquerableDestroyed(owner, context.victim, nil)
+	end
+	
+	-- If building is being repaired (also triggers OnDamageReceived) we will check if its landmark and return
+	if context.isRepairing then		
+		-- If building is marked as landmark (its type cant change)
+		if owner.AGS_Conquerables[entity_uwid].is_landmark then
+			if Entity_GetHealthPercentage(context.victim) == 1 then
+				-- Landmark is active again, whatever it already was does not matter as this is not an event.
+				owner.AGS_Conquerables[entity_uwid].is_landmark_active = true
+				-- This also means that its consider alive for all checks
+				owner.AGS_Conquerables[entity_uwid].is_alive = true
+				AGS_Conquest_UpdateObjective()
+			end
+		end
+		return		
+	end
+	
+	-- Excludes razing buildings as they do not have an attacker ?
+	-- Builder and attacker can't be world owned.
+	if context.attacker == nil or World_OwnsEntity(context.attacker) then 
+		return 
+	end
+	local attacker = Core_GetPlayersTableEntry(Entity_GetPlayerOwner(context.attacker))
+	
+	-- Exclude scuttling of incomplete buildings.
+	if Entity_IsBuilding(context.victim) and Entity_GetBuildingProgress(context.victim) < 1.0 then
+		return
+	end	
+	-- Notifications are skipped if entity is dead as we are only informing of them to take damage.
+	if not owner.AGS_Conquerables[entity_uwid].is_alive then	
+		return
+	end
+	AGS_Notifications_Damaged(entity_uwid, attacker, owner, AGS_NOTIFICATIONS_CONQUEST_ATTACKED)
+end
+
+---------------------------------------------------------------------------------------------------
+-- Functions:
+---------------------------------------------------------------------------------------------------
+
+function AGS_Conquest_CreateObjective()
+	AGS_CONQUEST_OBJECTIVE = AGS_Objectives_Create(AGS_OBJECTIVES_CONQUEST, AGS_GS_LOCAL_PLAYER)
+	AGS_Objectives_Set(AGS_CONQUEST_OBJECTIVE, OS_Incomplete, true, true, COUNTER_CountUpTo)
+end
+
+function AGS_Conquest_UpdateObjective()
+	if AGS_CONQUEST_OBJECTIVE == nil then 
+		return
+	end
+	local enemies_conquerables_statistics = AGS_Conquest_CountEnemyConquerables(AGS_GS_LOCAL_PLAYER)
+	if enemies_conquerables_statistics == nil then 
+		AGS_Objectives_Set(AGS_CONQUEST_OBJECTIVE, nil, nil, false)
+		return
+	else
+		AGS_Objectives_Set(AGS_CONQUEST_OBJECTIVE, nil, nil, true)
+	end
+	-- Update the progress bar of the objective.
+	AGS_Objectives_Progress(
+		AGS_CONQUEST_OBJECTIVE, 
+		enemies_conquerables_statistics.destroyed, 
+		enemies_conquerables_statistics.built, 
+		enemies_conquerables_statistics.destroyed / enemies_conquerables_statistics.built
+	)
+end
+
+function AGS_Conquest_RemoveObjective()
+	AGS_Objectives_Set(AGS_CONQUEST_OBJECTIVE, nil, false)
+end
+
+function AGS_Conquest_Eliminate(player)
+	-- Finish off all undestroyed objectives that are not yet acting as killed e.g. landmarks ?
+	AGS_Conquest_KillAllConquerables(player)
+	-- Finally eliminate.
+	AGS_SetPlayerDefeated(
+		player.id, 
+		AGS_Presentations_LossConquest, 
+		AGS_WR_CONQUEST,
+		AGS_Objectives_PresentWrap(
+			AGS_CONQUEST_OBJECTIVE, 
+			OS_Failed, 
+			AGS_OBJECTIVES_CONQUEST.title_lost))
+end
+
+function AGS_Conquest_EliminateGroup(player)
+	-- Eliminate teammates as they were leaching on this player at this moment.
+	local teammates = AGS_Teams_GetAllCurrentTeammates(player)
+	AGS_SetPlayerGroupDefeated(teammates, 
+		AGS_Presentations_LossConquest, 
+		AGS_WR_CONQUEST,
+		AGS_Objectives_PresentWrap(
+			AGS_CONQUEST_OBJECTIVE, 
+			OS_Failed, 
+			AGS_OBJECTIVES_CONQUEST.title_lost))
+end
+
+-- Finishes off selected player and verifies that his teammates are not stuck in a game without landmark
+function AGS_Conquest_FinishOffConquest(player)
+	-- kills all landmarks
+	AGS_Conquest_KillAllConquerables(player)
+	-- for this option we need to check his team, this will consider only static teams due to how relations work.
+	-- we basically lose that info if player is eliminated, so dynamic teams will not work with that. :(
+	if AGS_GLOBAL_SETTINGS.TeamVictory == AGS_GS_TEAM_VICTORY_STANDARD and
+		AGS_GLOBAL_SETTINGS.ConquestSettings.IsTeamShared then
+		-- get current teammate list
+		local teammates = AGS_Teams_GetAllCurrentTeammates(player)
+		
+		-- count all team landmarks, eliminated player is ignored
+		local conquerable_count = AGS_Conquest_GetTeammatesConquerableCount(player)	
+		
+		-- Check if player still has reason to be in conquest game.	
+		if conquerable_count ~= nil and conquerable_count.built > 0 and conquerable_count.remaining <= 0 then
+			for _, ally in pairs(teammates) do
+				AGS_Conquest_EliminateGroup(ally)	
+			end
+		end	
+	end
+end
+
+function AGS_Conquest_KillAllConquerables(player)
+	-- Disable landmark rebuilt prompt.
+	Player_SetStateModelBool(player.id, "disable_landmark_rebuild", true)
+	for _, conquerable in pairs(player.AGS_Conquerables) do 
+		if conquerable.is_alive then
+			conquerable.is_alive = false
+			if conquerable.entity ~= nil and Entity_IsAlive(conquerable.entity) then
+				Entity_Kill(conquerable.entity)
+			end
+		end
+	end	
+end
+
+function AGS_Conquest_InitializeConquerables()
+	for _, player in pairs(PLAYERS) do
+		player.AGS_Conquerables = {}
+		local eg_player_conquerables = Player_GetAllEntities(player.id)
+		
+		local AGS_TrackConquerable = function(gid, idx, eid)
+			local entity_uwid = Entity_GetID(eid)
+			-- Track entity UWIDs.
+			if AGS_Conquest_IsConquerable(eid) and player.AGS_Conquerables[entity_uwid] == nil then				
+				player.AGS_Conquerables[entity_uwid] = {
+					entity = eid,
+					is_alive = Entity_IsAlive(eid),
+					is_landmark = false,
+					is_landmark_active = false,
+				}
+				-- Landmark and Capital are marked in second step.
+				if AGS_IsALandmark(eid) or AGS_IsACapital(eid) then 
+					player.AGS_Conquerables[entity_uwid].is_landmark = true
+					player.AGS_Conquerables[entity_uwid].is_landmark_active = Entity_GetStateModelBool(eid, "landmark_active")
+				end
+			end
+		end
+		EGroup_ForEach(eg_player_conquerables, AGS_TrackConquerable)
+	end
+end
+
+---------------------------------------------------------------------------------------------------
+-- Conquest Checks:
+---------------------------------------------------------------------------------------------------
+
+function AGS_Conquest_ConquerableDestroyed(player, entity_id, killer)
+	-- Check if the player is alive and building also exists. Eliminated players are dealt with separately.
+	if player == nil or player.isEliminated or entity_id == nil then
+		return
+	end	
+	-- Check if we received entity that we are actively tracking.
+	if not Entity_HasBlueprint(entity_id, AGS_BP_BUILDING) or not AGS_Conquest_IsConquerable(entity_id) then
+		return
+	end		
+	-- Retrieve id and check if it exists
+	local entity_uwid = Entity_GetID(entity_id)	
+	if player.AGS_Conquerables[entity_uwid] == nil then
+		return
+	end
+	-- Update status to reflect that we consider it dead. Hopefully game does never pretend it to be alive on entity killed.
+	player.AGS_Conquerables[entity_uwid].is_alive = false
+	player.AGS_Conquerables[entity_uwid].is_landmark_alive = false
+		
+	-- Notify players about conquerable being destroyed.
+	AGS_Notifications_Destroyed(entity_uwid, player, killer, AGS_NOTIFICATIONS_CONQUEST_DESTROYED)
+	-- Update objective as we changed at least one condition target.
+	AGS_Conquest_UpdateObjective()	
+		
+	-- Verify that this player is still able to continue in his conquest.
+	local conquerable_count = AGS_Conquest_GetPlayerConquerableCount(player)
+	if AGS_GLOBAL_SETTINGS.TeamVictory == AGS_GS_TEAM_VICTORY_STANDARD and
+		AGS_GLOBAL_SETTINGS.ConquestSettings.IsTeamShared then
+		local team_count = AGS_Conquest_GetTeammatesConquerableCount(player)
+		conquerable_count.built = conquerable_count.built + team_count.built
+		conquerable_count.remaining = conquerable_count.remaining + team_count.remaining
+		conquerable_count.destroyed = conquerable_count.destroyed + team_count.destroyed		
+	end
+	
+	-- Check if player still has reason to be in conquest game.	
+	if conquerable_count.built > 0 and conquerable_count.remaining <= 0 then
+		if AGS_GLOBAL_SETTINGS.TeamVictory == AGS_GS_TEAM_VICTORY_STANDARD and
+			AGS_GLOBAL_SETTINGS.ConquestSettings.IsTeamShared then
+			AGS_Conquest_EliminateGroup(player)	
+		end
+	
+		-- Continue and eliminate player, finishing him off.
+		AGS_Conquest_Eliminate(player)
+	end		
+end
+
+---------------------------------------------------------------------------------------------------
+-- Helpers:
+---------------------------------------------------------------------------------------------------
+-- Returns number of Landmarks a player has built/remaining.
+-- player_conquerables is used to add count to already existing structure. Can be nil if you want new count.
+function AGS_Conquest_GetPlayerConquerableCount(player, player_conquerables)
+	if player_conquerables == nil then
+		player_conquerables = {
+			built = 0,
+			remaining = 0,
+			destroyed = 0,
+		}	
+	end
+	-- For every player count active and built conquerables.
+	for _, conquerable in pairs(player.AGS_Conquerables) do
+		player_conquerables.built = player_conquerables.built + 1
+		if conquerable.is_alive then 
+			player_conquerables.remaining = player_conquerables.remaining + 1
+		else 
+			player_conquerables.destroyed = player_conquerables.destroyed + 1
+		end
+	end
+	return player_conquerables	
+end
+-- Returns number of Enemy Conquerables standing for a given player.
+function AGS_Conquest_CountEnemyConquerables(player)
+	local conquerable_counter = nil
+	for _, enemy in pairs(AGS_Teams_GetAllCurrentOpponents(player, true)) do 
+		conquerable_counter = AGS_Conquest_GetPlayerConquerableCount(enemy, conquerable_counter)
+	end
+	return conquerable_counter
+end
+-- Returns number of Friendly Conqerables standing for a given player.
+function AGS_Conquest_GetTeammatesConquerableCount(player)
+	local conquerable_counter = nil
+	for _, ally in pairs(AGS_Teams_GetAllCurrentTeammates(player, true)) do 
+		conquerable_counter = AGS_Conquest_GetPlayerConquerableCount(ally, conquerable_counter)
+	end
+	return conquerable_counter
+end
+-- Returns if passed entity is conquerable objective.
+function AGS_Conquest_IsConquerable(entity_id)
+	if AGS_GLOBAL_SETTINGS.ConquestSettings.Capital and AGS_IsACapital(entity_id) then
+		return true
+	elseif AGS_GLOBAL_SETTINGS.ConquestSettings.Landmarks and AGS_IsALandmark(entity_id) then
+		return true
+	elseif AGS_GLOBAL_SETTINGS.ConquestSettings.TownCenters and AGS_IsATownCenter(entity_id) then
+		return true
+	elseif AGS_GLOBAL_SETTINGS.ConquestSettings.Keeps and AGS_IsAKeep(entity_id) then
+		return true
+	elseif AGS_GLOBAL_SETTINGS.ConquestSettings.Wonder and AGS_IsAWonder(entity_id) then
+		return true
+	end
+	return false
+end

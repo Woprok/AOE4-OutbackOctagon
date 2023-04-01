@@ -1,0 +1,240 @@
+---------------------------------------------------------------------------------------------------
+-- Authors:
+-- Relic
+-- Woprock
+--
+-- Description:
+-- Contains condition helpers for notifications.
+-- Notification is showed at any time.
+-- e.g. Elimination notification is showed immediately on player defeat being processed.
+---------------------------------------------------------------------------------------------------
+AGS_NOTIFICATIONS_SOUND_ELIMINATED = {
+	self = "Conquest_friendly_eliminated",
+	ally = "Conquest_friendly_eliminated",
+	enemy = "Conquest_enemy_eliminated",	
+}
+-- Priority of the notification.
+AGS_NP_LOW = 0
+AGS_NP_HIGH = 1
+AGS_NP_MAX = 2
+-- Standardized notification for all objectives to make them similiar and recognizeable.
+-- Default is filled with most common cases. Automatically supplied to every method that uses notification.
+AGS_NOTIFICATIONS_CORE = {
+	event_type = -1,	
+	-- lifetime, repeat_count and repeat_time should match the defaults set in AE under tuning_simulation\ui\event_cues
+	lifetime = 10.0,
+	repeat_count = 0,
+	repeat_time = 20.0,		
+	title = Loc_Empty(),
+	desc = Loc_Empty(),
+	sfx = "sfx_ui_event_queue_high_priority_play",
+	icon = "icons\\event_queue_high_priority",
+	icon_high = "icons\\event_queue_high_priority_large",
+	color = {r = 255, g = 255, b = 255, a = 255},
+	template = "high_priority", 
+	template_color = "event_with_player_color",
+	style_queue = ECV_Queue,
+	style_center = ECV_Title,
+	-- This one should be completely pointless as we can do it separately for greater effect.
+	style_combined = ECV_Queue | ECV_Title,
+}
+-- Points during countdown at which to display loss warning.
+-- Arrange in decreasing order since music intensity increases when the last one triggers.
+AGS_NOTIFICATIONS_COUNTDOWN = {
+	-- generic first
+	{
+		time = 3 * 60, 
+		sfx = "sfx_ui_victory_countdown_update_first",
+		music_intensity = MUSIC_TENSE,
+		music_intesity_param = -1,
+		music_special = nil,
+		text_param = 3,		
+	},
+	-- generic second
+	{
+		time = 2 * 60, 
+		sfx = "sfx_ui_victory_countdown_update_second",
+		music_intensity = MUSIC_TENSE_COMBAT_RARE,	
+		music_intesity_param = -1,	
+		music_special = nil,
+		text_param = 2,		
+	},
+	-- generic third
+	{
+		time = 1 * 60,
+		sfx = "sfx_ui_victory_countdown_update_final",	
+		music_intensity = MUSIC_RARE,		
+		music_intesity_param = 1 * 60,
+		music_special = "mus_shared_victory_countdown_mix_event",	
+		text_param = nil,					
+	},
+}
+
+---------------------------------------------------------------------------------------------------
+-- Pre-Filled Functions:
+---------------------------------------------------------------------------------------------------
+
+function AGS_Notifications_CountdownNotification(source_player, order_id, notification)
+	if AGS_GS_LOCAL_PLAYER.isEliminated then
+		return
+	end	
+	local relation = AGS_GetRelation(source_player)
+	local core_countdown = AGS_NOTIFICATIONS_COUNTDOWN[order_id]
+	-- Create cue.
+	local color = Player_GetUIColour(source_player.id)
+	local priority = AGS_NP_LOW
+	local title = nil
+	local sfx = core_countdown.sfx
+	
+	-- Increase music tempo.
+	Music_LockIntensity(core_countdown.music_intensity, core_countdown.music_intensity_param)
+	if relation ~= AGS_SAE_ENEMY then
+		if core_countdown.text_param ~= nil then
+			title = Loc_FormatText(notification.title_victory, core_countdown.text_param)
+		else
+			title = Loc_FormatText(notification.title_final_victory)
+		end				
+	else
+		if core_countdown.text_param ~= nil then
+			title = Loc_FormatText(notification.title_defeat, core_countdown.text_param)
+		else
+			title = Loc_FormatText(notification.title_final_defeat)
+		end		
+		if core_countdown.music_special ~= nil then
+			-- Trigger Mix Event.
+			Sound_Play2D(core_countdown.music_special)	
+		end
+	end
+	
+	AGS_Notifications_CreateTextCue(AGS_NOTIFICATIONS_CORE, AGS_NP_MAX, title, sfx, color)
+end
+
+-- Action variant that executes choosen variant, expects AGS_SAE_SELF, AGS_SAE_ALLY, AGS_SAE_ENEMY
+function AGS_Notifications_ObjectiveActionSelectable(player, notification, for_who)
+	if AGS_GS_LOCAL_PLAYER.isEliminated then
+		return
+	end	
+	-- Create cue.
+	local color = Player_GetUIColour(player.id)
+	local priority = nil
+	local title = nil
+	local sfx = nil
+	-- Fill based on context.
+	if for_who == AGS_SAE_SELF then
+		title = Loc_FormatText(notification.self_action)
+		sfx = notification.self_action_sfx
+		priority = notification.self_priority
+	end
+	if for_who == AGS_SAE_ALLY then
+		title = Loc_FormatText(notification.ally_action)
+		sfx = notification.ally_action_sfx
+		priority = notification.ally_priority
+	end
+	if for_who == AGS_SAE_ENEMY then
+		title = Loc_FormatText(notification.enemy_action)	
+		sfx = notification.enemy_action_sfx
+		priority = notification.enemy_priority
+	end
+	
+	AGS_Notifications_CreateTextCue(AGS_NOTIFICATIONS_CORE, priority, title, sfx, color)
+end
+
+function AGS_Notifications_ObjectiveAction(player, notification)
+	local owner_relation = AGS_GetRelation(player)
+	if AGS_GS_LOCAL_PLAYER.isEliminated then
+		return
+	end	
+	-- Create cue.
+	local color = Player_GetUIColour(player.id)
+	local priority = AGS_NP_LOW
+	local title = nil
+	local sfx = notification.self_action_sfx
+	-- Fill based on context.
+	if owner_relation == AGS_SAE_SELF then
+		title = Loc_FormatText(notification.self_action)
+	elseif owner_relation == AGS_SAE_ALLY then
+		title = Loc_FormatText(notification.ally_action, player.playerName)
+		sfx = notification.ally_action_sfx
+		priority = AGS_NP_HIGH
+	else
+		title = Loc_FormatText(notification.enemy_action, player.playerName)	
+		sfx = notification.enemy_action_sfx
+		priority = AGS_NP_MAX	
+	end
+	
+	AGS_Notifications_CreateTextCue(AGS_NOTIFICATIONS_CORE, priority, title, sfx, color)
+end
+
+function AGS_Notifications_Eliminated(player, cue_opt_fielded)
+	-- Do nothing if player is eliminated.
+	if player == nil then
+		return
+	end
+	-- Should this be played for eliminated player ?
+	--if AGS_GS_LOCAL_PLAYER.isEliminated then
+	--	return
+	--end
+	-- Notify via sound.
+	AGS_Notifications_SoundCue(player, AGS_NOTIFICATIONS_SOUND_ELIMINATED)
+	-- Notify via message in right bottom corner.	
+	AGS_Notifications_CreateTextCue(AGS_NOTIFICATIONS_CORE, AGS_NP_HIGH, Loc_FormatText(cue_opt_fielded.title, player.playerName), cue_opt_fielded.sfx)
+end
+
+---------------------------------------------------------------------------------------------------
+-- Functions:
+---------------------------------------------------------------------------------------------------
+-- This will resolve almost every single case we might need for very long time.
+-- Why would someone not create something glorious like this Relic and isntead copy paste this hundreds times ?
+function AGS_Notifications_CreateTextCue(cue, priority, title, sfx, color)
+	local template = cue.template
+	if color == nil then
+		color = cue.color
+		template = cue.template_color
+	end
+	if sfx == nil then
+		sfx = cue.sfx
+	end
+	if priority == AGS_NP_MAX then
+		AGS_Notifications_TextCue(cue, title, color, template, sfx, cue.icon, cue.style_queue)
+		AGS_Notifications_TextCue(cue, title, color, template, sfx, cue.icon_high, cue.style_center)
+	elseif priority == AGS_NP_HIGH then
+		AGS_Notifications_TextCue(cue, title, color, template, sfx, cue.icon_high, cue.style_combined)		
+	else 
+		AGS_Notifications_TextCue(cue, title, color, template, sfx, cue.icon, cue.style_queue)
+	end
+end
+
+---------------------------------------------------------------------------------------------------
+-- Internal Functions:
+---------------------------------------------------------------------------------------------------
+
+function AGS_Notifications_TextCue(cue, title, color, template, sfx, icon, style)
+	UI_CreateEventCueClickable(
+		cue.event_type, 
+		cue.lifetime, 
+		cue.repeat_count, 
+		cue.repeat_time, 
+		title, 
+		cue.desc, 
+		template, 
+		icon, 
+		sfx, 
+		color.r, 
+		color.g, 
+		color.b, 
+		color.a, 
+		style, 
+		nothing
+	)	
+end
+
+function AGS_Notifications_SoundCue(player, sound_notification)
+	local relation = AGS_GetRelation(player)
+	if relation == AGS_SAE_SELF then
+		Sound_Play2D(sound_notification.self)		
+	elseif relation == AGS_SAE_ALLY then
+		Sound_Play2D(sound_notification.ally)
+	else
+		Sound_Play2D(sound_notification.enemy)	
+	end
+end
