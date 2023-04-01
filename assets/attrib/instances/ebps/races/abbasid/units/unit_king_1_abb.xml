@@ -1,14 +1,14 @@
-<instance version="4" override_type="merge" description="Regicide Mode - King Unit" template="ebps">
-	<list name="extensions">
-		<template_reference name="exts" value="ebpextensions\moving_ext" List.ItemID="489012815">
+<instance version="4" override_type="merge" description="" template="ebps">
+	<list name="extensions" overrideParent="True">
+		<template_reference name="exts" value="ebpextensions\moving_ext" List.ItemID="-1444625924" List.ParentItemID="2057589443">
 			<float name="acceleration" value="-1" />
 			<float name="deceleration" value="10" />
 			<float name="high_path_look_ahead_max_dist" value="15" />
 			<bool name="orient_to_terrain" value="False" />
-			<instance_reference name="pass_type" value="pass_types\infantry" />
+			<instance_reference name="pass_type" value="" />
 			<float name="rotation_rate" value="600" />
 			<bool name="smooth_path" value="True" />
-			<instance_reference name="turn_plan" value="turn_plan\human" />
+			<instance_reference name="turn_plan" value="" />
 			<float name="on_land_overturn_scale" value="0" />
 			<enum name="motion_tree_movement_direction_count" value="2" />
 			<int name="right_of_way_priority" value="-1" />
@@ -31,25 +31,25 @@
 			</template_reference>
 			<bool name="motion_tree_strafing_anim" value="False" />
 			<enum_table name="speed_levels">
-				<float name="speed_level_0" value="3" />
-				<float name="speed_level_1" value="4" />
-				<float name="speed_level_2" value="10" />
-				<float name="speed_level_3" value="10" />
-				<float name="speed_level_4" value="10" />
+				<float name="speed_level_0" value="3" overrideParent="True" />
+				<float name="speed_level_1" value="4" overrideParent="True" />
+				<float name="speed_level_2" value="10" overrideParent="True" />
+				<float name="speed_level_3" value="10" overrideParent="True" />
+				<float name="speed_level_4" value="10" overrideParent="True" />
 			</enum_table>
 			<float name="melee_move_tolerance" value="0" />
-			<instance_reference name="navigation_agent_info" value="navigation\agent_info\default_infantry" />
+			<instance_reference name="navigation_agent_info" value="" />
 			<bool name="can_evacuate_enemy_unit" value="False" />
 			<instance_reference name="pass_type_destination" value="" />
 			<enum_table name="speed_scaling_table">
 				<float name="min_speed" value="0" />
-				<float name="default_speed" value="4.5" />
+				<float name="default_speed" value="4.5" overrideParent="True" />
 				<float name="max_speed" value="8" />
 			</enum_table>
 			<enum name="snap_to_surface_type" value="GroundOrWalkable" />
 			<float name="turn_in_place_distance" value="0" />
 		</template_reference>
 	</list>
-	<uniqueid name="pbgid" value="183804" />
-	<instance_reference name="parent_pbg" value="" />
+	<uniqueid name="pbgid" value="199666" />
+	<instance_reference name="parent_pbg" value="ebps\races\core\units\unit_king_1" />
 </instance>

@@ -1,0 +1,55 @@
+<instance version="4" override_type="merge" description="" template="ebps">
+	<list name="extensions" overrideParent="True">
+		<template_reference name="exts" value="ebpextensions\moving_ext" List.ItemID="228375977" List.ParentItemID="2057589443">
+			<float name="acceleration" value="-1" />
+			<float name="deceleration" value="10" />
+			<float name="high_path_look_ahead_max_dist" value="15" />
+			<bool name="orient_to_terrain" value="False" />
+			<instance_reference name="pass_type" value="pass_types\infantry" />
+			<float name="rotation_rate" value="600" />
+			<bool name="smooth_path" value="True" />
+			<instance_reference name="turn_plan" value="turn_plan\human" />
+			<float name="on_land_overturn_scale" value="0" />
+			<enum name="motion_tree_movement_direction_count" value="2" />
+			<int name="right_of_way_priority" value="-1" />
+			<bool name="use_prediction" value="False" />
+			<bool name="reduce_clipping_by_slowing_other" value="False" />
+			<template_reference name="walker_option" value="options\none">
+			</template_reference>
+			<enum name="motion_tree_pivot_animations_count" value="0" />
+			<bool name="motion_tree_atomic_pivot_anim" value="False" />
+			<template_reference name="skimmer_option" value="options\none">
+			</template_reference>
+			<bool name="can_path_into_blocked_cover" value="False" />
+			<template_reference name="convertible_dynamics_option" value="options\none">
+			</template_reference>
+			<template_reference name="pathfinding_option" value="options\ebpextensions\movingext\pathfinding_option">
+				<bool name="can_path_through_allies" value="False" />
+				<int name="path_blocking_priority" value="0" />
+				<bool name="right_of_way_evacuate_in_combat_allies" value="True" />
+				<float name="right_of_way_allies_time_in_combat_seconds" value="5" />
+			</template_reference>
+			<bool name="motion_tree_strafing_anim" value="False" />
+			<enum_table name="speed_levels">
+				<float name="speed_level_0" value="3" overrideParent="True" />
+				<float name="speed_level_1" value="4" overrideParent="True" />
+				<float name="speed_level_2" value="10" overrideParent="True" />
+				<float name="speed_level_3" value="10" overrideParent="True" />
+				<float name="speed_level_4" value="10" overrideParent="True" />
+			</enum_table>
+			<float name="melee_move_tolerance" value="0" />
+			<instance_reference name="navigation_agent_info" value="navigation\agent_info\default_infantry" />
+			<bool name="can_evacuate_enemy_unit" value="False" />
+			<instance_reference name="pass_type_destination" value="" />
+			<enum_table name="speed_scaling_table">
+				<float name="min_speed" value="0" />
+				<float name="default_speed" value="4.5" overrideParent="True" />
+				<float name="max_speed" value="8" />
+			</enum_table>
+			<enum name="snap_to_surface_type" value="GroundOrWalkable" />
+			<float name="turn_in_place_distance" value="0" />
+		</template_reference>
+	</list>
+	<uniqueid name="pbgid" value="2974784" />
+	<instance_reference name="parent_pbg" value="ebps\races\core\units\unit_king_1" />
+</instance>

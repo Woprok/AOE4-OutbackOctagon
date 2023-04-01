@@ -358,7 +358,7 @@
 					<enum name="construction_type" value="tp_construction_base" />
 				</group>
 				<group name="construction_group" comment="Castle Age" List.ItemID="1825275417">
-					<instance_reference name="construction_menu" value="menu\sul_age3" />
+					<instance_reference name="construction_menu" value="menu\sul_age3" mod="1ff2a908da9e434c98e779358e4b6aea" />
 					<list name="construction_items" overrideParent="True">
 						<group name="construction_item" comment="Siege Workshop&#xD;&#xA;" List.ItemID="-2045540857">
 							<instance_reference name="ebp" value="ebps\races\ottoman\buildings\building_unit_siege_ott" overrideParent="True" />
@@ -406,7 +406,7 @@
 							<state_tree_node name="additional_requirement_statetree" value="" />
 						</group>
 						<group name="construction_item" comment="Tower" List.ItemID="1073466789">
-							<instance_reference name="ebp" value="ebps\races\ottoman\buildings\building_defense_wall_ott\building_defense_tower_ott" overrideParent="True" />
+							<instance_reference name="ebp" value="ebps\races\ottoman\buildings\building_defense_wall_ott\building_defense_tower_ott" mod="1ff2a908da9e434c98e779358e4b6aea" overrideParent="True" />
 							<group name="ui_position">
 								<int name="ui_position_row" value="-1" overrideParent="True" />
 								<int name="ui_position_column" value="-1" overrideParent="True" />
@@ -421,9 +421,9 @@
 							<state_tree_node name="additional_requirement_statetree" value="" />
 						</group>
 						<group name="construction_item" comment="Wall" List.ItemID="1949700146">
-							<instance_reference name="ebp" value="ebps\races\ottoman\buildings\building_defense_wall_ott\building_defense_wall_ott" overrideParent="True" />
+							<instance_reference name="ebp" value="ebps\races\ottoman\buildings\building_defense_wall_ott\building_defense_wall_ott" mod="1ff2a908da9e434c98e779358e4b6aea" overrideParent="True" />
 							<group name="ui_position">
-								<int name="ui_position_row" value="3" />
+								<int name="ui_position_row" value="2" overrideParent="True" />
 								<int name="ui_position_column" value="2" overrideParent="True" />
 							</group>
 							<list name="associated_ebps">
@@ -436,10 +436,10 @@
 							<state_tree_node name="additional_requirement_statetree" value="" />
 						</group>
 						<group name="construction_item" comment="Wall Gate" List.ItemID="-1973210259">
-							<instance_reference name="ebp" value="ebps\races\ottoman\buildings\building_defense_wall_ott\building_defense_wall_gate_ott" overrideParent="True" />
+							<instance_reference name="ebp" value="ebps\races\ottoman\buildings\building_defense_wall_ott\building_defense_wall_gate_ott" mod="1ff2a908da9e434c98e779358e4b6aea" overrideParent="True" />
 							<group name="ui_position">
 								<int name="ui_position_row" value="3" />
-								<int name="ui_position_column" value="3" overrideParent="True" />
+								<int name="ui_position_column" value="2" overrideParent="True" />
 							</group>
 							<list name="associated_ebps">
 							</list>

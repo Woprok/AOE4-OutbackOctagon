@@ -1,14 +1,14 @@
 <instance version="4" override_type="merge" description="" template="ebps">
-	<list name="extensions">
-		<template_reference name="exts" value="ebpextensions\requirement_ext" List.ItemID="-207179182">
+	<list name="extensions" overrideParent="True">
+		<template_reference name="exts" value="ebpextensions\requirement_ext" List.ItemID="-1627400388" List.ParentItemID="1226421349">
 			<list name="requirement_table">
-				<template_reference name="required" value="requirements\required_player_upgrade" List.ItemID="2127320582">
+				<template_reference name="required" value="requirements\required_player_upgrade" List.ItemID="331061581" List.ParentItemID="307312619">
 					<enum name="reason" value="usage" />
 					<locstring name="ui_name" value="0" />
 					<bool name="is_present" value="True" />
 					<int name="max_completed" value="100" />
 					<int name="min_completed" value="1" />
-					<instance_reference name="upgrade_name" value="upgrade\dev\ages\castle_age" />
+					<instance_reference name="upgrade_name" value="upgrade\dev\ages\castle_age" overrideParent="True" />
 					<bool name="include_queued" value="False" />
 					<group name="include_pbg_parenting">
 						<bool name="include_child_pbgs" value="False" />
@@ -20,6 +20,6 @@
 			<state_tree_node name="requirement_statetree" value="" />
 		</template_reference>
 	</list>
-	<uniqueid name="pbgid" value="129064" />
-	<instance_reference name="parent_pbg" value="" />
+	<uniqueid name="pbgid" value="2784311" />
+	<instance_reference name="parent_pbg" value="ebps\races\core\buildings\building_defense_wall" />
 </instance>

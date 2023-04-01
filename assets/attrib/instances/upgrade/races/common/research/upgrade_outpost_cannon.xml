@@ -152,7 +152,7 @@
 				<enum name="reason" value="usage" />
 				<locstring name="ui_name" value="11150626" />
 				<bool name="is_present" value="False" />
-				<instance_reference name="upgrade_name" value="upgrade\races\chinese\research\upgrade_outpost_handcannonslits_chi" />
+				<instance_reference name="upgrade_name" value="upgrade\races\chinese\research\upgrade_outpost_handcannonslits_chi" mod="1ff2a908da9e434c98e779358e4b6aea" />
 				<bool name="include_queued" value="True" />
 				<int name="min_completed" value="1" />
 				<int name="max_completed" value="100" />
@@ -166,7 +166,7 @@
 				<enum name="reason" value="usage_and_display" />
 				<locstring name="ui_name" value="0" />
 				<bool name="is_present" value="False" />
-				<instance_reference name="upgrade_name" value="upgrade\races\chinese\research\upgrade_outpost_handcannonslits_chi" />
+				<instance_reference name="upgrade_name" value="upgrade\races\chinese\research\upgrade_outpost_handcannonslits_chi" mod="1ff2a908da9e434c98e779358e4b6aea" />
 				<bool name="include_queued" value="False" />
 				<int name="min_completed" value="1" />
 				<int name="max_completed" value="100" />
