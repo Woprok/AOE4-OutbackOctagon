@@ -353,21 +353,6 @@
 							</list>
 							<state_tree_node name="additional_requirement_statetree" value="" />
 						</group>
-						<group name="construction_item" comment="Tower" List.ItemID="566096042">
-							<instance_reference name="ebp" value="ebps\races\chinese\buildings\building_defense_wall_chi\building_defense_tower_chi" />
-							<group name="ui_position">
-								<int name="ui_position_row" value="-1" overrideParent="True" />
-								<int name="ui_position_column" value="-1" overrideParent="True" />
-							</group>
-							<list name="associated_ebps">
-							</list>
-							<instance_reference name="hotkey_binding" value="" overrideParent="True" />
-							<list name="alternate_ebps">
-							</list>
-							<list name="additional_requirements">
-							</list>
-							<state_tree_node name="additional_requirement_statetree" value="" />
-						</group>
 						<group name="construction_item" comment="Market" List.ItemID="-1685388616">
 							<instance_reference name="ebp" value="ebps\races\chinese\buildings\building_econ_market_chi\building_econ_market_control_chi" />
 							<group name="ui_position">
@@ -400,21 +385,6 @@
 							</list>
 							<state_tree_node name="additional_requirement_statetree" value="" />
 						</group>
-						<group name="construction_item" comment="Wall" List.ItemID="-1555481308">
-							<instance_reference name="ebp" value="ebps\races\chinese\buildings\building_defense_wall_chi\building_defense_wall_chi" />
-							<group name="ui_position">
-								<int name="ui_position_row" value="3" />
-								<int name="ui_position_column" value="2" overrideParent="True" />
-							</group>
-							<list name="associated_ebps">
-							</list>
-							<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\villager_build_menu\age_2\build_wall" overrideParent="True" />
-							<list name="alternate_ebps">
-							</list>
-							<list name="additional_requirements">
-							</list>
-							<state_tree_node name="additional_requirement_statetree" value="" />
-						</group>
 						<group name="construction_item" comment="Town Center" List.ItemID="1057374706">
 							<instance_reference name="ebp" value="ebps\races\chinese\buildings\building_town_center_chi\building_town_center_chi" />
 							<group name="ui_position">
@@ -435,36 +405,6 @@
 							<group name="ui_position">
 								<int name="ui_position_row" value="1" />
 								<int name="ui_position_column" value="3" overrideParent="True" />
-							</group>
-							<list name="associated_ebps">
-							</list>
-							<instance_reference name="hotkey_binding" value="" />
-							<list name="alternate_ebps">
-							</list>
-							<list name="additional_requirements">
-							</list>
-							<state_tree_node name="additional_requirement_statetree" value="" />
-						</group>
-						<group name="construction_item" comment="Wall Gate" List.ItemID="-1241706982">
-							<instance_reference name="ebp" value="ebps\races\chinese\buildings\building_defense_wall_chi\building_defense_wall_gate_chi" />
-							<group name="ui_position">
-								<int name="ui_position_row" value="3" />
-								<int name="ui_position_column" value="3" overrideParent="True" />
-							</group>
-							<list name="associated_ebps">
-							</list>
-							<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\villager_build_menu\age_2\build_wall_gate" overrideParent="True" />
-							<list name="alternate_ebps">
-							</list>
-							<list name="additional_requirements">
-							</list>
-							<state_tree_node name="additional_requirement_statetree" value="" />
-						</group>
-						<group name="construction_item" comment="Wall Bastion" List.ItemID="-2035702764">
-							<instance_reference name="ebp" value="ebps\races\chinese\buildings\building_defense_wall_chi\building_defense_wall_bastion_chi" overrideParent="True" />
-							<group name="ui_position">
-								<int name="ui_position_row" value="-1" />
-								<int name="ui_position_column" value="-1" />
 							</group>
 							<list name="associated_ebps">
 							</list>
@@ -588,6 +528,66 @@
 							<list name="associated_ebps">
 							</list>
 							<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\villager_build_menu\age_3\build_pagoda" overrideParent="True" />
+							<list name="alternate_ebps">
+							</list>
+							<list name="additional_requirements">
+							</list>
+							<state_tree_node name="additional_requirement_statetree" value="" />
+						</group>
+						<group name="construction_item" comment="Tower" List.ItemID="-340431859">
+							<instance_reference name="ebp" value="ebps\races\chinese\buildings\building_defense_wall_chi\building_defense_tower_chi" />
+							<group name="ui_position">
+								<int name="ui_position_row" value="-1" overrideParent="True" />
+								<int name="ui_position_column" value="-1" overrideParent="True" />
+							</group>
+							<list name="associated_ebps">
+							</list>
+							<instance_reference name="hotkey_binding" value="" overrideParent="True" />
+							<list name="alternate_ebps">
+							</list>
+							<list name="additional_requirements">
+							</list>
+							<state_tree_node name="additional_requirement_statetree" value="" />
+						</group>
+						<group name="construction_item" comment="Wall" List.ItemID="-1067046637">
+							<instance_reference name="ebp" value="ebps\races\chinese\buildings\building_defense_wall_chi\building_defense_wall_chi" />
+							<group name="ui_position">
+								<int name="ui_position_row" value="3" />
+								<int name="ui_position_column" value="2" overrideParent="True" />
+							</group>
+							<list name="associated_ebps">
+							</list>
+							<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\villager_build_menu\age_2\build_wall" overrideParent="True" />
+							<list name="alternate_ebps">
+							</list>
+							<list name="additional_requirements">
+							</list>
+							<state_tree_node name="additional_requirement_statetree" value="" />
+						</group>
+						<group name="construction_item" comment="Wall Gate" List.ItemID="-970139534">
+							<instance_reference name="ebp" value="ebps\races\chinese\buildings\building_defense_wall_chi\building_defense_wall_gate_chi" />
+							<group name="ui_position">
+								<int name="ui_position_row" value="3" />
+								<int name="ui_position_column" value="3" overrideParent="True" />
+							</group>
+							<list name="associated_ebps">
+							</list>
+							<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\villager_build_menu\age_2\build_wall_gate" overrideParent="True" />
+							<list name="alternate_ebps">
+							</list>
+							<list name="additional_requirements">
+							</list>
+							<state_tree_node name="additional_requirement_statetree" value="" />
+						</group>
+						<group name="construction_item" comment="Wall Bastion" List.ItemID="-1941349245">
+							<instance_reference name="ebp" value="ebps\races\chinese\buildings\building_defense_wall_chi\building_defense_wall_bastion_chi" overrideParent="True" />
+							<group name="ui_position">
+								<int name="ui_position_row" value="-1" />
+								<int name="ui_position_column" value="-1" />
+							</group>
+							<list name="associated_ebps">
+							</list>
+							<instance_reference name="hotkey_binding" value="" />
 							<list name="alternate_ebps">
 							</list>
 							<list name="additional_requirements">

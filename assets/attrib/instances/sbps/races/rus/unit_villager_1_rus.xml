@@ -303,66 +303,6 @@
 							</list>
 							<state_tree_node name="additional_requirement_statetree" value="" />
 						</group>
-						<group name="construction_item" comment="Wall" List.ItemID="848475611">
-							<instance_reference name="ebp" value="ebps\races\rus\buildings\building_defense_wall_rus\building_defense_wall_rus" overrideParent="True" />
-							<group name="ui_position">
-								<int name="ui_position_row" value="3" />
-								<int name="ui_position_column" value="2" overrideParent="True" />
-							</group>
-							<list name="associated_ebps">
-							</list>
-							<list name="alternate_ebps">
-							</list>
-							<instance_reference name="hotkey_binding" value="" />
-							<list name="additional_requirements">
-							</list>
-							<state_tree_node name="additional_requirement_statetree" value="" />
-						</group>
-						<group name="construction_item" comment="Wall Bastion" List.ItemID="1239347452">
-							<instance_reference name="ebp" value="ebps\races\rus\buildings\building_defense_wall_rus\building_defense_wall_bastion_rus" overrideParent="True" />
-							<group name="ui_position">
-								<int name="ui_position_row" value="-1" />
-								<int name="ui_position_column" value="-1" />
-							</group>
-							<list name="associated_ebps">
-							</list>
-							<list name="alternate_ebps">
-							</list>
-							<instance_reference name="hotkey_binding" value="" />
-							<list name="additional_requirements">
-							</list>
-							<state_tree_node name="additional_requirement_statetree" value="" />
-						</group>
-						<group name="construction_item" comment="Wall Gate" List.ItemID="1550686538">
-							<instance_reference name="ebp" value="ebps\races\rus\buildings\building_defense_wall_rus\building_defense_wall_gate_rus" overrideParent="True" />
-							<group name="ui_position">
-								<int name="ui_position_row" value="3" />
-								<int name="ui_position_column" value="3" overrideParent="True" />
-							</group>
-							<list name="associated_ebps">
-							</list>
-							<list name="alternate_ebps">
-							</list>
-							<instance_reference name="hotkey_binding" value="" />
-							<list name="additional_requirements">
-							</list>
-							<state_tree_node name="additional_requirement_statetree" value="" />
-						</group>
-						<group name="construction_item" comment="Tower" List.ItemID="-438643895">
-							<instance_reference name="ebp" value="ebps\races\rus\buildings\building_defense_wall_rus\building_defense_tower_rus" overrideParent="True" />
-							<group name="ui_position">
-								<int name="ui_position_row" value="-1" overrideParent="True" />
-								<int name="ui_position_column" value="-1" overrideParent="True" />
-							</group>
-							<list name="associated_ebps">
-							</list>
-							<list name="alternate_ebps">
-							</list>
-							<instance_reference name="hotkey_binding" value="" />
-							<list name="additional_requirements">
-							</list>
-							<state_tree_node name="additional_requirement_statetree" value="" />
-						</group>
 					</list>
 					<enum name="construction_type" value="tp_construction_base" />
 				</group>
@@ -446,6 +386,66 @@
 							<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\villager_build_menu\age_3\build_monastery" overrideParent="True" />
 							<list name="alternate_ebps">
 							</list>
+							<list name="additional_requirements">
+							</list>
+							<state_tree_node name="additional_requirement_statetree" value="" />
+						</group>
+						<group name="construction_item" comment="Wall" List.ItemID="1563449231">
+							<instance_reference name="ebp" value="ebps\races\rus\buildings\building_defense_wall_rus\building_defense_wall_rus" overrideParent="True" />
+							<group name="ui_position">
+								<int name="ui_position_row" value="3" />
+								<int name="ui_position_column" value="2" overrideParent="True" />
+							</group>
+							<list name="associated_ebps">
+							</list>
+							<list name="alternate_ebps">
+							</list>
+							<instance_reference name="hotkey_binding" value="" />
+							<list name="additional_requirements">
+							</list>
+							<state_tree_node name="additional_requirement_statetree" value="" />
+						</group>
+						<group name="construction_item" comment="Wall Bastion" List.ItemID="2084739339">
+							<instance_reference name="ebp" value="ebps\races\rus\buildings\building_defense_wall_rus\building_defense_wall_bastion_rus" overrideParent="True" />
+							<group name="ui_position">
+								<int name="ui_position_row" value="-1" />
+								<int name="ui_position_column" value="-1" />
+							</group>
+							<list name="associated_ebps">
+							</list>
+							<list name="alternate_ebps">
+							</list>
+							<instance_reference name="hotkey_binding" value="" />
+							<list name="additional_requirements">
+							</list>
+							<state_tree_node name="additional_requirement_statetree" value="" />
+						</group>
+						<group name="construction_item" comment="Wall Gate" List.ItemID="-1046142592">
+							<instance_reference name="ebp" value="ebps\races\rus\buildings\building_defense_wall_rus\building_defense_wall_gate_rus" overrideParent="True" />
+							<group name="ui_position">
+								<int name="ui_position_row" value="3" />
+								<int name="ui_position_column" value="3" overrideParent="True" />
+							</group>
+							<list name="associated_ebps">
+							</list>
+							<list name="alternate_ebps">
+							</list>
+							<instance_reference name="hotkey_binding" value="" />
+							<list name="additional_requirements">
+							</list>
+							<state_tree_node name="additional_requirement_statetree" value="" />
+						</group>
+						<group name="construction_item" comment="Tower" List.ItemID="1207499294">
+							<instance_reference name="ebp" value="ebps\races\rus\buildings\building_defense_wall_rus\building_defense_tower_rus" overrideParent="True" />
+							<group name="ui_position">
+								<int name="ui_position_row" value="-1" overrideParent="True" />
+								<int name="ui_position_column" value="-1" overrideParent="True" />
+							</group>
+							<list name="associated_ebps">
+							</list>
+							<list name="alternate_ebps">
+							</list>
+							<instance_reference name="hotkey_binding" value="" />
 							<list name="additional_requirements">
 							</list>
 							<state_tree_node name="additional_requirement_statetree" value="" />

@@ -258,21 +258,6 @@
 							</list>
 							<state_tree_node name="additional_requirement_statetree" value="" />
 						</group>
-						<group name="construction_item" comment="Tower" List.ItemID="1236141771">
-							<instance_reference name="ebp" value="ebps\races\ottoman\buildings\building_defense_wall_ott\building_defense_tower_ott" overrideParent="True" />
-							<group name="ui_position">
-								<int name="ui_position_row" value="-1" overrideParent="True" />
-								<int name="ui_position_column" value="-1" overrideParent="True" />
-							</group>
-							<list name="associated_ebps">
-							</list>
-							<list name="alternate_ebps">
-							</list>
-							<instance_reference name="hotkey_binding" value="" overrideParent="True" />
-							<list name="additional_requirements">
-							</list>
-							<state_tree_node name="additional_requirement_statetree" value="" />
-						</group>
 						<group name="construction_item" comment="Market" List.ItemID="-826100677">
 							<instance_reference name="ebp" value="ebps\races\ottoman\buildings\building_econ_market_ott" overrideParent="True" />
 							<group name="ui_position">
@@ -303,21 +288,6 @@
 							</list>
 							<state_tree_node name="additional_requirement_statetree" value="" />
 						</group>
-						<group name="construction_item" comment="Wall" List.ItemID="487302826">
-							<instance_reference name="ebp" value="ebps\races\ottoman\buildings\building_defense_wall_ott\building_defense_wall_ott" overrideParent="True" />
-							<group name="ui_position">
-								<int name="ui_position_row" value="3" />
-								<int name="ui_position_column" value="2" overrideParent="True" />
-							</group>
-							<list name="associated_ebps">
-							</list>
-							<list name="alternate_ebps">
-							</list>
-							<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\villager_build_menu\age_2\build_wall" overrideParent="True" />
-							<list name="additional_requirements">
-							</list>
-							<state_tree_node name="additional_requirement_statetree" value="" />
-						</group>
 						<group name="construction_item" comment="Town Center" List.ItemID="-268740283">
 							<instance_reference name="ebp" value="ebps\races\ottoman\buildings\building_town_center_ott" overrideParent="True" />
 							<group name="ui_position">
@@ -338,36 +308,6 @@
 							<group name="ui_position">
 								<int name="ui_position_row" value="1" />
 								<int name="ui_position_column" value="3" overrideParent="True" />
-							</group>
-							<list name="associated_ebps">
-							</list>
-							<list name="alternate_ebps">
-							</list>
-							<instance_reference name="hotkey_binding" value="" />
-							<list name="additional_requirements">
-							</list>
-							<state_tree_node name="additional_requirement_statetree" value="" />
-						</group>
-						<group name="construction_item" comment="Wall Gate" List.ItemID="1120922846">
-							<instance_reference name="ebp" value="ebps\races\ottoman\buildings\building_defense_wall_ott\building_defense_wall_gate_ott" overrideParent="True" />
-							<group name="ui_position">
-								<int name="ui_position_row" value="3" />
-								<int name="ui_position_column" value="3" overrideParent="True" />
-							</group>
-							<list name="associated_ebps">
-							</list>
-							<list name="alternate_ebps">
-							</list>
-							<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\villager_build_menu\age_2\build_wall_gate" overrideParent="True" />
-							<list name="additional_requirements">
-							</list>
-							<state_tree_node name="additional_requirement_statetree" value="" />
-						</group>
-						<group name="construction_item" comment="Wall Bastion" List.ItemID="-361495085">
-							<instance_reference name="ebp" value="ebps\races\ottoman\buildings\building_defense_wall_ott\building_defense_wall_bastion_ott" overrideParent="True" />
-							<group name="ui_position">
-								<int name="ui_position_row" value="-1" />
-								<int name="ui_position_column" value="-1" />
 							</group>
 							<list name="associated_ebps">
 							</list>
@@ -461,6 +401,66 @@
 							<list name="alternate_ebps">
 							</list>
 							<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\villager_build_menu\age_3\build_monastery" overrideParent="True" />
+							<list name="additional_requirements">
+							</list>
+							<state_tree_node name="additional_requirement_statetree" value="" />
+						</group>
+						<group name="construction_item" comment="Tower" List.ItemID="1073466789">
+							<instance_reference name="ebp" value="ebps\races\ottoman\buildings\building_defense_wall_ott\building_defense_tower_ott" overrideParent="True" />
+							<group name="ui_position">
+								<int name="ui_position_row" value="-1" overrideParent="True" />
+								<int name="ui_position_column" value="-1" overrideParent="True" />
+							</group>
+							<list name="associated_ebps">
+							</list>
+							<list name="alternate_ebps">
+							</list>
+							<instance_reference name="hotkey_binding" value="" overrideParent="True" />
+							<list name="additional_requirements">
+							</list>
+							<state_tree_node name="additional_requirement_statetree" value="" />
+						</group>
+						<group name="construction_item" comment="Wall" List.ItemID="1949700146">
+							<instance_reference name="ebp" value="ebps\races\ottoman\buildings\building_defense_wall_ott\building_defense_wall_ott" overrideParent="True" />
+							<group name="ui_position">
+								<int name="ui_position_row" value="3" />
+								<int name="ui_position_column" value="2" overrideParent="True" />
+							</group>
+							<list name="associated_ebps">
+							</list>
+							<list name="alternate_ebps">
+							</list>
+							<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\villager_build_menu\age_2\build_wall" overrideParent="True" />
+							<list name="additional_requirements">
+							</list>
+							<state_tree_node name="additional_requirement_statetree" value="" />
+						</group>
+						<group name="construction_item" comment="Wall Gate" List.ItemID="-1973210259">
+							<instance_reference name="ebp" value="ebps\races\ottoman\buildings\building_defense_wall_ott\building_defense_wall_gate_ott" overrideParent="True" />
+							<group name="ui_position">
+								<int name="ui_position_row" value="3" />
+								<int name="ui_position_column" value="3" overrideParent="True" />
+							</group>
+							<list name="associated_ebps">
+							</list>
+							<list name="alternate_ebps">
+							</list>
+							<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\villager_build_menu\age_2\build_wall_gate" overrideParent="True" />
+							<list name="additional_requirements">
+							</list>
+							<state_tree_node name="additional_requirement_statetree" value="" />
+						</group>
+						<group name="construction_item" comment="Wall Bastion" List.ItemID="448256198">
+							<instance_reference name="ebp" value="ebps\races\ottoman\buildings\building_defense_wall_ott\building_defense_wall_bastion_ott" overrideParent="True" />
+							<group name="ui_position">
+								<int name="ui_position_row" value="-1" />
+								<int name="ui_position_column" value="-1" />
+							</group>
+							<list name="associated_ebps">
+							</list>
+							<list name="alternate_ebps">
+							</list>
+							<instance_reference name="hotkey_binding" value="" />
 							<list name="additional_requirements">
 							</list>
 							<state_tree_node name="additional_requirement_statetree" value="" />
