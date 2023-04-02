@@ -1,5 +1,4 @@
 _ObserverUIDataContext = ObserverUiDataContext
-_ObserverUIDataContext.EfficiencyStatisticsDisplayModeCommand = UI_CreateCommand("EfficiencyStatisticsDisplayModeCommand")
 
 ObserverUi_ResourceMapping = {
 	food = RT_Food,
@@ -50,7 +49,6 @@ _RaceImage = {
 function InitializeObserverUIDataContext()
 	local dataContextMappingsPlayersByIndex = ObserverUIDataContextMappings.PlayersByIndex
 	local observerUIDataContext = _ObserverUIDataContext
-	observerUIDataContext.ShowEfficiencyStatisticsInPercent = ObserverUI_Settings.ShowEfficiencyStatisticsInPercent
 	
 	for index, playerTable in pairs(PLAYERS) do
 		local raceName = Player_GetRaceName(playerTable.id)
@@ -81,11 +79,6 @@ function InitializeObserverUIDataContext()
 		data.upgradesQueued = {}
 		data.units = {}
 		data.unitsWorkers = {}
-		data.civSpecifics = { visible = raceName == "rus", icon = AdaptIconPathForXaml("icons/races/rus/abilities/hunting_boon"), text = "0"}
-		data.WorkerIdleTime = 0
-		data.WorkerEfficiency = 0
-		data.TownCenterIdleTime = 0
-		data.TownCenterEfficiency = 0
 		
 		local resources = {}
 		for key,enum in pairs(ObserverUi_ResourceMapping) do
@@ -94,59 +87,6 @@ function InitializeObserverUIDataContext()
 		
 		data.resources = resources
 	end
-end
-
-function PrepareObserverUIDataContextFor1v1()
-	_ObserverUIDataContext.symmetricalUi = ObserverUI_Settings.symmetricalUi
-	ObserverUiDataContext.ShowMessages = ObserverUI_Settings.ShowMessages
-	
-	if ObserverUI_Settings.swapPlayers1v1 then
-		SwapSides()
-	end
-	
-	AssignSideToPlayerDataContexts()
-end
-
-function AssignSideToPlayerDataContexts()
-	if ObserverUiDataContext.TeamLeft and ObserverUiDataContext.TeamRight then
-		for i = 1, #ObserverUiDataContext.TeamLeft do
-			ObserverUiDataContext.TeamLeft[i].IsRightSide = false
-		end
-		
-		for i = 1, #ObserverUiDataContext.TeamRight do
-			ObserverUiDataContext.TeamRight[i].IsRightSide = true
-		end
-	end
-end
-
-function SwapSides()
-	ObserverUiDataContext.player1, ObserverUiDataContext.player2
-		= ObserverUiDataContext.player2, ObserverUiDataContext.player1
-	
-	ObserverUiDataContext.TeamLeft, ObserverUiDataContext.TeamRight
-		= ObserverUiDataContext.TeamRight, ObserverUiDataContext.TeamLeft
-	
-	ObserverUiDataContext.TeamSummaryLeft, ObserverUiDataContext.TeamSummaryRight
-		= ObserverUiDataContext.TeamSummaryRight, ObserverUiDataContext.TeamSummaryLeft
-end
-
-function SwapPlayers1v1()
-	ObserverUI_Settings.swapPlayers1v1 = not ObserverUI_Settings.swapPlayers1v1
-	SwapSides()
-	AssignSideToPlayerDataContexts()
-	UpdateObserverUIDataContext()
-end
-
-function ToggleSymmetricalUi()
-	ObserverUI_Settings.symmetricalUi = not ObserverUI_Settings.symmetricalUi
-	ObserverUiDataContext.symmetricalUi = ObserverUI_Settings.symmetricalUi
-	UpdateObserverUIDataContext()
-end
-
-function EfficiencyStatisticsDisplayModeCommand()
-	ObserverUI_Settings.ShowEfficiencyStatisticsInPercent = not ObserverUI_Settings.ShowEfficiencyStatisticsInPercent
-	_ObserverUIDataContext.ShowEfficiencyStatisticsInPercent = ObserverUI_Settings.ShowEfficiencyStatisticsInPercent
-	UpdateObserverUIDataContext()
 end
 
 function ToggleMessages()
@@ -179,7 +119,6 @@ function UpdateObserverUIDataContext()
 		UpdatePopulationComposition(playerTable, player)
 		UpdateRelics(playerTable, player)
 		UpdateUnitsAndQueuedStuff(playerTable, player, PLAYERS[index].race)
-		UpdateCivSpecifics(playerTable, player)
 	end
 end
 
@@ -385,12 +324,4 @@ end
 function UpdateIsUpping(t, player)
 	t.isUpping, t.ageUpProgress, t.upAt, t.upIcon, t.upName = 
 		AgingUpProgress:GetForPlayer_IsAgingUp_Progress_EstimatedTimeOfCompletion_Icon_Name(player)
-end
-
-function UpdateCivSpecifics(t, player)
-	if Player_GetRaceName(player) ~= "rus" then
-		return
-	end
-	
-	t.civSpecifics.text = tostring(math.floor(Player_GetStateModelFloat(player, "master_hunter_bounty_total_rus")))
 end
