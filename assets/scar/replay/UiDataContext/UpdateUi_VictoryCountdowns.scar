@@ -3,49 +3,49 @@ UiVictoryCountdowns = {}
 ObserverUiInitialization:AddInitializable(UiVictoryCountdowns)
 
 function UiVictoryCountdowns:Initialize()
-	local teamSummariesByIndex = ObserverUIDataContextMappings.TeamSummariesByIndex
-	for t=1, #teamSummariesByIndex do
-		teamSummariesByIndex[t].VictoryCountdownsContext = {}
-		teamSummariesByIndex[t].IsWinning = false
+	local playersByIndex = ObserverUIDataContextMappings.PlayersByIndex
+	for p=1, #playersByIndex do
+		playersByIndex[p].VictoryCountdownsContext = {}
+		playersByIndex[p].IsWinning = false
 	end
 	
-	local teams = TEAMS
+	local players = PLAYERS
 	local timer_Exists = Timer_Exists
 	local timer_GetRemaining = Timer_GetRemaining
 	local tableInsert = table.insert
 	local playersById = ObserverUIDataContextMappings.PlayersById
 	local rule = function()
 		
-		for t=1, #teams do
-			teamSummariesByIndex[t].VictoryCountdownsContext = {}
-			teamSummariesByIndex[t].IsWinning = false
+		for p=1, #players do
+			playersByIndex[p].VictoryCountdownsContext = {}
+			playersByIndex[p].IsWinning = false
 			
-			for p=1, #teams[t].players do
-				local wonder = teams[t].players[p]._wonder
-				if wonder and timer_Exists(wonder.timer_victory_deterministic) then
-					local victoryCountdown = { 
-						TimeRemaining = timer_GetRemaining(wonder.timer_victory_deterministic),
-						Icon = "pack://application:,,,/WPFGUI;component/icons/races/common/victory_conditions/victory_condition_wonder.png",
-						ClosestTo0 = false
-					}
-					tableInsert(teamSummariesByIndex[t].VictoryCountdownsContext, victoryCountdown)
-				end
+			local wonder = players[p].AGS_Wonder
+			if wonder and timer_Exists(wonder.objective_timer) then
+				local victoryCountdown = { 
+					TimeRemaining = timer_GetRemaining(wonder.objective_timer),
+					Icon = "pack://application:,,,/WPFGUI;component/icons/races/common/victory_conditions/victory_condition_wonder.png",
+					ClosestTo0 = false
+				}
+				tableInsert(playersByIndex[p].VictoryCountdownsContext, victoryCountdown)
 			end
 		end
 		
-	    if _religious and timer_Exists(_religious.timer_victory) then
+	    if AGS_RELIGIOUS_TIMER and timer_Exists(AGS_RELIGIOUS_TIMER) then
 			local victoryCountdown = { 
-				TimeRemaining = timer_GetRemaining(_religious.timer_victory),
+				TimeRemaining = timer_GetRemaining(AGS_RELIGIOUS_TIMER),
 				Icon = "pack://application:,,,/WPFGUI;component/icons/races/common/victory_conditions/victory_condition_religious.png",
 				ClosestTo0 = false
 			}
 			
-			local lastCapturer = _religious.last_capturer
-			if lastCapturer ~= nil then
-				local lastCapturerId = lastCapturer.PlayerID
-				if lastCapturerId ~= nil then
-					tableInsert(playersById[_religious.last_capturer.PlayerID].TeamSummary.VictoryCountdownsContext, 
-						victoryCountdown) 
+			if AGS_RELIGIOUS_LAST_CAPTURER ~= nil then
+				local lastCapturerPlayer = AGS_RELIGIOUS_LAST_CAPTURER.id
+				if lastCapturerPlayer ~= nil then
+					local lastCapturerId = lastCapturerPlayer.PlayerID
+					if lastCapturerId ~= nil then
+						tableInsert(playersById[lastCapturerId].VictoryCountdownsContext, 
+								victoryCountdown) 
+					end
 				end
 			end
 	    end
@@ -53,14 +53,14 @@ function UiVictoryCountdowns:Initialize()
 		local leastTimeRemaining = nil
 		local criticalVictoryCountdown = nil
 		local winningTeam = nil
-		for t=1, #teams do
-			local victoryCountdownsContext = teamSummariesByIndex[t].VictoryCountdownsContext
+		for p=1, #players do
+			local victoryCountdownsContext = playersByIndex[p].VictoryCountdownsContext
 			for i=1, #victoryCountdownsContext do
 				local victoryCountdown = victoryCountdownsContext[i]
 				if not leastTimeRemaining or victoryCountdown.TimeRemaining < leastTimeRemaining then
 					leastTimeRemaining = victoryCountdown.TimeRemaining
 					criticalVictoryCountdown = victoryCountdown
-					winningTeam = teamSummariesByIndex[t]
+					winningTeam = playersByIndex[p]
 				end
 			end
 		end

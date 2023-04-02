@@ -301,7 +301,7 @@ xmlns:engineSharedEffects="clr-namespace:WPFGUI.Shared.Effects;assembly=EngineUI
 						<Grid>
 							<ContentControl HorizontalAlignment="Right"
 									ContentTemplate="{StaticResource ObserverUiVictoryCountdowns}"
-									Content="{Binding [TeamSummary]}" />
+									Content="{Binding}" />
 							<ContentControl HorizontalAlignment="Left" Width="130"
 								ContentTemplate="{StaticResource ObserverUiUnits}"
 								Content="{Binding}" />
@@ -312,7 +312,7 @@ xmlns:engineSharedEffects="clr-namespace:WPFGUI.Shared.Effects;assembly=EngineUI
 						<Trigger Property="ItemsControl.AlternationIndex" Value="1">
 							<Setter TargetName="AlternationTarget" Property="Opacity" Value="0.2"/>
 						</Trigger>
-						<DataTrigger Binding="{Binding [TeamSummary][IsWinning]}" Value="True">
+						<DataTrigger Binding="{Binding [IsWinning]}" Value="True">
 							<Setter TargetName="Background" Property="Background" Value="{StaticResource PrimaryColorLightBrush}"/>
 						</Trigger>
 					</DataTemplate.Triggers>
