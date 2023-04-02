@@ -29,7 +29,7 @@ function AGS_Replay_UpdateModuleSettings()
 	end
 end
 
--- Disables observer ui in multiplayer matches.
+-- Disables observer ui in singleplayer matches.
 function AGS_Replay_AdjustSettings()
 	AGS_Print("AGS_Replay_AdjustSettings")
 	if AGS_GLOBAL_SETTINGS.ObserverUI and AGS_IsLocalGame() then
