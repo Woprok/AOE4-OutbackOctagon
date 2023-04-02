@@ -289,24 +289,6 @@ xmlns:engineSharedEffects="clr-namespace:WPFGUI.Shared.Effects;assembly=EngineUI
 												</StackPanel>
 												
 												<StackPanel Grid.Column="23" Orientation="Horizontal" HorizontalAlignment="Right">
-													<TextBlock
-															VerticalAlignment="Center"
-															Style="{StaticResource nHUDTitleSmallTextBlockStyle}"
-															FontWeight="Bold"
-															Text="{Binding [TeamSummary][LandmarkVictory][Remaining], Mode=OneWay, Converter={StaticResource CastToIntOperator}}" />
-													<TextBlock
-															VerticalAlignment="Center"
-															Style="{StaticResource nHUDTitleSmallTextBlockStyle}"
-															FontWeight="Bold"
-															Text="/" />
-													<TextBlock
-															VerticalAlignment="Center"
-															Style="{StaticResource nHUDTitleSmallTextBlockStyle}"
-															FontWeight="Bold"
-															Text="{Binding [TeamSummary][LandmarkVictory][Built], Mode=OneWay, Converter={StaticResource CastToIntOperator}}" />
-													<Image
-															Height="20" Margin="0,-2,0,2"
-															Source="pack://application:,,,/WPFGUI;component/icons/races/common/victory_conditions/victory_condition_wonder.png"/>
 												</StackPanel>
 												
 											</Grid>

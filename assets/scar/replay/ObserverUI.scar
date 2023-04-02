@@ -20,7 +20,6 @@ import("replay/UiDataContext/Initialize_ObserverUIDataContextMappings.scar")
 import("replay/UiDataContext/ObserverUiDataContext.scar")
 import("replay/UiDataContext/UpdateUi_Messages.scar")
 import("replay/UiDataContext/UpdateUi_VictoryCountdowns.scar")
-import("replay/UiDataContext/UpdateUi_LandmarkVictory.scar")
 
 import("replay/xaml/ObserveNPlayers.scar")
 import("replay/xaml/ToggleUIButton.scar")
