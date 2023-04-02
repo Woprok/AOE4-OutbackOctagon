@@ -1,0 +1,68 @@
+ObserverUIDataContextMappings = {
+	PlayersById = {},
+	PlayersByIndex = {{}, {}, {}, {}, {}, {}, {}, {}},
+	TeamSummariesByIndex = {{}, {}, {}, {}, {}, {}, {}, {}}
+}
+
+ObserverUiInitialization:AddInitializable(ObserverUIDataContextMappings)
+
+function ObserverUIDataContextMappings:Initialize()
+	for i = 1, #PLAYERS do
+		self.PlayersById[PLAYERS[i].id.PlayerID] = self.PlayersByIndex[i]
+	end
+	for t = 1, #TEAMS do
+		for p = 1, #TEAMS[t].players do
+			self.PlayersById[TEAMS[t].players[p].id.PlayerID].TeamSummary = self.TeamSummariesByIndex[t]
+		end
+	end
+	
+	self.TeamConfiguration = self:_GetTeamConfiguration()
+	
+	if self.TeamConfiguration == ObserverUiConstants.TEAM_CONFIGURATIONS.ONE_V_ONE then
+		ObserverUiDataContext.player1 = ObserverUIDataContextMappings.PlayersByIndex[1]
+		ObserverUiDataContext.player2 = ObserverUIDataContextMappings.PlayersByIndex[2]
+		
+		ObserverUiDataContext.TeamSummaryLeft = self.TeamSummariesByIndex[1]
+		ObserverUiDataContext.TeamSummaryRight = self.TeamSummariesByIndex[2]
+		
+	elseif self.TeamConfiguration == ObserverUiConstants.TEAM_CONFIGURATIONS.TEAM_V_TEAM then
+		local teamLeft = {}
+		local teamRight = {}
+		
+		for i = 1, #TEAMS[1].players do
+			table.insert(teamLeft, self.PlayersById[TEAMS[1].players[i].id.PlayerID])
+		end
+		
+		for i = 1, #TEAMS[2].players do
+			table.insert(teamRight, self.PlayersById[TEAMS[2].players[i].id.PlayerID])
+		end
+		
+		table.sort(teamLeft, ComparePlayers)
+		table.sort(teamRight, ComparePlayers)
+		
+		ObserverUiDataContext.TeamLeft = teamLeft
+		ObserverUiDataContext.TeamRight = teamRight
+		
+		ObserverUiDataContext.TeamSummaryLeft = self.TeamSummariesByIndex[1]
+		ObserverUiDataContext.TeamSummaryRight = self.TeamSummariesByIndex[2]
+	else
+		ObserverUiDataContext.players = ObserverUIDataContextMappings.PlayersByIndex
+	end
+end
+
+function ComparePlayers(player1, player2)
+	return player1.name.LocString < player2.name.LocString
+end
+
+function ObserverUIDataContextMappings:_GetTeamConfiguration()
+	local teamConfigurations = ObserverUiConstants.TEAM_CONFIGURATIONS
+	
+	if #TEAMS == 2 then
+		if #PLAYERS == 2 then
+			return teamConfigurations.ONE_V_ONE
+		end
+		return teamConfigurations.TEAM_V_TEAM
+	end
+	
+	return teamConfigurations.OTHER
+end

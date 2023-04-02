@@ -1,0 +1,152 @@
+AgingUpTimings = {
+	OfPlayer = {},
+	
+	REQUIRED_RESOURCES_FOR_NEXT_AGE_AS_ABBASID = {
+		{Food = 400, Gold = 200},
+		{Food = 1200, Gold = 600},
+		{Food = 2400, Gold = 1200}
+	}
+}
+
+ObserverUiInitialization:AddInitializable(AgingUpTimings)
+
+function AgingUpTimings:Initialize()
+	if World_GetPlayerCount() > 2 then 
+		return 
+	end
+	
+	for i=1, #PLAYERS do
+		local player = PLAYERS[i].id
+		self:_Initialize(player)
+	end
+end
+
+function AgingUpTimings:_Initialize(player)
+	local agingUpTimingsOfPlayer = {
+		Player = player,
+		Age = Player_GetCurrentAge(player),
+		ReachedAgeAt = {},
+		CanAffordNextAgeAt = {},
+		CanAffordMessageEmitted = {},
+	}
+	self.OfPlayer[player.PlayerID] = agingUpTimingsOfPlayer
+	
+	local rule = function ()
+		local age = GameObjectRepository[player.PlayerID].Age
+		if age > agingUpTimingsOfPlayer.Age then
+			agingUpTimingsOfPlayer.Age = age
+			agingUpTimingsOfPlayer.ReachedAgeAt[age] = World_GetGameTime()
+			
+			self:_AddAgeUpTimeDifferenceBetweenPlayersMessage(age)
+		end
+			
+		if age > 3 then
+			return
+		end
+		
+		if self:_IsAgingUp(player, age)
+				and agingUpTimingsOfPlayer.CanAffordNextAgeAt[age] ~= nil
+				and not agingUpTimingsOfPlayer.CanAffordMessageEmitted[age] then
+			self:_AddTimeBetweenCanAffordAndAgeUpMessage(agingUpTimingsOfPlayer, age)
+			agingUpTimingsOfPlayer.CanAffordMessageEmitted[age] = true
+		end
+		
+		if agingUpTimingsOfPlayer.CanAffordNextAgeAt[age] == nil then
+			if self:_PlayerCanAffordNextAge(player, age) then
+				agingUpTimingsOfPlayer.CanAffordNextAgeAt[age] = World_GetGameTime()
+			end
+		end
+	end
+	
+	ObserverUiRuleSystem:AddDataProcessingRule(player.PlayerID, rule)
+end
+
+function AgingUpTimings:_AbbasidPlayerCanAffordNextAge(player, age)
+	local food = Player_GetResource(player, RT_Food)
+	local gold = Player_GetResource(player, RT_Gold)
+	
+	return food >= self.REQUIRED_RESOURCES_FOR_NEXT_AGE_AS_ABBASID[age].Food 
+			and gold >= self.REQUIRED_RESOURCES_FOR_NEXT_AGE_AS_ABBASID[age].Gold 
+end
+
+function AgingUpTimings:_NonAbbasidPlayerCanAffordNextAge(player, age)
+	local landmarkEntityType = GameObjectRepository.AGE_TO_REQUIRED_ENTITY_TYPE_FOR_AGING_UP[age]
+	local landmarkBps = Cardinal_ConvertTypeToEntityBlueprint(landmarkEntityType, player, true)
+	for i = 1, #landmarkBps do
+		if Player_CanConstruct(player, landmarkBps[i]) then
+			return true
+		end	
+	end
+	return false
+end
+
+function AgingUpTimings:_PlayerCanAffordNextAge(player, age)
+	if Player_GetRace(player) == RACE.ABBASID then
+		return self:_AbbasidPlayerCanAffordNextAge(player, age)
+	end
+	return self:_NonAbbasidPlayerCanAffordNextAge(player, age)
+end
+
+function AgingUpTimings:_IsAgingUp(player, age)
+	if Player_GetRace(player) ~= RACE.ABBASID then
+		return GameObjectRepository[player.PlayerID].LandmarkForNextAge ~= nil
+	end
+	
+	local houseOfWisdom = GameObjectRepository[player.PlayerID].HouseOfWisdom
+	if not houseOfWisdom then
+		return false
+	end
+	
+    local queueSize = Entity_GetProductionQueueSize(houseOfWisdom)
+    for i = 0, (queueSize - 1) do
+        local queueItem = Entity_GetProductionQueueItem(houseOfWisdom, i)
+		
+		if BP_IsUpgradeOfType(queueItem, "abbasid_wing_upgrade") then
+			return true
+		end
+    end
+	
+	return false
+end
+
+function AgingUpTimings:_AddAgeUpTimeDifferenceBetweenPlayersMessage(age)
+	local firstPlayerId, agingUpTimingsOfFirstPlayer = next(self.OfPlayer)
+	local _, agingUpTimingsOfSecondPlayer = next(self.OfPlayer, firstPlayerId)
+	
+	if agingUpTimingsOfSecondPlayer == nil then
+		return
+	end
+	
+	local reachedAgeAtOfFirstPlayer = agingUpTimingsOfFirstPlayer.ReachedAgeAt[age]
+	local reachedAgeAtOfSecondPlayer = agingUpTimingsOfSecondPlayer.ReachedAgeAt[age]
+	
+	if reachedAgeAtOfFirstPlayer == nil or reachedAgeAtOfSecondPlayer == nil then
+		return
+	end
+	
+	local difference = reachedAgeAtOfSecondPlayer - reachedAgeAtOfFirstPlayer
+	if reachedAgeAtOfFirstPlayer > reachedAgeAtOfSecondPlayer then
+		agingUpTimingsOfFirstPlayer, agingUpTimingsOfSecondPlayer = agingUpTimingsOfSecondPlayer, agingUpTimingsOfFirstPlayer
+		difference = -difference
+	end
+	
+	ObserverUiMessageSystem:AddMessage({ 
+		MessageType = ObserverUiMessageSystem.OBSERVERUI_MESSAGE_TYPE_AGING_UP_TIME_DIFFERENCE,
+		FirstPlayer = agingUpTimingsOfFirstPlayer.Player,
+		SecondPlayer = agingUpTimingsOfSecondPlayer.Player,
+		Difference = difference,
+		Age = age
+	})
+end
+
+function AgingUpTimings:_AddTimeBetweenCanAffordAndAgeUpMessage(agingUpTimingsOfPlayer, age)
+	local currentGameTime = World_GetGameTime()
+	local canAffordNextAgeAt = agingUpTimingsOfPlayer.CanAffordNextAgeAt[age]
+	local difference = World_GetGameTime() - canAffordNextAgeAt
+	
+	ObserverUiMessageSystem:AddMessage({
+		MessageType = ObserverUiMessageSystem.OBSERVERUI_MESSAGE_TYPE_AGING_UP_CAN_AFFORD_TIME,
+		Player = agingUpTimingsOfPlayer.Player,
+		Difference = difference
+	})
+end

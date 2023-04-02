@@ -1,0 +1,49 @@
+SquadLosses = {}
+
+ObserverUiInitialization:AddInitializable(SquadLosses, true)
+
+function SquadLosses:GetForPlayer_Worker_Military(i)
+	local squadLosses = self[i]
+	return squadLosses.Worker, squadLosses.Military
+end
+
+function SquadLosses:Initialize()
+	local world_OwnsSquad = World_OwnsSquad
+	local squad_GetPlayerOwner = Squad_GetPlayerOwner
+	local squad_IsOfType = Squad_IsOfType
+	local world_GetPlayerIndex = World_GetPlayerIndex
+	local onSquadKilledRule = function(context)
+	    if world_OwnsSquad(context.victim) then
+	        return
+	    end
+	
+	    local playerIndex = world_GetPlayerIndex(squad_GetPlayerOwner(context.victim))
+		local squadLossesOfPlayer = SquadLosses[playerIndex]
+		
+	    if squad_IsOfType(context.victim, "worker") then
+	        squadLossesOfPlayer.Worker = squadLossesOfPlayer.Worker + 1
+	    elseif squad_IsOfType(context.victim, "military") then
+	        squadLossesOfPlayer.Military = squadLossesOfPlayer.Military + 1
+	    end
+	end
+	
+	self.Rule = onSquadKilledRule
+    Rule_AddGlobalEvent(_OnSquadKilledRule, GE_SquadKilled)
+end
+
+function SquadLosses:InitializePerPlayer(i)
+	local squadLossesOfPlayer = {
+		Worker = 0,
+		Military = 0
+	}
+	
+	self[i] = squadLossesOfPlayer
+end
+
+function SquadLosses:Reset()
+	Rule_RemoveGlobalEvent(_OnSquadKilledRule)
+end
+
+function _OnSquadKilledRule(context)
+	SquadLosses.Rule(context)
+end

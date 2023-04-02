@@ -1,11 +1,3 @@
----------------------------------------------------------------------------------------------------
--- Authors:
--- Kusch_AOE
---
--- Description:
--- Observer UI
----------------------------------------------------------------------------------------------------
-
 _ToggleUIButtonXaml = 
 [[<ToggleButton 
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -22,6 +14,7 @@ _ToggleUIButtonXaml =
         
         Command="{Binding [command]}">
     <TextBlock 
+			TextAlignment="Center"
             Style="{StaticResource HUDTitleAltTextBlockStyle}"
             Text="UI" />
 </ToggleButton>

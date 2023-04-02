@@ -1,0 +1,77 @@
+UiTeamSummary = {}
+
+ObserverUiInitialization:AddInitializable(UiTeamSummary)
+
+function UiTeamSummary:Initialize()
+	local teams = TEAMS
+	if #teams ~= 2 then
+		return
+	end
+	
+	local teamSummariesByIndex = ObserverUIDataContextMappings.TeamSummariesByIndex
+	for t = 1, 2 do
+		local teamSummary = teamSummariesByIndex[t]
+		teamSummary.Color = UI_GetColourAsString(Player_GetUIColour(teams[t].players[1].id)) 
+		teamSummary.IdleWorkerCount = 0
+		teamSummary.WorkerPopulation = 0
+		teamSummary.WorkerNonTradePopulation = 0
+		teamSummary.TradePopulation = 0
+		teamSummary.MilitaryPopulation = 0
+		teamSummary.SiegePopulation = 0
+		teamSummary.MilitaryNoSiegePopulation = 0
+	end
+	
+	local allPlayersSummary = {
+		CombinedWorkerPop = 1,
+		CombinedMilitaryPop = 1
+	}
+	ObserverUiDataContext.AllPlayersSummary = allPlayersSummary
+	
+	local populationComposition = PopulationComposition
+	local rule = function()
+		local combinedWorkerPop = 0
+		local combinedMilitaryPop = 0
+		
+		for t = 1, 2 do
+			local teamIdleWorkerCount = 0
+			local teamWorkerNonTradePopulation = 0
+			local teamTradePopulation = 0
+			local teamMilitaryPopulation = 0
+			local teamSiegePopulation = 0
+			local teamMilitaryNoSiegePopulation = 0
+			
+			for i = 1, #teams[t].players do
+				local workerNonTradePopulation, tradePopulation, idleWorkerCount, 
+				militaryNoSiegePopulation, siegePopulation = 
+				populationComposition:GetForPlayer_WorkerNonTrade_Trade_WorkerIdle_MilitaryNonSiege_Siege(
+					teams[t].players[i].id)
+				
+				teamIdleWorkerCount = teamIdleWorkerCount + idleWorkerCount 
+				teamWorkerNonTradePopulation = teamWorkerNonTradePopulation + workerNonTradePopulation 
+				teamTradePopulation = teamTradePopulation + tradePopulation 
+				teamMilitaryPopulation = teamMilitaryPopulation + militaryNoSiegePopulation + siegePopulation 
+				teamSiegePopulation = teamSiegePopulation + siegePopulation 
+				teamMilitaryNoSiegePopulation = teamMilitaryNoSiegePopulation + militaryNoSiegePopulation
+			end
+			
+			local teamWorkerPopulation = teamWorkerNonTradePopulation + teamTradePopulation 
+			
+			local teamSummary = teamSummariesByIndex[t]
+			teamSummary.IdleWorkerCount = teamIdleWorkerCount
+			teamSummary.WorkerPopulation = teamWorkerPopulation
+			teamSummary.WorkerNonTradePopulation = teamWorkerNonTradePopulation
+			teamSummary.TradePopulation = teamTradePopulation
+			teamSummary.MilitaryPopulation = teamMilitaryPopulation
+			teamSummary.SiegePopulation = teamSiegePopulation
+			teamSummary.MilitaryNoSiegePopulation = teamMilitaryNoSiegePopulation
+			
+			combinedWorkerPop = combinedWorkerPop + teamWorkerPopulation
+			combinedMilitaryPop = combinedMilitaryPop + teamMilitaryPopulation
+		end
+		
+		allPlayersSummary.CombinedWorkerPop = combinedWorkerPop
+		allPlayersSummary.CombinedMilitaryPop = combinedMilitaryPop
+	end
+	
+	ObserverUiRuleSystem:AddUpdateUiDataContextRule(rule)
+end

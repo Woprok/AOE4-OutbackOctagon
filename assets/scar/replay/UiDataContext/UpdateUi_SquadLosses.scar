@@ -1,0 +1,20 @@
+UiSquadLosses = {}
+
+ObserverUiInitialization:AddInitializable(UiSquadLosses, true)
+
+function UiSquadLosses:InitializePerPlayer(i)
+	local squadLossesContext = { 
+		Worker = 0, 
+		Military = 0
+	}
+	ObserverUIDataContextMappings.PlayersByIndex[i].SquadLossesContext
+		= squadLossesContext
+	
+	local squadLosses = SquadLosses
+	local rule = function()
+		squadLossesContext.Worker, squadLossesContext.Military =
+			squadLosses:GetForPlayer_Worker_Military(i)
+	end
+	
+	ObserverUiRuleSystem:AddUpdateUiDataContextForPlayerRule(PLAYERS[i].id.PlayerID, rule)
+end
