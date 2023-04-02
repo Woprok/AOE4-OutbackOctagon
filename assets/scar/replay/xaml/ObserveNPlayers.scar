@@ -253,8 +253,8 @@ xmlns:engineSharedEffects="clr-namespace:WPFGUI.Shared.Effects;assembly=EngineUI
 												<Grid.ColumnDefinitions>
 													<ColumnDefinition Width="90" />
 													<ColumnDefinition Width="50" />
-													<ColumnDefinition Width="43" />
 													<ColumnDefinition Width="50" />
+													<ColumnDefinition Width="43" />
 												</Grid.ColumnDefinitions>
 												
 												<StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right">
@@ -273,9 +273,10 @@ xmlns:engineSharedEffects="clr-namespace:WPFGUI.Shared.Effects;assembly=EngineUI
 															VerticalAlignment="Center"
 															Style="{StaticResource nHUDTitleSmallTextBlockStyle}"
 															FontWeight="Bold"
-															Text="{Binding [allMilitaryPopulation], Mode=OneWay, Converter={StaticResource CastToIntOperator}}" />
-													<Image Height="18"
-															Source="pack://application:,,,/WPFGUI;component/icons/races/common/victory_conditions/victory_condition_conquest.png"/>
+															Text="{Binding [workerPopulation], Mode=OneWay, Converter={StaticResource CastToIntOperator}}" />
+									                <Image Height="24"
+															Margin="0,-6,0,0"
+									                        Source="pack://application:,,,/WPFGUI;component/icons/resources/resource_villager.png"/>
 												</StackPanel>
 												
 												<StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
@@ -283,12 +284,19 @@ xmlns:engineSharedEffects="clr-namespace:WPFGUI.Shared.Effects;assembly=EngineUI
 															VerticalAlignment="Center"
 															Style="{StaticResource nHUDTitleSmallTextBlockStyle}"
 															FontWeight="Bold"
-															Text="{Binding [relics], Mode=OneWay, Converter={StaticResource CastToIntOperator}}" />
+															Text="{Binding [allMilitaryPopulation], Mode=OneWay, Converter={StaticResource CastToIntOperator}}" />
 													<Image Height="18"
-															Source="pack://application:,,,/WPFGUI;component/icons/races/common/abilities/create_relic.png"/>
+															Source="pack://application:,,,/WPFGUI;component/icons/races/common/victory_conditions/victory_condition_conquest.png"/>
 												</StackPanel>
 												
-												<StackPanel Grid.Column="23" Orientation="Horizontal" HorizontalAlignment="Right">
+												<StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right">
+													<TextBlock
+															VerticalAlignment="Center"
+															Style="{StaticResource nHUDTitleSmallTextBlockStyle}"
+															FontWeight="Bold"
+															Text="{Binding [relicsDeposited], Mode=OneWay, Converter={StaticResource CastToIntOperator}}" />
+													<Image Height="18"
+															Source="pack://application:,,,/WPFGUI;component/icons/races/common/abilities/create_relic.png"/>
 												</StackPanel>
 												
 											</Grid>
