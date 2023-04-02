@@ -1,0 +1,4 @@
+ObserverUI_Settings = {
+	ShowMessages = true,
+	ShowArmy = true
+}

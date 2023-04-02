@@ -137,7 +137,7 @@ import("specials/ags_testing.scar")
 import("specials/ags_match_ui.scar")
 -- Observer UI
 -- Disabled due to Caster Mode UI
--- import("replay/ags_replay.scar")
+import("replay/ags_replay.scar")
 
 ---------------------------------------------------------------------------------------------------
 -- AGS LIBRARY GUIDELINES AND INFORMATIONS
