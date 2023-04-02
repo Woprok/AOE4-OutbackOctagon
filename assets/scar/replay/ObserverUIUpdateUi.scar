@@ -180,7 +180,6 @@ function UpdateObserverUIDataContext()
 		UpdateRelics(playerTable, player)
 		UpdateUnitsAndQueuedStuff(playerTable, player, PLAYERS[index].race)
 		UpdateCivSpecifics(playerTable, player)
-		UpdateEfficiencyStatistics(playerTable, player)
 	end
 end
 
@@ -394,11 +393,4 @@ function UpdateCivSpecifics(t, player)
 	end
 	
 	t.civSpecifics.text = tostring(math.floor(Player_GetStateModelFloat(player, "master_hunter_bounty_total_rus")))
-end
-
-function UpdateEfficiencyStatistics(playerTable, player)
-	playerTable.TownCenterIdleTime, playerTable.TownCenterEfficiency = TownCenterIdling:GetForPlayer_IdleTime_Efficiency(player)
-	playerTable.TownCenterEfficiency = string.format("%.1f%%", playerTable.TownCenterEfficiency * 100)
-	playerTable.WorkerIdleTime, playerTable.WorkerEfficiency = WorkerIdling:GetForPlayer_IdleTime_Efficiency(player)
-	playerTable.WorkerEfficiency = string.format("%.1f%%", playerTable.WorkerEfficiency * 100)
 end
