@@ -7,9 +7,9 @@
 		</list>
 		<list name="starting_units" removedIds="-1238250774, -500125344, 1056982643, 1979873547, 1546927302, 46362655">
 			<instance_reference name="squad" value="sbps\races\chinese\unit_villager_1_chi" overrideParent="True" List.ItemID="-2090941458" List.ParentItemID="-2090941458" />
-			<instance_reference name="squad" value="sbps\races\chinese\unit_villager_1_chi" overrideParent="True" List.ItemID="46362655" List.ParentItemID="46362655" />
 			<instance_reference name="squad" value="sbps\races\chinese\unit_villager_1_chi" overrideParent="True" List.ItemID="-1712295898" List.ParentItemID="-1712295898" />
-			<instance_reference name="squad" value="sbps\races\chinese\unit_king_1_chi" List.ItemID="-249598747" List.ListAction="Append" />
+			<instance_reference name="squad" value="sbps\races\chinese\unit_villager_1_chi" overrideParent="True" List.ItemID="-249598747" List.ListAction="Append" />
+			<instance_reference name="squad" value="sbps\races\chinese\unit_king_1_chi" List.ItemID="1662157341" List.ListAction="Append" />
 		</list>
 		<template_reference name="starting_units_spawner" value="options\spawn\scatter" overrideParent="True">
 			<float name="spawn_radius" value="340" overrideParent="True" />
