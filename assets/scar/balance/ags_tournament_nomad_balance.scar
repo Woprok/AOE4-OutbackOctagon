@@ -73,6 +73,7 @@ function AGS_TournamentNomadBalance_OnConstructionComplete(context)
 end
 
 function AGS_TournamentNomadBalance_OnEntityKilled(context)
+	AGS_Print("EntityKilled", context)
 	-- We need context and we need killer that is a remaining player
 	if context == nil or context.killer == nil or World_OwnsEntity(context.killer) then
 		return
