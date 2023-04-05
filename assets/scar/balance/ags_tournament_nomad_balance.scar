@@ -110,7 +110,7 @@ function AGS_TournamentNomadBalance_OnSquadKilled(context)
 	end
 end
 
-function AGS_TournamentNomadBalance_KilledKing(victim, killer)
+function AGS_TournamentNomadBalance_KilledKing(killer)
 	AGS_TournamentNomadBalance_KillBonus(killer)
 end
 
