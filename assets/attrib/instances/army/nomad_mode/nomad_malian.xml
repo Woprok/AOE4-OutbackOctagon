@@ -13,7 +13,7 @@
 		</list>
 		<template_reference name="starting_units_spawner" value="options\spawn\scatter" overrideParent="True">
 			<float name="spawn_radius" value="340" overrideParent="True" />
-			<int name="spawn_position_attempts" value="1" overrideParent="True" />
+			<int name="spawn_position_attempts" value="100" overrideParent="True" />
 		</template_reference>
 	</group>
 	<uniqueid name="pbgid" value="2121063" />

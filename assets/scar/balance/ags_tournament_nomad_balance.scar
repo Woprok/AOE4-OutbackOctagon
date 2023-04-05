@@ -41,18 +41,78 @@ end
 function AGS_TournamentNomadBalance_OnPlay()
 	AGS_Print("AGS_TournamentNomadBalance_OnPlay")
 	Rule_AddGlobalEvent(AGS_TournamentNomadBalance_OnEntityKilled, GE_EntityKilled)
+	Rule_AddGlobalEvent(AGS_TournamentNomadBalance_OnSquadKilled, GE_SquadKilled)
 	Rule_AddGlobalEvent(AGS_TournamentNomadBalance_OnConstructionComplete, GE_ConstructionComplete)
 end
 
 function AGS_TournamentNomadBalance_OnGameOver()
 	AGS_Print("AGS_TournamentNomadBalance_OnGameOver")
 	Rule_RemoveGlobalEvent(AGS_TournamentNomadBalance_OnEntityKilled)
+	Rule_RemoveGlobalEvent(AGS_TournamentNomadBalance_OnSquadKilled)
 	Rule_RemoveGlobalEvent(AGS_TournamentNomadBalance_OnConstructionComplete)
 end
 
 ---------------------------------------------------------------------------------------------------
 -- Callbacks:
 ---------------------------------------------------------------------------------------------------
+
+-- HACK player with king in transport ship can die only due to being force killed.
+-- if this is ever fixed by Relic to fire approriate event we can remove this hack.
+-- This handles rare edge case where player is killed by loosing a ship with a king
+-- all other transport destruction cases shouldn't result in lost of a king
+function AGS_TournamentNomadBalance_OnSquadKilled(context)
+	-- We need context and we need killer that is a remaining player
+	if context == nil or context.killer == nil or World_OwnsEntity(context.killer) then
+		return
+	end
+	-- We need victim entity to check if it is transport ship
+	if context.victim == nil then
+		return	
+	end
+	-- We need to verify that we are dealing with ships that can hold squads
+	if not Squad_IsOfType(context.victim, AGS_BP_TRANSPORT_SHIP) and not Squad_IsOfType(context.victim, AGS_BP_MILITARY_SCHOOL) then
+		return
+	end
+	-- We have ship that might have hold a king before it was killed.
+	-- We have multiple cases:
+	-- Ship has no owner and we are clueless about the king:
+	if World_OwnsSquad(context.victim) then
+		-- King is alive or dead, but we do not have player.
+		-- We can still try to find the king that is alive in our saved position
+		-- and then give award to killer.
+		for _, player in pairs(PLAYERS) do 
+			for _, king in pairs(player.AGS_Kings) do
+				if king.is_alive and not Squad_IsAlive(king.squad) then
+					king.is_alive = false
+					-- alive in our, dead in game, give credit
+					AGS_TournamentNomadBalance_KilledKing(context.killer)					
+				end
+			end
+		end	
+	-- Ship has owner:
+	else
+		local owner = Core_GetPlayersTableEntry(Squad_GetPlayerOwner(context.victim))
+		for _, king in pairs(owner.AGS_Kings) do
+			if Squad_IsAlive(king.squad) then
+				-- King is alive
+				return
+			else
+				king.is_alive = false
+				-- King is dead
+				-- We found the edge case, this player has to die in regicide!
+				local king_count = AGS_Regicide_GetPlayerKingCount(owner)
+				if king_count.recruited > 0 and king_count.remaining <= 0 then 
+					AGS_TournamentNomadBalance_KilledKing(context.killer)
+					AGS_Regicide_Eliminate(owner)		
+				end
+			end
+		end		
+	end
+end
+
+function AGS_TournamentNomadBalance_KilledKing(victim, killer)
+	AGS_TournamentNomadBalance_KillBonus(killer)
+end
 
 function AGS_TournamentNomadBalance_OnConstructionComplete(context)	
 	if context == nil or context.player == nil or context.entity == nil then 
@@ -73,13 +133,16 @@ function AGS_TournamentNomadBalance_OnConstructionComplete(context)
 end
 
 function AGS_TournamentNomadBalance_OnEntityKilled(context)
-	AGS_Print("EntityKilled", context)
 	-- We need context and we need killer that is a remaining player
 	if context == nil or context.killer == nil or World_OwnsEntity(context.killer) then
 		return
 	end
 	-- We need victim entity to check if it is a king
-	if context.victim == nil or not Entity_IsOfType(context.victim, AGS_BP_KING) then
+	if context.victim == nil then
+		return	
+	end
+	-- We can leave if entity is not king
+	if not Entity_IsOfType(context.victim, AGS_BP_KING) then
 		return
 	end
 	-- Add bonus

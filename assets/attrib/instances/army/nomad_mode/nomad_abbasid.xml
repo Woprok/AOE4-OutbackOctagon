@@ -13,8 +13,13 @@
 		</list>
 		<template_reference name="starting_units_spawner" value="options\spawn\scatter" overrideParent="True">
 			<float name="spawn_radius" value="340" overrideParent="True" />
-			<int name="spawn_position_attempts" value="1" overrideParent="True" />
+			<int name="spawn_position_attempts" value="100" overrideParent="True" />
 		</template_reference>
+		<group name="race_population_cap_table">
+			<float name="base_personnel_cap" value="0" overrideParent="True" />
+			<float name="max_medic_cap" value="0" overrideParent="True" />
+			<float name="max_personnel_cap" value="200" overrideParent="True" />
+		</group>
 	</group>
 	<uniqueid name="pbgid" value="2121058" />
 	<instance_reference name="parent_pbg" value="army\standard_mode\normal_abbasid" />
