@@ -5,15 +5,11 @@
 				<instance_reference name="building" value="ebps\races\mongol\buildings\building_town_center_dummy_start" overrideParent="True" />
 			</group>
 		</list>
-		<list name="starting_units" removedIds="-601223359, 1549979823, -2076984021, 1147452887, 1740450243">
-			<instance_reference name="squad" value="sbps\races\french\unit_villager_1_fre" overrideParent="True" List.ItemID="-1757705624" List.ParentItemID="-1757705624" />
-			<instance_reference name="squad" value="sbps\races\french\unit_villager_1_fre" overrideParent="True" List.ItemID="1134218759" List.ParentItemID="1134218759" />
-			<instance_reference name="squad" value="sbps\races\french\unit_villager_1_fre" overrideParent="True" List.ItemID="-1768200728" List.ParentItemID="-1768200728" />
-			<instance_reference name="squad" value="sbps\races\french\unit_king_1_fre" List.ItemID="-1239220361" List.ListAction="Append" />
+		<list name="starting_units" removedIds="-601223359, 1549979823, -2076984021, 1147452887, 1740450243, -1757705624, 1134218759, -1768200728">
 		</list>
 		<template_reference name="starting_units_spawner" value="options\spawn\scatter" overrideParent="True">
 			<float name="spawn_radius" value="340" overrideParent="True" />
-			<int name="spawn_position_attempts" value="100" overrideParent="True" />
+			<int name="spawn_position_attempts" value="1" overrideParent="True" />
 		</template_reference>
 	</group>
 	<uniqueid name="pbgid" value="2121061" />

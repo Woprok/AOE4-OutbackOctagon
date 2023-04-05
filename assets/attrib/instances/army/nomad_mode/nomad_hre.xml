@@ -5,15 +5,11 @@
 				<instance_reference name="building" value="ebps\races\mongol\buildings\building_town_center_dummy_start" overrideParent="True" />
 			</group>
 		</list>
-		<list name="starting_units" removedIds="1657219302, 1507945379, 932114225, 1311524786, -1280268849, -1670031990">
-			<instance_reference name="squad" value="sbps\races\hre\unit_villager_1_hre" overrideParent="True" List.ItemID="1802817272" List.ParentItemID="1802817272" />
-			<instance_reference name="squad" value="sbps\races\hre\unit_villager_1_hre" overrideParent="True" List.ItemID="-430702088" List.ParentItemID="-430702088" />
-			<instance_reference name="squad" value="sbps\races\hre\unit_villager_1_hre" overrideParent="True" List.ItemID="961027287" List.ParentItemID="961027287" />
-			<instance_reference name="squad" value="sbps\races\hre\unit_king_1_hre" List.ItemID="-2137303114" List.ListAction="Append" />
+		<list name="starting_units" removedIds="1657219302, 1507945379, 932114225, 1311524786, -1280268849, -1670031990, 1802817272, -430702088, 961027287">
 		</list>
 		<template_reference name="starting_units_spawner" value="options\spawn\scatter" overrideParent="True">
 			<float name="spawn_radius" value="340" overrideParent="True" />
-			<int name="spawn_position_attempts" value="100" overrideParent="True" />
+			<int name="spawn_position_attempts" value="1" overrideParent="True" />
 		</template_reference>
 		<enum_table name="resource_starting_amount">
 			<float name="gold" value="100" overrideParent="True" />
