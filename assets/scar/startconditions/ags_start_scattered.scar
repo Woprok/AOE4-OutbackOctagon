@@ -23,7 +23,7 @@ Core_RegisterModule(AGS_SCATTERED_MODULE)
 function AGS_Scattered_AdjustSettings()
 	AGS_Print("AGS_Scattered_AdjustSettings")
 	if AGS_GLOBAL_SETTINGS.StartingVillagers == 0 then
-		AGS_GLOBAL_SETTINGS.StartingVillagers = 1
+		AGS_GLOBAL_SETTINGS.StartingVillagers = 3
 	end
 end
 
