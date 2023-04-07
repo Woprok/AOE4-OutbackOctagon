@@ -102,7 +102,6 @@ function AGS_Scattered_CreateSpawn()
 			local spawn_pos = AGS_Scattered_GetScatterPosition()
 			UnitEntry_DeploySquads(player.id, squad_group, {{sbp = sbp_vil, numSquads = 1 }}, spawn_pos)
 		end		
-		
-		Core_CallDelegateFunctions("UnitsSpawned", player.id, nil, squad_group)			
+		--Core_CallDelegateFunctions("UnitsSpawned", player.id, nil, squad_group)			
 	end
 end	
