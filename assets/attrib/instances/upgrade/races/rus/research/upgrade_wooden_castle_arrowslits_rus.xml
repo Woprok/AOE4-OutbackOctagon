@@ -38,7 +38,7 @@
 			</template_reference>
 			<template_reference name="help_text_formatter" value="ui_text_formatter">
 				<list name="formatter_arguments">
-					<int name="int_value" value="1" List.ItemID="899490139" />
+					<int name="int_value" value="1" List.ItemID="-1994017002" />
 				</list>
 				<locstring name="formatter" value="11246400" />
 			</template_reference>
@@ -51,7 +51,7 @@
 			<int name="global_unit_control_row" value="1" />
 		</group>
 		<list name="requirements">
-			<template_reference name="required" value="requirements\required_player_upgrade" List.ItemID="1257635181">
+			<template_reference name="required" value="requirements\required_player_upgrade" List.ItemID="1895782808">
 				<enum name="reason" value="usage" />
 				<locstring name="ui_name" value="0" />
 				<bool name="is_present" value="True" />
@@ -65,7 +65,7 @@
 				</group>
 				<bool name="include_completed" value="True" />
 			</template_reference>
-			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="1735916266">
+			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="534683845">
 				<enum name="reason" value="usage_and_display" />
 				<locstring name="ui_name" value="0" />
 				<bool name="is_present" value="False" />
@@ -79,7 +79,7 @@
 				</group>
 				<bool name="include_completed" value="True" />
 			</template_reference>
-			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="-342911881">
+			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="-1108233921">
 				<enum name="reason" value="display" />
 				<locstring name="ui_name" value="0" />
 				<bool name="is_present" value="False" />
@@ -130,7 +130,7 @@
 			</template_reference>
 		</group>
 		<list name="upgrade_type">
-			<enum name="upgrade_type" value="military_upgrade" List.ItemID="-1397164582" />
+			<enum name="upgrade_type" value="military_upgrade" List.ItemID="-68615410" />
 		</list>
 		<string name="requirements_openingbranch" value="" />
 		<instance_reference name="ui_menu" value="" />

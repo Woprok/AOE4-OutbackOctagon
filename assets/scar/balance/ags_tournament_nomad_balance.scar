@@ -6,18 +6,9 @@
 --
 -- Description:
 -- Nomad tournament adjustments.
--- Mongols: +100 Wood
--- English: +50 Wood
--- Ottomans: +50 Stone +50 Wood
--- Chinese: Main TC build time +100%
--- All: Outpost only after first TC built.
 ---------------------------------------------------------------------------------------------------
 
 AGS_TOURNAMENT_NOMAD_BALANCE = "AGS_TournamentNomadBalance"
-AGS_TOURNAMENT_NOMAD_BALANCE_MONGOL_WOOD = 100
-AGS_TOURNAMENT_NOMAD_BALANCE_ENGLISH_WOOD = 50
-AGS_TOURNAMENT_NOMAD_BALANCE_OTTOMAN_STONE = 50
-AGS_TOURNAMENT_NOMAD_BALANCE_OTTOMAN_WOOD = 50
 AGS_TOURNAMENT_NOMAD_BALANCE_KING_POP = 50
 
 ---------------------------------------------------------------------------------------------------
@@ -33,23 +24,16 @@ function AGS_TournamentNomadBalance_UpdateModuleSettings()
 	end
 end
 
-function AGS_TournamentNomadBalance_OnStarting()
-	AGS_Print("AGS_TournamentNomadBalance_OnStarting")
-	AGS_TournamentNomadBalance_ApplyBalance()
-end
-
 function AGS_TournamentNomadBalance_OnPlay()
 	AGS_Print("AGS_TournamentNomadBalance_OnPlay")
 	Rule_AddGlobalEvent(AGS_TournamentNomadBalance_OnEntityKilled, GE_EntityKilled)
 	Rule_AddGlobalEvent(AGS_TournamentNomadBalance_OnSquadKilled, GE_SquadKilled)
-	Rule_AddGlobalEvent(AGS_TournamentNomadBalance_OnConstructionComplete, GE_ConstructionComplete)
 end
 
 function AGS_TournamentNomadBalance_OnGameOver()
 	AGS_Print("AGS_TournamentNomadBalance_OnGameOver")
 	Rule_RemoveGlobalEvent(AGS_TournamentNomadBalance_OnEntityKilled)
 	Rule_RemoveGlobalEvent(AGS_TournamentNomadBalance_OnSquadKilled)
-	Rule_RemoveGlobalEvent(AGS_TournamentNomadBalance_OnConstructionComplete)
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -70,7 +54,7 @@ function AGS_TournamentNomadBalance_OnSquadKilled(context)
 		return	
 	end
 	-- We need to verify that we are dealing with ships that can hold squads
-	if not Squad_IsOfType(context.victim, AGS_BP_TRANSPORT_SHIP) and not Squad_IsOfType(context.victim, AGS_BP_MILITARY_SCHOOL) then
+	if not Squad_IsOfType(context.victim, AGS_BP_TRANSPORT_SHIP) and not (Squad_IsOfType(context.victim, AGS_BP_MILITARY_SCHOOL) and Squad_IsOfType(context.victim, AGS_BP_NAVAL_GALLEASS)) then
 		return
 	end
 	-- We have ship that might have hold a king before it was killed.
@@ -110,28 +94,6 @@ function AGS_TournamentNomadBalance_OnSquadKilled(context)
 	end
 end
 
-function AGS_TournamentNomadBalance_KilledKing(killer)
-	AGS_TournamentNomadBalance_KillBonus(killer)
-end
-
-function AGS_TournamentNomadBalance_OnConstructionComplete(context)	
-	if context == nil or context.player == nil or context.entity == nil then 
-		return
-	end	
-	if World_OwnsEntity(context.entity) then
-		return
-	end	
-	local player = Core_GetPlayersTableEntry(context.player)
-	-- Eliminated players are not interesting.
-	if player.isEliminated then
-		return
-	end
-	-- We are looking only for landmarks.
-	if AGS_IsACapital(context.entity) then
-		Player_SetEntityProductionAvailability(player.id, AGS_GetCivilizationEntity(player.raceName, AGS_BP_OUTPOST), ITEM_DEFAULT)
-	end
-end
-
 function AGS_TournamentNomadBalance_OnEntityKilled(context)
 	-- We need context and we need killer that is a remaining player
 	if context == nil or context.killer == nil or World_OwnsEntity(context.killer) then
@@ -146,10 +108,14 @@ function AGS_TournamentNomadBalance_OnEntityKilled(context)
 		return
 	end
 	-- Add bonus
-	AGS_TournamentNomadBalance_KillBonus(context.killer)
+	AGS_TournamentNomadBalance_KilledKing(context.killer)
 end
 
-function AGS_TournamentNomadBalance_KillBonus(context_killer)
+---------------------------------------------------------------------------------------------------
+-- Functions:
+---------------------------------------------------------------------------------------------------
+
+function AGS_TournamentNomadBalance_KilledKing(context_killer)
 	local killer_owner = Core_GetPlayersTableEntry(Entity_GetPlayerOwner(context_killer))
 	
 	AGS_TournamentNomadBalance_AddMaxCapPopulation(killer_owner, AGS_TOURNAMENT_NOMAD_BALANCE_KING_POP)
@@ -158,44 +124,7 @@ function AGS_TournamentNomadBalance_KillBonus(context_killer)
 		AGS_TournamentNomadBalance_AddMinPopulation(killer_owner, AGS_TOURNAMENT_NOMAD_BALANCE_KING_POP)
 	end
 end
-
----------------------------------------------------------------------------------------------------
--- Functions:
----------------------------------------------------------------------------------------------------
-function AGS_TournamentNomadBalance_ApplyResourceBalance(player)
-	-- Increase starting resources based on what is missing from "low"
-	if player.raceName == AGS_CIV_MONGOL then
-		Player_GiftResource(player.id, RT_Wood, AGS_TOURNAMENT_NOMAD_BALANCE_MONGOL_WOOD)
-	end
-	
-	if player.raceName == AGS_CIV_ENGLISH then
-		Player_GiftResource(player.id, RT_Wood, AGS_TOURNAMENT_NOMAD_BALANCE_ENGLISH_WOOD)
-	end
-			
-	if player.raceName == AGS_CIV_OTTOMAN then
-		Player_GiftResource(player.id, RT_Stone, AGS_TOURNAMENT_NOMAD_BALANCE_OTTOMAN_STONE)
-		Player_GiftResource(player.id, RT_Wood, AGS_TOURNAMENT_NOMAD_BALANCE_OTTOMAN_WOOD)
-	end
-end
-
-function AGS_TournamentNomadBalance_ApplyBalance()
-	for _, player in pairs(PLAYERS) do			
-		-- AGS_TournamentNomadBalance_ApplyResourceBalance(player)
-		
-		if player.raceName == AGS_CIV_CHINESE then
-			-- Nerf TC build time
-			local ebp = AGS_GetCivilizationEntity(player.raceName, AGS_BP_TC_CAPITAL)
-			AGS_TournamentNomadBalance_Nerf(player.id, "cost_ticks_modifier", 2, ebp)
-		end
-		Player_SetStateModelBool(player.id, "player_can_construct_structures", true)	
-		-- Block outpost
-		Player_SetEntityProductionAvailability(player.id, AGS_GetCivilizationEntity(player.raceName, AGS_BP_OUTPOST), ITEM_LOCKED)
-	end
-end
 -- Apply function.
-function AGS_TournamentNomadBalance_Nerf(player_id, modifier_type, modifier_value, modifier_ebp)
-	Modifier_ApplyToPlayer(Modifier_Create(MAT_EntityType, modifier_type, MUT_Multiplication, false, modifier_value, modifier_ebp), player_id, 0.0)
-end	
 function AGS_TournamentNomadBalance_AddMaxCapPopulation(player, value)
 	Modifier_ApplyToPlayer(Modifier_Create(MAT_Player, "max_personnel_cap_player_modifier", MUT_Addition, false, value, ""), player.id, 0)
 end

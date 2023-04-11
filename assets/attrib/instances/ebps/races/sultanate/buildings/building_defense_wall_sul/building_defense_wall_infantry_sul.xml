@@ -1,0 +1,51 @@
+<instance version="4" description="" template="ebps">
+	<list name="extensions">
+		<template_reference name="exts" value="ebpextensions\entity_blueprint_ext" List.ItemID="-1184830763" List.ParentItemID="-1184830763">
+			<enum name="subclass_type" value="Wall" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\requirement_ext" List.ItemID="1226421349" List.ParentItemID="1226421349">
+			<list name="requirement_table" overrideParent="True">
+				<template_reference name="required" value="requirements\required_statemodelbool" List.ItemID="111571008">
+					<locstring name="ui_name" value="11154521" />
+					<enum name="reason" value="usage" overrideParent="True" />
+					<enum name="key" value="compound_of_the_defender_active_sul" overrideParent="True" />
+					<enum name="data_source_type" value="player_datasource" overrideParent="True" />
+					<bool name="default_value" value="False" />
+					<bool name="compare_to_value" value="True" overrideParent="True" />
+				</template_reference>
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\territory_sector_layout_ext" List.ItemID="-1904123328" List.ParentItemID="-1904123328">
+			<template_reference name="placement_style" value="options\ebpextensions\hexmapext\placement_styles\placement_primary">
+				<instance_reference name="optional_representative_entity" value="ebps\races\sultanate\buildings\building_defense_wall_sul\building_defense_wall_sul" mod="1ff2a908da9e434c98e779358e4b6aea" overrideParent="True" />
+			</template_reference>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\tier_ext" List.ItemID="-1057870799" List.ParentItemID="-1057870799">
+			<list name="tier_group_list" overrideParent="True">
+				<list name="tier_group" overrideParent="True" List.ItemID="-514738656">
+					<group name="tier" List.ItemID="-108764277">
+						<list name="tier_requirements">
+						</list>
+						<instance_reference name="attachments" value="" />
+						<template_reference name="statetree_tier_reached_actions" value="state_tree_reference_info">
+							<state_tree_node name="ActionTree_OpeningBranch" value="" />
+							<bool name="start_suspended" value="False" />
+						</template_reference>
+						<instance_reference name="statetree_tier_requirements_pbg" value="" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_entity" value="ebps\races\sultanate\buildings\building_defense_wall_sul\building_defense_wall_sul" mod="1ff2a908da9e434c98e779358e4b6aea" overrideParent="True" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_squad" value="" />
+						<string name="tier_attachment_action" value="" />
+						<template_reference name="blueprint_conversion_parameters" value="blueprint_conversion_parameters">
+							<bool name="reissue_commands" value="False" />
+							<bool name="continue_state_trees" value="False" />
+							<bool name="remove_from_pending_deaths" value="False" />
+						</template_reference>
+						<string name="inventory_category_to_refresh_on_tier_up" value="" />
+					</group>
+				</list>
+			</list>
+		</template_reference>
+	</list>
+	<uniqueid name="pbgid" value="203943" />
+	<instance_reference name="parent_pbg" value="ebps\races\sultanate\buildings\building_defense_wall_sul\building_defense_wall_sul" mod="1ff2a908da9e434c98e779358e4b6aea" />
+</instance>

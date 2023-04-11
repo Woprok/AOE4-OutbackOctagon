@@ -1,0 +1,119 @@
+<instance version="4" description="" template="ebps">
+	<list name="extensions">
+		<template_reference name="exts" value="ebpextensions\entity_blueprint_ext" List.ItemID="-123036312" List.ParentItemID="-123036312">
+			<instance_reference name="animator_attachments" value="attachments\attachment_lists\civilizations\hre\buildings\defense_outpost_hre\defense_outpost_control_hre" overrideParent="True" />
+			<bool name="browsable_in_editor" value="True" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\health_ext" List.ItemID="-437286743" List.ParentItemID="-437286743">
+			<bool name="can_repair" value="True" overrideParent="True" />
+			<state_tree_node name="death_action_tree" value="building_death_actions\buildings\outpost_death_actions\outpost_death_actions_hre" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\type_ext" List.ItemID="225797870" List.ParentItemID="225797870">
+			<list name="unit_type_list" overrideParent="True">
+				<enum name="unit_type" value="military" List.ItemID="-1588754001" />
+				<enum name="unit_type" value="building" List.ItemID="-1155382274" />
+				<enum name="unit_type" value="tower" List.ItemID="-1278013051" />
+				<enum name="unit_type" value="outpost" List.ItemID="-1386561425" />
+				<enum name="unit_type" value="defensive_structure" List.ItemID="-811208871" />
+				<enum name="unit_type" value="siegeable" List.ItemID="-731311699" />
+				<enum name="unit_type" value="town_bell_target" List.ItemID="-784261413" />
+				<enum name="unit_type" value="relic_dropoff" List.ItemID="1120846231" />
+				<enum name="unit_type" value="scar_outpost" List.ItemID="-1806449528" />
+				<enum name="unit_type" value="monastery" List.ItemID="-300055857" />
+			</list>
+			<list name="race_type_list" overrideParent="True">
+				<instance_reference name="race_type" value="racebps\hre" List.ItemID="-756446718" />
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\ui_ext" List.ItemID="-469897641" List.ParentItemID="-469897641">
+			<list name="ui_extra_infos" overrideParent="True">
+				<template_reference name="ui_extra_info" value="info\ui_extra_info" List.ItemID="854638602">
+					<file name="icon" value="influence_decorator" overrideParent="True" />
+					<locstring name="description" value="0" />
+					<template_reference name="description_formatter" value="ui_text_formatter" overrideParent="True">
+						<list name="formatter_arguments">
+							<int name="int_value" value="200" List.ItemID="1368894076" />
+						</list>
+						<locstring name="formatter" value="11204532" />
+					</template_reference>
+				</template_reference>
+			</list>
+			<template_reference name="help_text_formatter" value="ui_text_formatter" overrideParent="True">
+				<list name="formatter_arguments">
+					<int name="int_value" value="50" overrideParent="True" List.ItemID="1774738969" />
+				</list>
+				<locstring name="formatter" value="11217915" />
+			</template_reference>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\site_ext" List.ItemID="375853765" List.ParentItemID="375853765">
+			<bool name="snap_to_construction_grid" value="True" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\construction_ext" List.ItemID="1826153244" List.ParentItemID="1826153244">
+			<float name="orientation" value="0" overrideParent="True" />
+			<bool name="construction_site_erase_inactive" value="False" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\spawner_ext" List.ItemID="1007740528" List.ParentItemID="1007740528">
+			<instance_reference name="rally_pass_type" value="pass_types\infantry" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\combat_ext" List.ItemID="790744597" List.ParentItemID="790744597">
+			<list name="hardpoints">
+				<group name="hardpoint" comment="Garrison Arrow slot&#xD;&#xA;" List.ItemID="-770852270" List.ParentItemID="-770852270">
+				</group>
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\interactive_object_ext" List.ItemID="-2013235784" List.ParentItemID="-2013235784">
+			<list name="type_list" overrideParent="True">
+				<group name="type" List.ItemID="-71108803">
+					<enum name="interaction_type" value="repair" />
+					<int name="prefer_number" value="-1" />
+					<int name="max_number" value="-1" />
+					<enum name="interaction_target_type" value="entity" />
+					<template_reference name="node_list_option" value="options\none">
+					</template_reference>
+					<bool name="block_pathing_when_interacted" value="False" />
+				</group>
+				<group name="type" List.ItemID="1954496933">
+					<enum name="interaction_type" value="construct" />
+					<int name="prefer_number" value="-1" />
+					<int name="max_number" value="-1" />
+					<enum name="interaction_target_type" value="entity" />
+					<template_reference name="node_list_option" value="options\none">
+					</template_reference>
+					<bool name="block_pathing_when_interacted" value="False" />
+				</group>
+				<group name="type" comment="Seek Shelter" List.ItemID="-612067881">
+					<enum name="interaction_type" value="seek_shelter_destination" />
+					<int name="prefer_number" value="2" />
+					<int name="max_number" value="-1" />
+					<enum name="interaction_target_type" value="entity" />
+					<template_reference name="node_list_option" value="options\none">
+					</template_reference>
+					<bool name="block_pathing_when_interacted" value="False" />
+				</group>
+				<group name="type" List.ItemID="-1947527439">
+					<enum name="interaction_type" value="deposit_relic" overrideParent="True" />
+					<int name="prefer_number" value="-1" overrideParent="True" />
+					<int name="max_number" value="20" overrideParent="True" />
+					<enum name="interaction_target_type" value="entity" />
+					<template_reference name="node_list_option" value="options\none">
+					</template_reference>
+					<bool name="block_pathing_when_interacted" value="False" />
+				</group>
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\ability_ext" List.ItemID="-327068324" List.ParentItemID="-327068324">
+			<list name="abilities" overrideParent="True">
+				<instance_reference name="ability" value="abilities\timed_abilities\civ_core\core_building_scuttle" List.ItemID="-1536290273" />
+				<instance_reference name="ability" value="abilities\always_on_abilities\hre\passives\spotters_hre" List.ItemID="-1197274429" />
+				<instance_reference name="ability" value="abilities\always_on_abilities\hre\passives\relic_tower_keep_bonus_hre" List.ItemID="-191601626" />
+				<instance_reference name="ability" value="abilities\modal_abilities\core\town_bell\hold_return_to_work" List.ItemID="688485403" />
+				<instance_reference name="ability" value="abilities\timed_abilities\hre\influence_auto_repair_hre" List.ItemID="-1549068668" />
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\statemodel_ext" List.ItemID="-1494997589" List.ParentItemID="-1494997589">
+			<instance_reference name="schema" value="statemodel_schema\buildings\civilizations\hre\outpost_hre" overrideParent="True" />
+		</template_reference>
+	</list>
+	<uniqueid name="pbgid" value="134924" />
+	<instance_reference name="parent_pbg" value="ebps\races\core\buildings\building_defense_outpost" mod="1ff2a908da9e434c98e779358e4b6aea" />
+</instance>

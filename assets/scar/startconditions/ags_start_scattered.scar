@@ -29,15 +29,8 @@ end
 
 function AGS_Scattered_UpdateModuleSettings()
 	AGS_Print("AGS_Scattered_UpdateModuleSettings")
-	if AGS_GLOBAL_SETTINGS.Settlement ~= AGS_GS_SETTLEMENT_SCATTERED or AGS_GLOBAL_SETTINGS.UsingPrefabNomadStartAndArmy then
+	if AGS_GLOBAL_SETTINGS.Settlement ~= AGS_GS_SETTLEMENT_SCATTERED then
 		Core_UnregisterModule(AGS_SCATTERED_MODULE)
-	end
-end
-
-function AGS_Scattered_EarlyInitializations()
-	AGS_Print("AGS_Scattered_EarlyInitializations")
-	if AGS_GLOBAL_SETTINGS.UsingPrefabStart then
-		AGS_Scattered_DestroySpawn()
 	end
 end
 
@@ -60,30 +53,14 @@ function AGS_Scattered_OnStarting()
 		Player_SetStateModelFloat(player.id, "has_capital", 0)	
 		-- Player should be able to build structures.
 		Player_SetStateModelBool(player.id, "player_can_construct_structures", true)	
-		if AGS_GLOBAL_SETTINGS.UsingPrefabStart then
-			FOW_UnExploreAll()
-		end
-		
-		-- Increase starting resources to cover cost of building an TC
-		--if player.raceName ~= AGS_CIV_MONGOL then
-		--	Player_GiftResource(player.id, RT_Stone, AGS_SCATTERED_STONE)
+		--if AGS_GLOBAL_SETTINGS.UsingPrefabStart then
+		--	FOW_UnExploreAll()
 		--end
-		--Player_GiftResource(player.id, RT_Wood, AGS_SCATTERED_WOOD)
-		
-		--Core_CallDelegateFunctions("AdjustAIPlayers", AGS_AI_ADJUSTREASON_NOMAD, player)
 	end
 end
 ---------------------------------------------------------------------------------------------------
 -- Functions:
 ---------------------------------------------------------------------------------------------------
--- Removing prefab start.
-function AGS_Scattered_DestroySpawn()
-	AGS_Print("AGS_Scattered_DestroySpawn")
-	for _, player in pairs(PLAYERS) do	
-		EGroup_DestroyAllEntities(Player_GetEntities(player.id))
-		SGroup_DestroyAllSquads(Player_GetSquads(player.id))
-	end
-end
 -- Get spawn dimensions and initial squad location.
 function AGS_Scattered_GetScatterPosition()
 	local x = World_GetRand(0 - AGS_SCATTERED_RADIUS, AGS_SCATTERED_RADIUS)

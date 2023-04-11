@@ -47,7 +47,7 @@
 			<int name="global_unit_control_row" value="1" />
 		</group>
 		<list name="requirements">
-			<template_reference name="required" value="requirements\required_player_upgrade" List.ItemID="1998792468">
+			<template_reference name="required" value="requirements\required_player_upgrade" List.ItemID="1055670947">
 				<enum name="reason" value="usage" />
 				<locstring name="ui_name" value="0" />
 				<bool name="is_present" value="True" />
@@ -61,7 +61,7 @@
 				</group>
 				<bool name="include_completed" value="True" />
 			</template_reference>
-			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="1064962041">
+			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="-1791273636">
 				<enum name="reason" value="usage_and_display" />
 				<locstring name="ui_name" value="0" />
 				<bool name="is_present" value="False" />
@@ -75,7 +75,7 @@
 				</group>
 				<bool name="include_completed" value="True" />
 			</template_reference>
-			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="-64765000">
+			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="-298317526">
 				<enum name="reason" value="usage" />
 				<locstring name="ui_name" value="11150626" />
 				<bool name="is_present" value="False" />
@@ -89,11 +89,11 @@
 				</group>
 				<bool name="include_completed" value="True" />
 			</template_reference>
-			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="-87715471">
+			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="795992407">
 				<enum name="reason" value="usage_and_display" />
 				<locstring name="ui_name" value="0" />
 				<bool name="is_present" value="False" />
-				<instance_reference name="upgrade_name" value="upgrade\races\common\research\upgrade_tower_springald" mod="1ff2a908da9e434c98e779358e4b6aea" />
+				<instance_reference name="upgrade_name" value="upgrade\races\common\research\upgrade_tower_springald" />
 				<bool name="include_queued" value="False" />
 				<int name="min_completed" value="1" />
 				<int name="max_completed" value="100" />
@@ -103,11 +103,11 @@
 				</group>
 				<bool name="include_completed" value="True" />
 			</template_reference>
-			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="-1735750733">
+			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="-948051288">
 				<enum name="reason" value="usage" />
 				<locstring name="ui_name" value="11150626" />
 				<bool name="is_present" value="False" />
-				<instance_reference name="upgrade_name" value="upgrade\races\common\research\upgrade_tower_springald" mod="1ff2a908da9e434c98e779358e4b6aea" />
+				<instance_reference name="upgrade_name" value="upgrade\races\common\research\upgrade_tower_springald" />
 				<bool name="include_queued" value="True" />
 				<int name="min_completed" value="1" />
 				<int name="max_completed" value="100" />
@@ -117,11 +117,11 @@
 				</group>
 				<bool name="include_completed" value="True" />
 			</template_reference>
-			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="1559868078">
+			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="-5301112">
 				<enum name="reason" value="usage_and_display" />
 				<locstring name="ui_name" value="0" />
 				<bool name="is_present" value="False" />
-				<instance_reference name="upgrade_name" value="upgrade\races\common\research\upgrade_tower_cannon" mod="1ff2a908da9e434c98e779358e4b6aea" />
+				<instance_reference name="upgrade_name" value="upgrade\races\common\research\upgrade_tower_cannon" />
 				<bool name="include_queued" value="False" />
 				<int name="min_completed" value="1" />
 				<int name="max_completed" value="100" />
@@ -131,11 +131,11 @@
 				</group>
 				<bool name="include_completed" value="True" />
 			</template_reference>
-			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="1761955514">
+			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="-1661586900">
 				<enum name="reason" value="usage" />
 				<locstring name="ui_name" value="11150626" />
 				<bool name="is_present" value="False" />
-				<instance_reference name="upgrade_name" value="upgrade\races\common\research\upgrade_tower_cannon" mod="1ff2a908da9e434c98e779358e4b6aea" />
+				<instance_reference name="upgrade_name" value="upgrade\races\common\research\upgrade_tower_cannon" />
 				<bool name="include_queued" value="True" />
 				<int name="min_completed" value="1" />
 				<int name="max_completed" value="100" />
@@ -182,7 +182,7 @@
 			</template_reference>
 		</group>
 		<list name="upgrade_type">
-			<enum name="upgrade_type" value="military_upgrade" List.ItemID="-474078114" />
+			<enum name="upgrade_type" value="military_upgrade" List.ItemID="-509133095" />
 		</list>
 		<string name="requirements_openingbranch" value="" />
 		<instance_reference name="ui_menu" value="" />

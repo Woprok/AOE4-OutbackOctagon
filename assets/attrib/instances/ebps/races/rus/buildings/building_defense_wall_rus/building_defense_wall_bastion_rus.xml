@@ -1,0 +1,29 @@
+<instance version="4" description="" template="ebps">
+	<list name="extensions">
+		<template_reference name="exts" value="ebpextensions\entity_blueprint_ext" List.ItemID="-72758508" List.ParentItemID="-72758508">
+			<file name="alternate_sua" value="art\civilizations\english\structures\stonewall\eng_stonewall_bastion_end\eng_stonewall_bastion_end" overrideParent="True" />
+			<bool name="browsable_in_editor" value="True" overrideParent="True" />
+			<enum name="subclass_type" value="Wall" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\health_ext" List.ItemID="-1456959780" List.ParentItemID="-1456959780">
+			<bool name="can_repair" value="True" overrideParent="True" />
+			<enum_table name="armor_scaler_by_damage_type">
+				<float name="Melee" value="0" overrideParent="True" />
+			</enum_table>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\type_ext" List.ItemID="-936535524" List.ParentItemID="-936535524">
+			<list name="race_type_list" overrideParent="True">
+				<instance_reference name="race_type" value="racebps\rus" List.ItemID="1551509144" />
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\ui_ext" List.ItemID="-1318211719" List.ParentItemID="-1318211719">
+			<float name="decorator_height" value="11.5" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\territory_sector_layout_ext" List.ItemID="362742533" List.ParentItemID="362742533">
+			<instance_reference name="cap_attachment_list" value="attachments\attachment_lists\civilizations\common\buildings\building_defense_wall_stone_bastion_east" overrideParent="True" />
+			<file name="adjacent_to_impass_indicator_animator" value="art\civilizations\english\structures\stonewall\eng_stonewall_cliff_intersection\eng_stonewall_cliff_intersection" overrideParent="True" />
+		</template_reference>
+	</list>
+	<uniqueid name="pbgid" value="133440" />
+	<instance_reference name="parent_pbg" value="ebps\races\core\buildings\building_defense_wall_bastion" />
+</instance>

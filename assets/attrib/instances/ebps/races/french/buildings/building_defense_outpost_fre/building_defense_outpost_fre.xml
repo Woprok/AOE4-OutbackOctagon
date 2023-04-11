@@ -1,0 +1,41 @@
+<instance version="4" description="" template="ebps">
+	<list name="extensions">
+		<template_reference name="exts" value="ebpextensions\entity_blueprint_ext" List.ItemID="-123036312" List.ParentItemID="-123036312">
+			<instance_reference name="animator_attachments" value="attachments\attachment_lists\civilizations\french\buildings\defense_outpost_fre\defense_outpost_control_fre" overrideParent="True" />
+			<bool name="browsable_in_editor" value="True" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\health_ext" List.ItemID="-437286743" List.ParentItemID="-437286743">
+			<bool name="can_repair" value="True" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\sight_ext" List.ItemID="1792609820" List.ParentItemID="1792609820">
+			<group name="sight_package">
+				<float name="outer_radius" value="60" comment="French Trait - Outposts have Increased vision range" overrideParent="True" />
+			</group>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\type_ext" List.ItemID="225797870" List.ParentItemID="225797870">
+			<list name="race_type_list" overrideParent="True">
+				<instance_reference name="race_type" value="racebps\french" List.ItemID="-549766442" />
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\upgrade_ext" comment="French Trait: Arrowslits available in Age 1" List.ItemID="-32619215" List.ParentItemID="-32619215">
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\construction_ext" List.ItemID="1826153244" List.ParentItemID="1826153244">
+			<float name="orientation" value="0" overrideParent="True" />
+			<bool name="construction_site_erase_inactive" value="False" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\spawner_ext" List.ItemID="1007740528" List.ParentItemID="1007740528">
+			<instance_reference name="rally_pass_type" value="pass_types\infantry" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\combat_ext" List.ItemID="790744597" List.ParentItemID="790744597">
+			<list name="hardpoints">
+				<group name="hardpoint" List.ItemID="2000507907" List.ParentItemID="2000507907">
+					<list name="firing_offset_markers">
+						<string name="marker" value="fx_muz_arrow_00" overrideParent="True" List.ItemID="650725547" List.ParentItemID="650725547" />
+					</list>
+				</group>
+			</list>
+		</template_reference>
+	</list>
+	<uniqueid name="pbgid" value="132680" />
+	<instance_reference name="parent_pbg" value="ebps\races\core\buildings\building_defense_outpost" mod="1ff2a908da9e434c98e779358e4b6aea" />
+</instance>

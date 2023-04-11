@@ -47,7 +47,7 @@
 			<int name="global_unit_control_row" value="1" />
 		</group>
 		<list name="requirements">
-			<template_reference name="required" value="requirements\required_player_upgrade" List.ItemID="-1034642861">
+			<template_reference name="required" value="requirements\required_player_upgrade" List.ItemID="2000072085">
 				<enum name="reason" value="usage" />
 				<locstring name="ui_name" value="0" />
 				<bool name="is_present" value="True" />
@@ -61,7 +61,7 @@
 				</group>
 				<bool name="include_completed" value="True" />
 			</template_reference>
-			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="652316507">
+			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="1358686389">
 				<enum name="reason" value="usage_and_display" />
 				<locstring name="ui_name" value="0" />
 				<bool name="is_present" value="False" />
@@ -75,7 +75,7 @@
 				</group>
 				<bool name="include_completed" value="True" />
 			</template_reference>
-			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="-158495962">
+			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="-1882883870">
 				<enum name="reason" value="display" />
 				<locstring name="ui_name" value="0" />
 				<bool name="is_present" value="False" />
@@ -126,7 +126,7 @@
 			</template_reference>
 		</group>
 		<list name="upgrade_type">
-			<enum name="upgrade_type" value="military_upgrade" List.ItemID="-975692630" />
+			<enum name="upgrade_type" value="military_upgrade" List.ItemID="1796067087" />
 		</list>
 		<string name="requirements_openingbranch" value="" />
 		<instance_reference name="ui_menu" value="" />

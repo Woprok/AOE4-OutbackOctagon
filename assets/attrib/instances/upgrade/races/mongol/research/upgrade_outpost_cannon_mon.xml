@@ -1,0 +1,32 @@
+<instance version="4" description="Adds archers to the castle" template="upgrade">
+	<group name="upgrade_bag">
+		<list name="requirements">
+			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="-1443385020" List.ParentItemID="-1443385020">
+				<instance_reference name="upgrade_name" value="upgrade\races\mongol\research\upgrade_outpost_arrowslits_mon" mod="1ff2a908da9e434c98e779358e4b6aea" overrideParent="True" />
+			</template_reference>
+			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="-1670945732" List.ParentItemID="-1670945732">
+				<instance_reference name="upgrade_name" value="upgrade\races\mongol\research\upgrade_outpost_arrowslits_mon" mod="1ff2a908da9e434c98e779358e4b6aea" overrideParent="True" />
+			</template_reference>
+			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="-886460184" List.ParentItemID="-886460184">
+				<instance_reference name="upgrade_name" value="upgrade\races\mongol\research\upgrade_outpost_springald_mon" mod="1ff2a908da9e434c98e779358e4b6aea" overrideParent="True" />
+			</template_reference>
+			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="-1688908318" List.ParentItemID="-1688908318">
+				<instance_reference name="upgrade_name" value="upgrade\races\mongol\research\upgrade_outpost_springald_mon" mod="1ff2a908da9e434c98e779358e4b6aea" overrideParent="True" />
+			</template_reference>
+			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="2035737475" List.ParentItemID="2035737475">
+				<instance_reference name="upgrade_name" value="upgrade\races\mongol\research\upgrade_outpost_cannon_mon" mod="1ff2a908da9e434c98e779358e4b6aea" overrideParent="True" />
+			</template_reference>
+			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="343860146" List.ParentItemID="343860146">
+				<instance_reference name="upgrade_name" value="upgrade\races\mongol\research\upgrade_outpost_cannon_mon" mod="1ff2a908da9e434c98e779358e4b6aea" overrideParent="True" />
+			</template_reference>
+		</list>
+		<group name="time_cost">
+			<enum_table name="cost">
+				<float name="stone" value="750" overrideParent="True" />
+				<float name="gold" value="250" overrideParent="True" />
+			</enum_table>
+		</group>
+	</group>
+	<uniqueid name="pbgid" value="186400" />
+	<instance_reference name="parent_pbg" value="upgrade\races\common\research\upgrade_outpost_cannon" />
+</instance>

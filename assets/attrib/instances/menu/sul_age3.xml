@@ -13,12 +13,12 @@
 			<int name="ui_position_column" value="5" />
 		</group>
 		<template_reference name="behaviour" value="options\menu\inline">
-			<int name="columns" value="2" />
+			<int name="columns" value="3" />
 			<int name="rows" value="3" />
 			<bool name="auto_exit" value="True" />
 		</template_reference>
 		<list name="requirements">
-			<template_reference name="requirement" value="requirements\required_target_upgrade" List.ItemID="-508632793">
+			<template_reference name="requirement" value="requirements\required_target_upgrade" List.ItemID="344221831">
 				<enum name="reason" value="usage" />
 				<locstring name="ui_name" value="0" />
 				<bool name="check_entities_only" value="False" />

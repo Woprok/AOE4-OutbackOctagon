@@ -1,8 +1,26 @@
-<instance version="4" override_type="merge" description="" template="ebps">
-	<list name="extensions" overrideParent="True">
-		<template_reference name="exts" value="ebpextensions\requirement_ext" List.ItemID="1385713189" List.ParentItemID="-1728814585">
+<instance version="4" description="" template="ebps">
+	<list name="extensions">
+		<template_reference name="exts" value="ebpextensions\entity_blueprint_ext" List.ItemID="-1212808348" List.ParentItemID="-1212808348">
+			<instance_reference name="animator_attachments" value="attachments\attachment_lists\civilizations\rus\buildings\building_defense_wall_rus\building_defense_wall_stone_tower_rus" overrideParent="True" />
+			<bool name="browsable_in_editor" value="True" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\health_ext" List.ItemID="2028962899" List.ParentItemID="2028962899">
+			<bool name="can_repair" value="True" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\type_ext" List.ItemID="-923485527" List.ParentItemID="-923485527">
+			<list name="race_type_list" overrideParent="True">
+				<instance_reference name="race_type" value="racebps\rus" List.ItemID="-1274365483" />
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\ui_ext" List.ItemID="172807975" List.ParentItemID="172807975">
+			<group name="ui_codex_info">
+				<int name="priority" value="3751" overrideParent="True" />
+				<bool name="exclusive" value="True" overrideParent="True" />
+			</group>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\requirement_ext" List.ItemID="-1728814585" List.ParentItemID="-1728814585">
 			<list name="requirement_table" overrideParent="True">
-				<template_reference name="required" value="requirements\required_player_upgrade" overrideParent="True" List.ItemID="578861642">
+				<template_reference name="required" value="requirements\required_player_upgrade" overrideParent="True" List.ItemID="1062731531">
 					<enum name="reason" value="usage_and_display" overrideParent="True" />
 					<locstring name="ui_name" value="0" />
 					<bool name="is_present" value="True" />
@@ -17,7 +35,11 @@
 					<bool name="include_completed" value="True" />
 				</template_reference>
 			</list>
-			<state_tree_node name="requirement_statetree" value="" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\territory_sector_layout_ext" List.ItemID="-730002550" List.ParentItemID="-730002550">
+			<template_reference name="placement_style" value="options\ebpextensions\hexmapext\placement_styles\placement_primary_fence_dependent">
+				<instance_reference name="depends_on_blueprint" value="ebps\races\rus\buildings\building_defense_wall_rus\building_defense_wall_rus" mod="1ff2a908da9e434c98e779358e4b6aea" overrideParent="True" />
+			</template_reference>
 		</template_reference>
 	</list>
 	<uniqueid name="pbgid" value="133439" />

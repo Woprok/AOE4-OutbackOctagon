@@ -1,0 +1,87 @@
+<instance version="4" description="Mongol outpost" template="ebps">
+	<list name="extensions">
+		<template_reference name="exts" value="ebpextensions\entity_blueprint_ext" List.ItemID="-123036312" List.ParentItemID="-123036312">
+			<instance_reference name="animator_attachments" value="attachments\attachment_lists\civilizations\mongol\buildings\outpost_mon\tier1_outpost_mon" overrideParent="True" />
+			<bool name="browsable_in_editor" value="True" overrideParent="True" />
+			<enum name="subclass_type" value="MongolBuilding" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\cost_ext" List.ItemID="1685947166" List.ParentItemID="1685947166">
+			<group name="time_cost">
+				<enum_table name="cost">
+					<float name="wood" value="100" overrideParent="True" />
+					<float name="stone" value="0" overrideParent="True" />
+				</enum_table>
+			</group>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\type_ext" List.ItemID="225797870" List.ParentItemID="225797870">
+			<list name="race_type_list" overrideParent="True">
+				<instance_reference name="race_type" value="racebps\mongol" List.ItemID="-750980849" />
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\ui_ext" List.ItemID="-469897641" List.ParentItemID="-469897641">
+			<file name="portrait_icon" value="" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\upgrade_ext" List.ItemID="-32619215" List.ParentItemID="-32619215">
+			<list name="standard_upgrades" overrideParent="True">
+				<instance_reference name="upgrade" value="upgrade\races\mongol\research\upgrade_outpost_arrowslits_mon" overrideParent="True" List.ItemID="-1854690822" />
+				<instance_reference name="upgrade" value="upgrade\races\mongol\research\upgrade_outpost_springald_mon" overrideParent="True" List.ItemID="-1140069785" />
+				<instance_reference name="upgrade" value="upgrade\races\mongol\research\upgrade_outpost_cannon_mon" overrideParent="True" List.ItemID="43288901" />
+				<instance_reference name="upgrade" value="upgrade\races\mongol\research\unique\upgrade_ortoo_all_units_mon" List.ItemID="1024705972" />
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\site_ext" List.ItemID="375853765" List.ParentItemID="375853765">
+			<bool name="snap_to_construction_grid" value="True" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\construction_ext" List.ItemID="1826153244" List.ParentItemID="1826153244">
+			<instance_reference name="ui_range" value="ui_reticule\structure_range" overrideParent="True" />
+			<bool name="show_ability_range_in_construction_item_preview" value="True" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\spawner_ext" List.ItemID="1007740528" List.ParentItemID="1007740528">
+			<instance_reference name="rally_pass_type" value="pass_types\infantry" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\requirement_ext" List.ItemID="-942670541" List.ParentItemID="-942670541">
+			<list name="requirement_table">
+				<template_reference name="required" value="requirements\required_any_in_list" List.ItemID="-404719881" List.ParentItemID="-404719881">
+					<list name="requirements">
+						<template_reference name="requirement" value="requirements\required_structure" List.ItemID="-250844149" List.ListAction="Append">
+							<enum name="reason" value="usage" />
+							<locstring name="ui_name" value="0" />
+							<instance_reference name="structure_name" value="ebps\races\mongol\buildings\building_town_center_moving_mon" overrideParent="True" />
+							<int name="required_structure_count" value="1" />
+							<bool name="check_team" value="False" />
+							<bool name="require_construction_complete" value="True" />
+							<group name="include_pbg_parenting">
+								<bool name="include_child_pbgs" value="True" overrideParent="True" />
+								<bool name="include_parent_pbgs" value="False" />
+							</group>
+						</template_reference>
+						<template_reference name="requirement" value="requirements\required_structure" List.ItemID="285388744" List.ListAction="Append">
+							<enum name="reason" value="usage" />
+							<locstring name="ui_name" value="0" />
+							<instance_reference name="structure_name" value="ebps\races\mongol\buildings\building_town_center_capital_moving_mon" overrideParent="True" />
+							<int name="required_structure_count" value="1" />
+							<bool name="check_team" value="False" />
+							<bool name="require_construction_complete" value="True" />
+							<group name="include_pbg_parenting">
+								<bool name="include_child_pbgs" value="True" overrideParent="True" />
+								<bool name="include_parent_pbgs" value="False" />
+							</group>
+						</template_reference>
+					</list>
+				</template_reference>
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\ability_ext" overrideParent="True" List.ItemID="-327068324" List.ParentItemID="-327068324">
+			<list name="abilities" overrideParent="True">
+				<instance_reference name="ability" value="abilities\timed_abilities\civ_core\core_building_scuttle" List.ItemID="-1007305622" />
+				<instance_reference name="ability" value="abilities\always_on_abilities\mongol\ortoo_outpost_speed_aura_mon" List.ItemID="679946215" />
+				<instance_reference name="ability" value="abilities\modal_abilities\core\town_bell\hold_return_to_work" List.ItemID="-288044484" />
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\statemodel_ext" List.ItemID="-1494997589" List.ParentItemID="-1494997589">
+			<instance_reference name="schema" value="statemodel_schema\buildings\civilizations\mongols\outpost_mon" overrideParent="True" />
+		</template_reference>
+	</list>
+	<uniqueid name="pbgid" value="130795" />
+	<instance_reference name="parent_pbg" value="ebps\races\core\buildings\building_defense_outpost" mod="1ff2a908da9e434c98e779358e4b6aea" />
+</instance>

@@ -1,0 +1,29 @@
+<instance version="4" description="" template="ebps">
+	<list name="extensions">
+		<template_reference name="exts" value="ebpextensions\entity_blueprint_ext" List.ItemID="-123036312" List.ParentItemID="-123036312">
+			<instance_reference name="animator_attachments" value="attachments\attachment_lists\civilizations\sultanate\buildings\defense_outpost_sul\defense_outpost_control_sul" overrideParent="True" />
+			<bool name="browsable_in_editor" value="True" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\type_ext" List.ItemID="225797870" List.ParentItemID="225797870">
+			<list name="race_type_list" overrideParent="True">
+				<instance_reference name="race_type" value="racebps\sultanate" List.ItemID="-94394308" />
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\upgrade_ext" List.ItemID="-32619215" List.ParentItemID="-32619215">
+			<list name="standard_upgrades" overrideParent="True">
+				<instance_reference name="upgrade" value="upgrade\races\common\research\upgrade_outpost_arrowslits" List.ItemID="104504132" />
+				<instance_reference name="upgrade" value="upgrade\races\common\research\upgrade_outpost_cannon" List.ItemID="-200579" />
+				<instance_reference name="upgrade" value="upgrade\races\common\research\upgrade_outpost_springald" List.ItemID="1542501823" />
+				<instance_reference name="upgrade" value="upgrade\races\common\research\upgrade_outpost_stone" List.ItemID="-1853362207" />
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\spawner_ext" List.ItemID="1007740528" List.ParentItemID="1007740528">
+			<instance_reference name="rally_pass_type" value="pass_types\infantry" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\statemodel_ext" List.ItemID="-1494997589" List.ParentItemID="-1494997589">
+			<instance_reference name="schema" value="statemodel_schema\buildings\civilizations\sultanate\outpost_sul" overrideParent="True" />
+		</template_reference>
+	</list>
+	<uniqueid name="pbgid" value="135795" />
+	<instance_reference name="parent_pbg" value="ebps\races\core\buildings\building_defense_outpost" mod="1ff2a908da9e434c98e779358e4b6aea" />
+</instance>

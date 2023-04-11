@@ -50,7 +50,7 @@
 			<int name="global_unit_control_row" value="1" />
 		</group>
 		<list name="requirements">
-			<template_reference name="required" value="requirements\required_player_upgrade" List.ItemID="561799342">
+			<template_reference name="required" value="requirements\required_player_upgrade" List.ItemID="1333681373">
 				<enum name="reason" value="usage" />
 				<locstring name="ui_name" value="0" />
 				<bool name="is_present" value="True" />
@@ -64,11 +64,11 @@
 				</group>
 				<bool name="include_completed" value="True" />
 			</template_reference>
-			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="-1370292598">
+			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="1118369038">
 				<enum name="reason" value="usage" />
 				<locstring name="ui_name" value="11246227" />
 				<bool name="is_present" value="False" />
-				<instance_reference name="upgrade_name" value="upgrade\races\common\research\upgrade_outpost_arrowslits" />
+				<instance_reference name="upgrade_name" value="upgrade\races\common\research\upgrade_outpost_arrowslits" mod="1ff2a908da9e434c98e779358e4b6aea" />
 				<bool name="include_queued" value="True" />
 				<int name="min_completed" value="1" />
 				<int name="max_completed" value="100" />
@@ -78,11 +78,11 @@
 				</group>
 				<bool name="include_completed" value="True" />
 			</template_reference>
-			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="-162748552">
+			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="-1892810699">
 				<enum name="reason" value="usage_and_display" />
 				<locstring name="ui_name" value="0" />
 				<bool name="is_present" value="False" />
-				<instance_reference name="upgrade_name" value="upgrade\races\common\research\upgrade_outpost_arrowslits" />
+				<instance_reference name="upgrade_name" value="upgrade\races\common\research\upgrade_outpost_arrowslits" mod="1ff2a908da9e434c98e779358e4b6aea" />
 				<bool name="include_queued" value="False" />
 				<int name="min_completed" value="1" />
 				<int name="max_completed" value="100" />
@@ -92,7 +92,7 @@
 				</group>
 				<bool name="include_completed" value="True" />
 			</template_reference>
-			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="-723590716">
+			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="2019334680">
 				<enum name="reason" value="usage_and_display" />
 				<locstring name="ui_name" value="0" />
 				<bool name="is_present" value="False" />
@@ -106,7 +106,7 @@
 				</group>
 				<bool name="include_completed" value="True" />
 			</template_reference>
-			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="1030919243">
+			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="-1240657658">
 				<enum name="reason" value="usage" />
 				<locstring name="ui_name" value="11246227" />
 				<bool name="is_present" value="False" />
@@ -120,7 +120,7 @@
 				</group>
 				<bool name="include_completed" value="True" />
 			</template_reference>
-			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="1963257219">
+			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="942425273">
 				<enum name="reason" value="usage" />
 				<locstring name="ui_name" value="11246227" />
 				<bool name="is_present" value="False" />
@@ -134,7 +134,7 @@
 				</group>
 				<bool name="include_completed" value="True" />
 			</template_reference>
-			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="117236404">
+			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="-1465124420">
 				<enum name="reason" value="usage_and_display" />
 				<locstring name="ui_name" value="0" />
 				<bool name="is_present" value="False" />
@@ -148,11 +148,11 @@
 				</group>
 				<bool name="include_completed" value="True" />
 			</template_reference>
-			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="-1291278454">
+			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="1244261384">
 				<enum name="reason" value="usage" />
 				<locstring name="ui_name" value="11150626" />
 				<bool name="is_present" value="False" />
-				<instance_reference name="upgrade_name" value="upgrade\races\chinese\research\upgrade_outpost_handcannonslits_chi" mod="1ff2a908da9e434c98e779358e4b6aea" />
+				<instance_reference name="upgrade_name" value="upgrade\races\chinese\research\upgrade_outpost_handcannonslits_chi" />
 				<bool name="include_queued" value="True" />
 				<int name="min_completed" value="1" />
 				<int name="max_completed" value="100" />
@@ -162,11 +162,11 @@
 				</group>
 				<bool name="include_completed" value="True" />
 			</template_reference>
-			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="1166488819">
+			<template_reference name="required" value="requirements\required_entity_upgrade" List.ItemID="2078373660">
 				<enum name="reason" value="usage_and_display" />
 				<locstring name="ui_name" value="0" />
 				<bool name="is_present" value="False" />
-				<instance_reference name="upgrade_name" value="upgrade\races\chinese\research\upgrade_outpost_handcannonslits_chi" mod="1ff2a908da9e434c98e779358e4b6aea" />
+				<instance_reference name="upgrade_name" value="upgrade\races\chinese\research\upgrade_outpost_handcannonslits_chi" />
 				<bool name="include_queued" value="False" />
 				<int name="min_completed" value="1" />
 				<int name="max_completed" value="100" />
@@ -213,7 +213,7 @@
 			</template_reference>
 		</group>
 		<list name="upgrade_type">
-			<enum name="upgrade_type" value="military_upgrade" List.ItemID="-1548594558" />
+			<enum name="upgrade_type" value="military_upgrade" List.ItemID="1525265612" />
 		</list>
 		<string name="requirements_openingbranch" value="" />
 		<instance_reference name="ui_menu" value="" />

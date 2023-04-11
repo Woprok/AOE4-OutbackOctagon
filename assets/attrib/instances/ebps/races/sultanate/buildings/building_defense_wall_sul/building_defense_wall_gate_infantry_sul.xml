@@ -1,0 +1,23 @@
+<instance version="4" description="" template="ebps">
+	<list name="extensions">
+		<template_reference name="exts" value="ebpextensions\cost_ext" List.ItemID="27741658" List.ParentItemID="27741658">
+			<group name="time_cost">
+				<float name="time_seconds" value="60" overrideParent="True" />
+			</group>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\requirement_ext" List.ItemID="-2008251085" List.ParentItemID="-2008251085">
+			<list name="requirement_table">
+				<template_reference name="required" value="requirements\required_statemodelbool" overrideParent="True" List.ItemID="-1223953072" List.ParentItemID="-1223953072">
+					<locstring name="ui_name" value="11154521" />
+					<enum name="reason" value="usage" />
+					<enum name="key" value="compound_of_the_defender_active_sul" />
+					<enum name="data_source_type" value="player_datasource" />
+					<bool name="default_value" value="False" />
+					<bool name="compare_to_value" value="True" />
+				</template_reference>
+			</list>
+		</template_reference>
+	</list>
+	<uniqueid name="pbgid" value="203944" />
+	<instance_reference name="parent_pbg" value="ebps\races\sultanate\buildings\building_defense_wall_sul\building_defense_wall_gate_sul" mod="1ff2a908da9e434c98e779358e4b6aea" />
+</instance>

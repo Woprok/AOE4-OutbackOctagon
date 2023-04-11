@@ -5,10 +5,10 @@
 				<instance_reference name="building" value="ebps\races\mongol\buildings\building_town_center_dummy_start" overrideParent="True" />
 			</group>
 		</list>
-		<list name="starting_units" removedIds="1657219302, 1507945379, 932114225, 1311524786, -1280268849, -1670031990, 1802817272, -430702088, 961027287">
+		<list name="starting_units" removedIds="1657219302, 1507945379, 932114225, 1311524786, -1280268849, -1670031990, 961027287, -430702088, 1802817272">
 		</list>
 		<template_reference name="starting_units_spawner" value="options\spawn\scatter" overrideParent="True">
-			<float name="spawn_radius" value="340" overrideParent="True" />
+			<float name="spawn_radius" value="75" overrideParent="True" />
 			<int name="spawn_position_attempts" value="1" overrideParent="True" />
 		</template_reference>
 		<enum_table name="resource_starting_amount">

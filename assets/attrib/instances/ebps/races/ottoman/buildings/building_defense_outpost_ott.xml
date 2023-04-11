@@ -1,0 +1,26 @@
+<instance version="4" description="" template="ebps">
+	<list name="extensions">
+		<template_reference name="exts" value="ebpextensions\entity_blueprint_ext" List.ItemID="-123036312" List.ParentItemID="-123036312">
+			<instance_reference name="animator_attachments" value="attachments\attachment_lists\civilizations\ottoman\buildings\defense_outpost_ott\defense_outpost_control_ott" overrideParent="True" />
+			<bool name="browsable_in_editor" value="True" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\type_ext" List.ItemID="225797870" List.ParentItemID="225797870">
+			<list name="race_type_list" overrideParent="True">
+				<instance_reference name="race_type" value="racebps\ottoman" overrideParent="True" List.ItemID="-787807092" />
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\hold_ext" List.ItemID="324250167" List.ParentItemID="324250167">
+			<list name="acceptable_types" overrideParent="True">
+				<enum name="acceptable_type" value="hold_infantry" List.ItemID="962063684" />
+				<enum name="acceptable_type" value="hold_infantry_ranged" List.ItemID="1094337900" />
+				<enum name="acceptable_type" value="hold_villager" List.ItemID="383086018" />
+				<enum name="acceptable_type" value="hold_monk" List.ItemID="1176710436" />
+				<enum name="acceptable_type" value="hold_cavalry" List.ItemID="-1360003654" />
+				<enum name="acceptable_type" value="hold_khan" List.ItemID="1708677970" />
+				<enum name="acceptable_type" value="hold_trader" List.ItemID="1327333872" />
+			</list>
+		</template_reference>
+	</list>
+	<uniqueid name="pbgid" value="2034591" />
+	<instance_reference name="parent_pbg" value="ebps\races\core\buildings\building_defense_outpost" mod="1ff2a908da9e434c98e779358e4b6aea" />
+</instance>
