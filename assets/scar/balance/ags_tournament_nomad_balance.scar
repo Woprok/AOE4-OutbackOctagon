@@ -54,7 +54,8 @@ function AGS_TournamentNomadBalance_OnSquadKilled(context)
 		return	
 	end
 	-- We need to verify that we are dealing with ships that can hold squads
-	if not Squad_IsOfType(context.victim, AGS_BP_TRANSPORT_SHIP) and not (Squad_IsOfType(context.victim, AGS_BP_MILITARY_SCHOOL) and Squad_IsOfType(context.victim, AGS_BP_NAVAL_GALLEASS)) then
+	-- not (Squad_IsOfType(context.victim, AGS_BP_MILITARY_SCHOOL) and Squad_IsOfType(context.victim, AGS_BP_NAVAL_GALLEASS)) 
+	if not Squad_IsOfType(context.victim, AGS_BP_TRANSPORT_SHIP) then
 		return
 	end
 	-- We have ship that might have hold a king before it was killed.

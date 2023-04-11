@@ -292,6 +292,7 @@ AGS_ENTITY_TABLE = {
 		house = "building_house_ott",	
 		blacksmith = "building_tech_unit_infantry_ott",
 		outpost = "building_defense_outpost_ott",
+		naval_galleass = "unit_naval_galleass_4_ott",
 	},
 }
 

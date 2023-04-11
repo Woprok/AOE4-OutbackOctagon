@@ -1,0 +1,749 @@
+<instance version="4" description="" template="ebps">
+	<list name="extensions">
+		<template_reference name="exts" value="ebpextensions\action_apply_ext" List.ItemID="1537439943" List.ParentItemID="1537439943">
+			<list name="action_state_trees" overrideParent="True">
+				<group name="container" List.ItemID="-605725365">
+					<string name="state_tree" value="unit_action_apply\units\naval_generic" />
+				</group>
+				<group name="container" List.ItemID="-123313049">
+					<string name="state_tree" value="disable_hold_ott" overrideParent="True" />
+				</group>
+				<group name="container" List.ItemID="2032330071">
+					<string name="state_tree" value="combat_ship_action_apply" />
+				</group>
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\cost_ext" List.ItemID="2136739756" List.ParentItemID="2136739756">
+			<group name="time_cost">
+				<enum_table name="cost">
+					<float name="food" value="150" overrideParent="True" />
+				</enum_table>
+			</group>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\health_ext" List.ItemID="616929351" List.ParentItemID="616929351">
+			<float name="hitpoints" value="750" overrideParent="True" />
+			<enum_table name="armor_scaler_by_damage_type">
+				<float name="Ranged" value="0" overrideParent="True" />
+			</enum_table>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\type_ext" List.ItemID="-67126189" List.ParentItemID="-67126189">
+			<list name="unit_type_list" overrideParent="True">
+				<enum name="unit_type" value="military" List.ItemID="-387019354" />
+				<enum name="unit_type" value="siegeable" List.ItemID="-2147177569" />
+				<enum name="unit_type" value="ship" List.ItemID="-428861045" />
+				<enum name="unit_type" value="naval_unit" List.ItemID="1372037955" />
+				<enum name="unit_type" value="naval_galleass" List.ItemID="-1741518699" />
+				<enum name="unit_type" value="ranged" List.ItemID="568846003" />
+				<enum name="unit_type" value="annihilation_condition" List.ItemID="1454242368" />
+				<enum name="unit_type" value="gunpowder" List.ItemID="722570250" />
+				<enum name="unit_type" value="included_by_military_hotkeys" List.ItemID="77083137" />
+				<enum name="unit_type" value="military_school_ott" List.ItemID="-532361275" />
+				<enum name="unit_type" value="naval_transport" List.ItemID="177639902" />
+				<enum name="unit_type" value="transport" List.ItemID="924253826" />
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\combat_ext" List.ItemID="815706891" List.ParentItemID="815706891">
+			<list name="hardpoints" overrideParent="True">
+				<group name="hardpoint" List.ItemID="1512307638">
+					<float name="parent_hardpoint" value="-1" />
+					<list name="weapon_table">
+						<group name="weapon" List.ItemID="1296076543">
+							<group name="heading">
+								<float name="x" value="0" />
+								<float name="y" value="0" />
+								<float name="z" value="1" />
+							</group>
+							<float name="length" value="4" />
+							<group name="origin">
+								<float name="x" value="0" />
+								<float name="y" value="1.5" overrideParent="True" />
+								<float name="z" value="3.5" overrideParent="True" />
+							</group>
+							<enum name="type" value="default" />
+							<template_reference name="weapon_entity_attachment" value="options\attachment_types\entity_create_attachment">
+								<template_reference name="entity_attach_data" value="attachments\attach_data_entity">
+									<template_reference name="attach_data" value="attachments\attach_data">
+										<string name="marker_name_parent" value="mrk_weapon_bow" />
+										<string name="parent_rigidbody_target_name" value="" />
+										<enum name="game_object_attachment_type" value="scenegraph" />
+									</template_reference>
+									<instance_reference name="ebp" value="ebps\races\ottoman\weapons\wpn_range_naval_galley_bombard_ott" overrideParent="True" />
+									<group name="attachment_flags">
+										<bool name="sim_only" value="False" />
+										<bool name="no_pathfinding" value="False" />
+										<bool name="not_snappable" value="False" />
+										<bool name="restore_snap_to_ground_on_detach" value="False" />
+										<bool name="no_sim_update" value="False" />
+										<bool name="join_parent_squad" value="False" />
+										<bool name="redirect_damage_to_parent_entity" value="True" />
+										<bool name="assign_as_attachment_combat_leader" value="False" />
+										<bool name="assign_as_attachment_movement_leader" value="False" />
+										<bool name="receive_parent_animations" value="False" />
+										<bool name="receive_parent_death" value="False" />
+									</group>
+								</template_reference>
+								<list name="possible_blueprint_updates">
+								</list>
+							</template_reference>
+							<template_reference name="non_entity_weapon_wrapper" value="">
+							</template_reference>
+						</group>
+					</list>
+					<bool name="receives_attack_commands" value="True" overrideParent="True" />
+					<string name="base_marker" value="" />
+					<list name="preferred_inventory_item_categories">
+					</list>
+					<list name="firing_offset_markers">
+					</list>
+					<bool name="initialize_weapons_on_creation" value="True" />
+					<string name="offhand_marker" value="" />
+				</group>
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\upgrade_ext" List.ItemID="1789671804" List.ParentItemID="1789671804">
+			<list name="standard_upgrades" overrideParent="True">
+				<instance_reference name="upgrade" value="upgrade\races\ottoman\research\naval\upgrade_naval_grand_galley_mil_school_ott" List.ItemID="273656586" />
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\statemodel_ext" List.ItemID="1962838028" List.ParentItemID="1962838028">
+			<instance_reference name="schema" value="statemodel_schema\units\civilizations\ottoman\grand_galley_ott" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\tier_ext" List.ItemID="-329187785" List.ParentItemID="-329187785">
+			<list name="tier_group_list">
+				<list name="tier_group" List.ItemID="1889298141" List.ParentItemID="1889298141">
+					<group name="tier" List.ItemID="1119160868" List.ParentItemID="1119160868">
+						<instance_reference name="attachments" value="attachments\attachment_lists\civilizations\ottoman\units\tier3_naval_galleass_ott" overrideParent="True" />
+					</group>
+				</list>
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\hold_ext" List.ItemID="-1164655411" List.ListAction="Append">
+			<list name="acceptable_types" overrideParent="True">
+				<enum name="acceptable_type" value="hold_infantry" List.ItemID="1384028592" />
+				<enum name="acceptable_type" value="hold_villager" List.ItemID="240965018" />
+				<enum name="acceptable_type" value="hold_infantry_ranged" List.ItemID="-1714018015" />
+				<enum name="acceptable_type" value="hold_siege" List.ItemID="1149717049" />
+				<enum name="acceptable_type" value="hold_monk" List.ItemID="721391235" />
+				<enum name="acceptable_type" value="hold_khan" List.ItemID="2080436806" />
+				<enum name="acceptable_type" value="hold_cavalry" List.ItemID="606808536" />
+				<enum name="acceptable_type" value="hold_trader" List.ItemID="1612660087" />
+			</list>
+			<bool name="attach_passenger_animator" value="False" />
+			<bool name="can_attack_occupant" value="False" />
+			<bool name="invulnerable_in_hold" value="True" />
+			<bool name="disable_area_effect_on_overflow_slot" value="False" />
+			<bool name="disable_unload" value="False" />
+			<bool name="disallow_load_command" value="False" />
+			<bool name="enable_trigger_abilities_in_hold" value="False" />
+			<bool name="enable_trigger_attack_in_hold" value="False" />
+			<bool name="holds_produced_squads" value="False" />
+			<bool name="keep_abandoned_team_weapon" value="False" />
+			<float name="load_seconds" value="1" />
+			<float name="max_load_seconds" value="5" />
+			<float name="min_hold_seconds" value="1" />
+			<float name="num_slots" value="25" overrideParent="True" />
+			<float name="num_squad_slots" value="25" overrideParent="True" />
+			<float name="percent_unload_on_death" value="0" />
+			<bool name="revert_ownership" value="False" />
+			<bool name="scavenge_enabled" value="False" />
+			<enum_table name="scavenge_resource">
+				<float name="action" value="0" />
+				<float name="command" value="0" />
+				<float name="popcap" value="0" />
+				<float name="food" value="0" />
+				<float name="wood" value="0" />
+				<float name="stone" value="0" />
+				<float name="gold" value="0" />
+				<float name="militia_hre" value="0" />
+			</enum_table>
+			<bool name="shared_with_other_same_type_units" value="False" />
+			<float name="unload_seconds" value="0.5" />
+			<bool name="use_building_target_scan_radius" value="True" />
+			<bool name="use_crouching_posture" value="False" />
+			<list name="on_loading_modifiers">
+			</list>
+			<bool name="despawn_on_load" value="False" />
+			<float name="load_distance" value="12" />
+			<bool name="maintain_selection" value="True" />
+			<template_reference name="on_loaded_hold_action_tree" value="state_tree_reference_info">
+				<state_tree_node name="ActionTree_OpeningBranch" value="" />
+				<bool name="start_suspended" value="False" />
+			</template_reference>
+			<template_reference name="on_loaded_squad_action_tree" value="state_tree_reference_info">
+				<state_tree_node name="ActionTree_OpeningBranch" value="" />
+				<bool name="start_suspended" value="False" />
+			</template_reference>
+			<template_reference name="on_unloaded_squad_instant_action_tree" value="state_tree_reference_info">
+				<state_tree_node name="ActionTree_OpeningBranch" value="" />
+				<bool name="start_suspended" value="False" />
+			</template_reference>
+			<bool name="convert_garrision_on_owner_change" value="False" />
+			<bool name="move_on_remove_hold" value="False" />
+			<bool name="load_separate_entrances" value="False" />
+			<bool name="can_issue_retreat_to_hold_contents" value="True" />
+			<bool name="ensure_pathability_to_hold_for_unload" value="True" />
+			<float name="unload_path_distance_max" value="15" />
+			<bool name="is_indoors" value="True" />
+			<bool name="right_click_garrison_always_enabled" value="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\spawner_ext" List.ItemID="1858356822" List.ListAction="Append">
+			<bool name="must_be_in_supply" value="False" />
+			<float name="reinforce_radius" value="0" />
+			<list name="spawn_items">
+				<group name="spawn_item" comment="spearman - dark age" List.ItemID="1583292773">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\ottoman\unit_spearman_1_ott" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="-1" />
+						<int name="ui_position_column" value="-1" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="-500" />
+						<float name="wood" value="-500" />
+						<float name="stone" value="0" />
+						<float name="gold" value="-500" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="" />
+				</group>
+				<group name="spawn_item" comment="spearman - feudal age" List.ItemID="1285840970">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\ottoman\unit_spearman_2_ott" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="-1" />
+						<int name="ui_position_column" value="-1" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="-500" />
+						<float name="wood" value="-500" />
+						<float name="stone" value="0" />
+						<float name="gold" value="-500" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="" />
+				</group>
+				<group name="spawn_item" comment="spearman - castle age" List.ItemID="1844448031">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\ottoman\unit_spearman_3_ott" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="-1" />
+						<int name="ui_position_column" value="-1" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="-500" />
+						<float name="wood" value="-500" />
+						<float name="stone" value="0" />
+						<float name="gold" value="-500" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="" />
+				</group>
+				<group name="spawn_item" comment="spearman - imperial age" List.ItemID="-441874482">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\ottoman\unit_spearman_4_ott" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="-1" />
+						<int name="ui_position_column" value="-1" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="-500" />
+						<float name="wood" value="-500" />
+						<float name="stone" value="0" />
+						<float name="gold" value="-500" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="" />
+				</group>
+				<group name="spawn_item" comment="man-at-arms - castle age&#xD;&#xA;" List.ItemID="-772617718">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\ottoman\unit_manatarms_3_ott" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="-1" />
+						<int name="ui_position_column" value="-1" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="-500" />
+						<float name="wood" value="-500" />
+						<float name="stone" value="0" />
+						<float name="gold" value="-500" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="" />
+				</group>
+				<group name="spawn_item" comment="man-at-arms - imperial age&#xD;&#xA;" List.ItemID="-87117146">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\ottoman\unit_manatarms_4_ott" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="-1" />
+						<int name="ui_position_column" value="-1" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="-500" />
+						<float name="wood" value="-500" />
+						<float name="stone" value="0" />
+						<float name="gold" value="-500" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="" />
+				</group>
+				<group name="spawn_item" comment="handcannon - castle age + chemistry" List.ItemID="-80141882">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\ottoman\unit_handcannon_3_ott" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="-1" />
+						<int name="ui_position_column" value="-1" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="-500" />
+						<float name="wood" value="-500" />
+						<float name="stone" value="0" />
+						<float name="gold" value="-500" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="" />
+				</group>
+				<group name="spawn_item" comment="handcannon - imperial age + chemistry" List.ItemID="-2053293480">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\ottoman\unit_handcannon_4_ott" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="-1" />
+						<int name="ui_position_column" value="-1" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="-500" />
+						<float name="wood" value="-500" />
+						<float name="stone" value="0" />
+						<float name="gold" value="-500" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="" />
+				</group>
+				<group name="spawn_item" comment="archer - feudal age " List.ItemID="1675403850">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\ottoman\unit_archer_2_ott" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="-1" />
+						<int name="ui_position_column" value="-1" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="-500" />
+						<float name="wood" value="-500" />
+						<float name="stone" value="0" />
+						<float name="gold" value="-500" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="" />
+				</group>
+				<group name="spawn_item" comment="archer - castle age " List.ItemID="816103974">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\ottoman\unit_archer_3_ott" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="-1" />
+						<int name="ui_position_column" value="-1" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="-500" />
+						<float name="wood" value="-500" />
+						<float name="stone" value="0" />
+						<float name="gold" value="-500" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="" />
+				</group>
+				<group name="spawn_item" comment="archer - imperial age " List.ItemID="684109240">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\ottoman\unit_archer_4_ott" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="-1" />
+						<int name="ui_position_column" value="-1" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="-500" />
+						<float name="wood" value="-500" />
+						<float name="stone" value="0" />
+						<float name="gold" value="-500" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="" />
+				</group>
+				<group name="spawn_item" comment="crossbowman - castle age" List.ItemID="486048369">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\ottoman\unit_crossbowman_3_ott" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="-1" />
+						<int name="ui_position_column" value="-1" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="-500" />
+						<float name="wood" value="-500" />
+						<float name="stone" value="0" />
+						<float name="gold" value="-500" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="" />
+				</group>
+				<group name="spawn_item" comment="crossbowman - imperial age" List.ItemID="1930125119">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\ottoman\unit_crossbowman_4_ott" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="-1" />
+						<int name="ui_position_column" value="-1" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="-500" />
+						<float name="wood" value="-500" />
+						<float name="stone" value="0" />
+						<float name="gold" value="-500" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="" />
+				</group>
+				<group name="spawn_item" comment="Horseman" List.ItemID="-1825509169">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\ottoman\unit_horseman_2_ott" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="-1" />
+						<int name="ui_position_column" value="-1" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="-500" />
+						<float name="wood" value="-500" />
+						<float name="stone" value="0" />
+						<float name="gold" value="-500" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="" />
+				</group>
+				<group name="spawn_item" comment="Veteran Horseman" List.ItemID="1210549984">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\ottoman\unit_horseman_3_ott" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="-1" />
+						<int name="ui_position_column" value="-1" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="-500" />
+						<float name="wood" value="-500" />
+						<float name="stone" value="0" />
+						<float name="gold" value="-500" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="" />
+				</group>
+				<group name="spawn_item" comment="Elite Horseman" List.ItemID="1726759454">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\ottoman\unit_horseman_4_ott" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="-1" />
+						<int name="ui_position_column" value="-1" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="-500" />
+						<float name="wood" value="-500" />
+						<float name="stone" value="0" />
+						<float name="gold" value="-500" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="" />
+				</group>
+				<group name="spawn_item" comment="Knight" List.ItemID="-1623940715">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\ottoman\unit_knight_3_ott" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="-1" />
+						<int name="ui_position_column" value="-1" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="-500" />
+						<float name="wood" value="-500" />
+						<float name="stone" value="0" />
+						<float name="gold" value="-500" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="" />
+				</group>
+				<group name="spawn_item" comment="Elite Knight" List.ItemID="-343858669">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\ottoman\unit_knight_4_ott" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="-1" />
+						<int name="ui_position_column" value="-1" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="-500" />
+						<float name="wood" value="-500" />
+						<float name="stone" value="0" />
+						<float name="gold" value="-500" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="" />
+				</group>
+				<group name="spawn_item" comment="Mehter" List.ItemID="-412432648">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\ottoman\unit_mehter_2_ott" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="-1" />
+						<int name="ui_position_column" value="-1" overrideParent="True" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="-500" />
+						<float name="wood" value="-500" />
+						<float name="stone" value="0" />
+						<float name="gold" value="-500" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="" />
+				</group>
+			</list>
+			<list name="bonus_xp_from_hold_list">
+			</list>
+			<list name="reinforce_requirements">
+			</list>
+			<bool name="spawn_to_hold_try_first" value="True" overrideParent="True" />
+			<list name="queue_requirements">
+			</list>
+			<bool name="can_rally" value="True" />
+			<template_reference name="animated_spawn_option" value="options\none">
+			</template_reference>
+			<int name="max_queue_size_override" value="-1" />
+			<string name="queue_requirements_openingbranch" value="" />
+			<string name="reinforce_requirements_openingbranch" value="" />
+			<state_tree_node name="production_item_completed_openingbranch" value="building_production_item_completed\Master\building_production_item_complete\building_production_item_complete_infantry" />
+			<bool name="enforce_minimum_clearance_at_spawn_positions" value="True" />
+			<bool name="enforce_minimum_clearance_if_entities_blocking" value="True" />
+			<float name="enforce_minimum_clearance_at_spawn_positions_search_range" value="30" />
+			<instance_reference name="rally_pass_type" value="pass_types\infantry" />
+			<bool name="reset_production_progress_at_current_pop_cap" value="True" />
+		</template_reference>
+	</list>
+	<uniqueid name="pbgid" value="2057467" />
+	<instance_reference name="parent_pbg" value="ebps\races\french\units\unit_naval_galleass_4_fre" />
+</instance>
