@@ -31,6 +31,12 @@ AGS_NOTIFICATIONS_REGICIDE = {
 	sfx = nil,	
 }
 
+AGS_NOTIFICATIONS_REGICIDE_EXTENDED = {
+	-- "%1PLAYER_NAME% assassinated %2PLAYER_NAME%"
+	title = "$1ff2a908da9e434c98e779358e4b6aea:399",
+	sfx = nil,	
+}
+
 AGS_NOTIFICATIONS_REGICIDE_ATTACKED = {
 	-- "King under attack"
 	self_attacked = "$1ff2a908da9e434c98e779358e4b6aea:266",

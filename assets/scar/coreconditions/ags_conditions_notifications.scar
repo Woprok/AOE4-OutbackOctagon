@@ -165,6 +165,29 @@ function AGS_Notifications_ObjectiveAction(player, notification)
 	AGS_Notifications_CreateTextCue(AGS_NOTIFICATIONS_CORE, priority, title, sfx, color)
 end
 
+function AGS_Notifications_EliminatedExtended(killer, victim, cue_opt_fielded)
+	-- Do nothing if player is eliminated.
+	if killer == nil or victim == nil then
+		return
+	end
+	-- Notify via sound.
+	local color = Player_GetUIColour(killer.id)
+	AGS_Notifications_SoundCue(victim, AGS_NOTIFICATIONS_SOUND_ELIMINATED)
+	-- Notify via message in right bottom corner.	
+	AGS_Notifications_CreateTextCue(AGS_NOTIFICATIONS_CORE, AGS_NP_HIGH, Loc_FormatText(cue_opt_fielded.title, killer.playerName, victim.playerName), cue_opt_fielded.sfx, color)
+end
+
+function AGS_Notifications_EliminatedLesser(player, cue_opt_fielded)
+	-- Do nothing if player is eliminated.
+	if player == nil then
+		return
+	end
+	-- Notify via sound.
+	AGS_Notifications_SoundCue(player, AGS_NOTIFICATIONS_SOUND_ELIMINATED)
+	-- Notify via message in right bottom corner.	
+	AGS_Notifications_CreateTextCue(AGS_NOTIFICATIONS_CORE, AGS_NP_LOW, Loc_FormatText(cue_opt_fielded.title, player.playerName), cue_opt_fielded.sfx)
+end
+
 function AGS_Notifications_Eliminated(player, cue_opt_fielded)
 	-- Do nothing if player is eliminated.
 	if player == nil then

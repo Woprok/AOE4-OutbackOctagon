@@ -60,6 +60,7 @@ function AGS_TournamentNomadBalance_OnSquadKilled(context)
 	end
 	-- We have ship that might have hold a king before it was killed.
 	-- We have multiple cases:
+	local killer = Core_GetPlayersTableEntry(Entity_GetPlayerOwner(context.killer))
 	-- Ship has no owner and we are clueless about the king:
 	if World_OwnsSquad(context.victim) then
 		-- King is alive or dead, but we do not have player.
@@ -70,7 +71,7 @@ function AGS_TournamentNomadBalance_OnSquadKilled(context)
 				if king.is_alive and not Squad_IsAlive(king.squad) then
 					king.is_alive = false
 					-- alive in our, dead in game, give credit
-					AGS_TournamentNomadBalance_KilledKing(context.killer)					
+					AGS_TournamentNomadBalance_KilledKing(killer, player)					
 				end
 			end
 		end	
@@ -87,7 +88,7 @@ function AGS_TournamentNomadBalance_OnSquadKilled(context)
 				-- We found the edge case, this player has to die in regicide!
 				local king_count = AGS_Regicide_GetPlayerKingCount(owner)
 				if king_count.recruited > 0 and king_count.remaining <= 0 then 
-					AGS_TournamentNomadBalance_KilledKing(context.killer)
+					AGS_TournamentNomadBalance_KilledKing(killer, owner)
 					AGS_Regicide_Eliminate(owner)		
 				end
 			end
@@ -108,21 +109,39 @@ function AGS_TournamentNomadBalance_OnEntityKilled(context)
 	if not Entity_IsOfType(context.victim, AGS_BP_KING) then
 		return
 	end
+	-- Find killer and victim so we can do a proper message
+	local killer = Core_GetPlayersTableEntry(Entity_GetPlayerOwner(context.killer))
+	local victim = nil
+	if context.victimOwner ~= nil then
+		victim = Core_GetPlayersTableEntry(context.victimOwner)
+	elseif context.victimSquad ~= nil then
+		for _, player in pairs(PLAYERS) do
+			for _, king in pairs(player.AGS_Kings) do
+				if king.squad == context.victimSquad then
+					victim = player
+					break
+				end
+			end			
+		end
+	else
+		-- this should not happen
+		victim = killer		
+	end
 	-- Add bonus
-	AGS_TournamentNomadBalance_KilledKing(context.killer)
+	AGS_TournamentNomadBalance_KilledKing(killer, victim)
 end
 
 ---------------------------------------------------------------------------------------------------
 -- Functions:
 ---------------------------------------------------------------------------------------------------
 
-function AGS_TournamentNomadBalance_KilledKing(context_killer)
-	local killer_owner = Core_GetPlayersTableEntry(Entity_GetPlayerOwner(context_killer))
-	
-	AGS_TournamentNomadBalance_AddMaxCapPopulation(killer_owner, AGS_TOURNAMENT_NOMAD_BALANCE_KING_POP)
-	
-	if killer_owner.raceName == AGS_CIV_MONGOL then
-		AGS_TournamentNomadBalance_AddMinPopulation(killer_owner, AGS_TOURNAMENT_NOMAD_BALANCE_KING_POP)
+function AGS_TournamentNomadBalance_KilledKing(player_killer, player_victim)	
+	-- Notifies player that someone gained bonus.
+	AGS_Notifications_EliminatedExtended(player_killer, player_victim, AGS_NOTIFICATIONS_REGICIDE_EXTENDED)
+	-- Applies bonus.
+	AGS_TournamentNomadBalance_AddMaxCapPopulation(player_killer, AGS_TOURNAMENT_NOMAD_BALANCE_KING_POP)
+	if player_killer.raceName == AGS_CIV_MONGOL then
+		AGS_TournamentNomadBalance_AddMinPopulation(player_killer, AGS_TOURNAMENT_NOMAD_BALANCE_KING_POP)
 	end
 end
 -- Apply function.

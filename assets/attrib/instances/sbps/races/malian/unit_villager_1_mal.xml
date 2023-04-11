@@ -471,8 +471,8 @@
 						<group name="construction_item" comment="Mosque" List.ItemID="-1784124156">
 							<instance_reference name="ebp" value="ebps\races\malian\buildings\building_unit_religious_mal" overrideParent="True" />
 							<group name="ui_position">
-								<int name="ui_position_row" value="2" overrideParent="True" />
-								<int name="ui_position_column" value="4" overrideParent="True" />
+								<int name="ui_position_row" value="1" overrideParent="True" />
+								<int name="ui_position_column" value="1" overrideParent="True" />
 							</group>
 							<list name="associated_ebps">
 							</list>
