@@ -25,7 +25,7 @@ end
 function AGS_Teams_OnPlayerDefeated(player, reason)
 	AGS_Print("AGS_Teams_OnPlayerDefeated")
 	-- Assign to default team field once player is eliminated. Hopefully nothing will overwrite it after we do it.
-	if player ~= nil then
+	if player ~= nil and player.team ~= nil and player.AGS_Team ~= nil then
 		player.team.index = player.AGS_Team.index
 		player.team.players = player.AGS_Team.allies
 	end

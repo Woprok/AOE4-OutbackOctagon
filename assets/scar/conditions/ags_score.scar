@@ -52,6 +52,10 @@ end
 
 function AGS_Score_OnPlayerDefeated(player, reason)
 	AGS_Print("AGS_Score_OnPlayerDefeated")
+	if player.AGS_Score == nil then
+		AGS_Print("AGS_Score_OnPlayerDefeated_ScoreIsNotPresent")
+		return
+	end
 	if reason == AGS_WR_SCORE then 
 		AGS_Notifications_Eliminated(player, AGS_NOTIFICATIONS_SCORE)
 		AGS_Score_TryDeclareWinners()

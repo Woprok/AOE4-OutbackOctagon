@@ -48,6 +48,10 @@ end
 
 function AGS_Regicide_OnPlayerDefeated(player, reason)
 	AGS_Print("AGS_Regicide_OnPlayerDefeated")
+	if player.AGS_Kings == nil then
+		AGS_Print("AGS_Regicide_OnPlayerDefeated_RegicideIsNotPresent")
+		return
+	end
 	if reason == AGS_WR_REGICIDE then 
 		AGS_Notifications_EliminatedLesser(player, AGS_NOTIFICATIONS_REGICIDE)
 		AGS_Conditions_CheckVictory(AGS_REGICIDE_ACTIVE, AGS_Presentations_Victory, AGS_WR_REGICIDE,

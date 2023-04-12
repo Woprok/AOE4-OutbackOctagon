@@ -81,6 +81,10 @@ end
 
 function AGS_Religious_OnPlayerDefeated(player, reason)
 	AGS_Print("AGS_Religious_OnPlayerDefeated")
+	if player.AGS_SacredSites == nil then
+		AGS_Print("AGS_Religious_OnPlayerDefeated_ReligiousIsNotPresent")
+		return
+	end
 	if reason == AGS_WR_RELIGIOUS then 
 		AGS_Notifications_Eliminated(player, AGS_NOTIFICATIONS_RELIGIOUS)
 		AGS_Religious_TryDeclareWinners()

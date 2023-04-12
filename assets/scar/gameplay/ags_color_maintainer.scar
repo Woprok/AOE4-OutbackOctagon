@@ -57,6 +57,10 @@ end
 
 function AGS_ColorMaintainer_OnPlayerDefeated(player, reason)
 	AGS_Print("AGS_ColorMaintainer_OnPlayerDefeated")
+	if player.AGS_Colors == nil then
+		AGS_Print("AGS_ColorMaintainer_OnPlayerDefeated_ColorIsNotPresent")
+		return
+	end
 	AGS_ColorMaintainer_RefreshSlots()
 end		
 

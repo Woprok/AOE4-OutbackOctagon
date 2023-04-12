@@ -75,6 +75,10 @@ end
 
 function AGS_Wonder_OnPlayerDefeated(player, reason)
 	AGS_Print("AGS_Wonder_OnPlayerDefeated")
+	if player.AGS_Wonder == nil then
+		AGS_Print("AGS_Wonder_OnPlayerDefeated_WonderIsNotPresent")
+		return
+	end
 	if reason == AGS_WR_WONDER then 
 		AGS_Notifications_Eliminated(player, AGS_NOTIFICATIONS_WONDER)
 		AGS_Wonder_TryDeclareWinners()

@@ -72,6 +72,10 @@ end
 
 function AGS_Conquest_OnPlayerDefeated(player, reason)
 	AGS_Print("AGS_Conquest_OnPlayerDefeated")
+	if player.AGS_Conquerables == nil then
+		AGS_Print("AGS_Conquest_OnPlayerDefeated_ConquestIsNotPresent")
+		return
+	end
 	if reason == AGS_WR_CONQUEST then 
 		AGS_Notifications_Eliminated(player, AGS_NOTIFICATIONS_CONQUEST)
 		AGS_Conditions_CheckVictory(AGS_CONQUEST_ACTIVE, AGS_Presentations_VictoryConquest, AGS_WR_CONQUEST,
