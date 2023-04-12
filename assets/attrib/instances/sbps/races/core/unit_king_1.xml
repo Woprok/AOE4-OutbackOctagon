@@ -21,7 +21,7 @@
 						<int name="ui_priority" value="0" />
 						<bool name="use_random_entity_speaker" value="False" />
 						<file name="portrait_name" value="" />
-						<float name="minimap_texture_scale" value="1" overrideParent="True" />
+						<float name="minimap_texture_scale" value="1.75" overrideParent="True" />
 						<locstring name="brief_text" value="0" />
 						<locstring name="screen_name_short" value="0" />
 						<enum name="map_rotation_type_override" value="no_override" />
