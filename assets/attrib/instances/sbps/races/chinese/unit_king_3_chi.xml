@@ -7,16 +7,6 @@
 				</group>
 			</list>
 		</template_reference>
-		<template_reference name="squadexts" value="sbpextensions\squad_ability_ext" List.ItemID="1276694845" List.ParentItemID="1276694845">
-			<list name="abilities" overrideParent="True">
-				<instance_reference name="ability" value="abilities\timed_abilities\regicide_mode\regicide_king_treason" List.ItemID="1326372467" />
-				<instance_reference name="ability" value="abilities\toggle_abilities\civ_core\core_formation_line" List.ItemID="-597391212" />
-				<instance_reference name="ability" value="abilities\toggle_abilities\civ_core\core_formation_spread" List.ItemID="696323114" />
-				<instance_reference name="ability" value="abilities\toggle_abilities\civ_core\core_formation_wedge" List.ItemID="-515631909" />
-				<instance_reference name="ability" value="abilities\modal_abilities\core\military_neutralize_holy_site" List.ItemID="-62024176" />
-				<instance_reference name="ability" value="abilities\always_on_abilities\core\military_charge" List.ItemID="-28672791" />
-			</list>
-		</template_reference>
 		<template_reference name="squadexts" value="sbpextensions\squad_type_ext" List.ItemID="-1459898680" List.ParentItemID="-1459898680">
 			<list name="squad_race_type_list" overrideParent="True">
 				<instance_reference name="squad_race_type" value="racebps\chinese" List.ItemID="810407611" />
