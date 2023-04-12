@@ -22,22 +22,64 @@ function AGS_StartingKing_UpdateModuleSettings()
 	end
 end
 
-function AGS_StartingKing_PresetExecute()
-	AGS_Print("AGS_StartingKing_PresetExecute")
-	AGS_StartingKing_Create()
+--function AGS_StartingKing_PresetExecute()
+--	AGS_Print("AGS_StartingKing_PresetExecute")
+--	AGS_StartingKing_Create()
+--end
+
+function AGS_StartingKing_OnPlay()
+	AGS_Print("AGS_StartingKing_OnPlay")
+	Rule_AddGlobalEvent(AGS_StartingKing_OnConstructionComplete, GE_ConstructionComplete)
+end
+
+function AGS_StartingKing_GameOver()
+	AGS_Print("AGS_StartingKing_GameOver")
+	Rule_RemoveGlobalEvent(AGS_StartingKing_OnConstructionComplete)
+end
+
+---------------------------------------------------------------------------------------------------
+-- Callbacks:
+---------------------------------------------------------------------------------------------------
+
+function AGS_StartingKing_OnConstructionComplete(context)
+	if context == nil or context.player == nil or context.entity == nil then 
+		return
+	end	
+	local new_context = {
+		player = Core_GetPlayersTableEntry(context.player),
+		entity_id = context.entity,
+		--entity_uwid = Entity_GetID(context.entity),
+		entity_position = Entity_GetPosition(context.entity),
+	}	
+	-- Eliminated players are not interesting for any conditions.
+	if new_context.player == nil or new_context.player.isEliminated then
+		return
+	end
+	if not new_context.player.AGS_SpawnedKing and AGS_IsACapital(new_context.entity_id) then
+		new_context.player.AGS_SpawnedKing = true
+		AGS_StartingKing_SpawnKing(new_context.player, new_context.entity_position)
+		AGS_Regicide_InitializePlayerKings(new_context.player)
+		AGS_Regicide_UpdateObjective()
+	end
 end
 
 ---------------------------------------------------------------------------------------------------
 -- Functions:
 ---------------------------------------------------------------------------------------------------
--- This function spawns a king next each player's Town Center
-function AGS_StartingKing_Create()
-	for _, player in pairs(PLAYERS) do		
-		local sbp_king = AGS_GetCivilizationUnit(player.raceName, AGS_BP_KING)				
-		local snameKNG = AGS_SGroupName(player.id, AGS_BP_KING)		
-		local squad_group = SGroup_CreateIfNotFound(snameKNG)	
-		--following call is same as original AGS_Starts_GetStartPosition(player.id)
-		local spawn_pos = AGS_Scattered_GetScatterPosition() 
-		UnitEntry_DeploySquads(player.id, squad_group, {{sbp = sbp_king, numSquads = 1 }}, spawn_pos)
-	end
+
+function AGS_StartingKing_SpawnKing(player, position)
+	local sbp_king = AGS_GetCivilizationUnit(player.raceName, AGS_BP_KING)				
+	local snameKNG = AGS_SGroupName(player.id, AGS_BP_KING)		
+	local squad_group = SGroup_CreateIfNotFound(snameKNG)	
+	local spawn_pos = position
+	UnitEntry_DeploySquads(player.id, squad_group, {{sbp = sbp_king, numSquads = 1 }}, spawn_pos)
 end
+
+-- This function spawns a king next each player's Town Center
+--function AGS_StartingKing_Create()
+--	for _, player in pairs(PLAYERS) do
+--		--following call is same as original AGS_Starts_GetStartPosition(player.id)
+--		local position = AGS_Scattered_GetScatterPosition() 
+--		AGS_StartingKing_SpawnKing(player, position)			
+--	end
+--end
