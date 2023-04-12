@@ -1,39 +1,38 @@
 <instance version="4" description="" template="ebps">
 	<list name="extensions">
-		<template_reference name="exts" value="ebpextensions\entity_blueprint_ext" List.ItemID="-2078854337" List.ParentItemID="-2078854337">
+		<template_reference name="exts" value="ebpextensions\entity_blueprint_ext" List.ItemID="-2116048274" List.ParentItemID="-2116048274">
 			<bool name="browsable_in_editor" value="True" overrideParent="True" />
 		</template_reference>
-		<template_reference name="exts" value="ebpextensions\moving_ext" List.ItemID="2057589443" List.ParentItemID="2057589443">
-			<enum_table name="speed_levels">
-				<float name="speed_level_0" value="3" overrideParent="True" />
-				<float name="speed_level_1" value="4" overrideParent="True" />
-				<float name="speed_level_2" value="10" overrideParent="True" />
-				<float name="speed_level_3" value="10" overrideParent="True" />
-				<float name="speed_level_4" value="10" overrideParent="True" />
-			</enum_table>
-			<enum_table name="speed_scaling_table">
-				<float name="default_speed" value="4.5" overrideParent="True" />
-			</enum_table>
-		</template_reference>
-		<template_reference name="exts" value="ebpextensions\type_ext" List.ItemID="-433665015" List.ParentItemID="-433665015">
+		<template_reference name="exts" value="ebpextensions\type_ext" List.ItemID="-37057555" List.ParentItemID="-37057555">
 			<list name="race_type_list" overrideParent="True">
 				<instance_reference name="race_type" value="racebps\ottoman" overrideParent="True" List.ItemID="-279700685" />
 			</list>
 		</template_reference>
-		<template_reference name="exts" value="ebpextensions\tier_ext" List.ItemID="2081103240" List.ParentItemID="2081103240">
+		<template_reference name="exts" value="ebpextensions\tier_ext" List.ItemID="741828885" List.ParentItemID="741828885">
 			<list name="tier_group_list">
-				<list name="tier_group" List.ItemID="-1937759202" List.ParentItemID="-1937759202">
-					<group name="tier" List.ItemID="-1144010367" List.ParentItemID="-1144010367">
+				<list name="tier_group" List.ItemID="-1622868805" List.ParentItemID="-1622868805">
+					<group name="tier" List.ItemID="-1234849736" List.ParentItemID="-1234849736">
 						<instance_reference name="attachments" value="attachments\attachment_lists\races\ottoman\units\unit_king_1_ott" overrideParent="True" />
+					</group>
+					<group name="tier" List.ItemID="-1372731930" List.ParentItemID="-1372731930">
+						<instance_reference name="attachments" value="attachments\attachment_lists\races\ottoman\units\unit_king_1_ott" overrideParent="True" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_entity" value="ebps\races\ottoman\units\unit_king_2_ott" mod="1ff2a908da9e434c98e779358e4b6aea" overrideParent="True" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_squad" value="sbps\races\ottoman\unit_king_2_ott" mod="1ff2a908da9e434c98e779358e4b6aea" overrideParent="True" />
+					</group>
+					<group name="tier" List.ItemID="920532629" List.ParentItemID="920532629">
+						<instance_reference name="attachments" value="attachments\attachment_lists\races\ottoman\units\unit_king_1_ott" overrideParent="True" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_entity" value="ebps\races\ottoman\units\unit_king_3_ott" mod="1ff2a908da9e434c98e779358e4b6aea" overrideParent="True" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_squad" value="sbps\races\ottoman\unit_king_3_ott" mod="1ff2a908da9e434c98e779358e4b6aea" overrideParent="True" />
+					</group>
+					<group name="tier" List.ItemID="1892503180" List.ParentItemID="1892503180">
+						<instance_reference name="attachments" value="attachments\attachment_lists\races\ottoman\units\unit_king_1_ott" overrideParent="True" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_entity" value="ebps\races\ottoman\units\unit_king_4_ott" mod="1ff2a908da9e434c98e779358e4b6aea" overrideParent="True" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_squad" value="sbps\races\ottoman\unit_king_4_ott" mod="1ff2a908da9e434c98e779358e4b6aea" overrideParent="True" />
 					</group>
 				</list>
 			</list>
 		</template_reference>
-		<template_reference name="exts" value="ebpextensions\modifier_apply_ext" List.ItemID="2021515520" List.ListAction="Append">
-			<list name="modifiers">
-			</list>
-		</template_reference>
 	</list>
 	<uniqueid name="pbgid" value="2034637" />
-	<instance_reference name="parent_pbg" value="ebps\races\core\units\unit_king_1" />
+	<instance_reference name="parent_pbg" value="ebps\races\core\units\unit_king_1" mod="1ff2a908da9e434c98e779358e4b6aea" />
 </instance>

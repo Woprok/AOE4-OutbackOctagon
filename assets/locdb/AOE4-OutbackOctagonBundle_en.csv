@@ -401,4 +401,14 @@
 400,,,,,,Overview
 401,,,,,,Rules
 402,,,,,,Changes will be shown during the loading screen.
-403,,,,,,"Regicide, Religious & Wonder victory.\nNomad 3 Villagers start.\n3 minute treaty.\nKing movement speed increased.\nEmplamcement cost for non-Mongols doubled.\nStone Towers removed.\nStone Walls & Gates moved to Castle Age.\nBugfixes for Treason and other small issues.\nBalance changes:\nOutpost requires TC to be built.\nChinese Landmark TC +100% built time.\nHRE +100 gold and Mongol +100 wood."
+403,,,,,,"Regicide, Religious & Wonder victory.\nNomad 3 Villagers start.\n3 minute treaty.\nKing scales with the ages.\nEmplamcement cost for non-Mongols doubled.\nStone Towers removed.\nStone Walls & Gates moved to Castle Age.\nBugfixes for Treason and other small issues.\nBalance changes:\nOutpost requires TC to be built.\nChinese Landmark TC +100% built time.\nHRE +100 gold and Mongol +100 wood."
+404,,,screen_name_king,,,Hardened King
+405,,,screen_name_king,,,King
+406,,,screen_name_king,,,Veteran King
+407,,,screen_name_king,,,Elite King
+408,,,help_text,,,Worthless King that decides your fate. Protect him or your empire will crumble. Automatically improves as the Ages are advanced.
+409,,,help_text,,,Worthless King that decides your fate. Protect him or your empire will crumble. Automatically improves as the Ages are advanced.
+410,,,extra_text,,,King
+411,,,extra_text,,,King
+412,,,extra_text,,,King
+413,,,extra_text,,,King

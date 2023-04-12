@@ -1,0 +1,29 @@
+<instance version="4" description="" template="sbps">
+	<list name="extensions">
+		<template_reference name="squadexts" value="sbpextensions\squad_loadout_ext" List.ItemID="-2128166355" List.ParentItemID="-2128166355">
+			<list name="unit_list">
+				<group name="loadout_data" List.ItemID="-353089523" List.ParentItemID="-353089523">
+					<instance_reference name="type" value="ebps\races\sultanate\units\unit_king_1_sul" mod="1ff2a908da9e434c98e779358e4b6aea" overrideParent="True" />
+				</group>
+			</list>
+		</template_reference>
+		<template_reference name="squadexts" value="sbpextensions\squad_ability_ext" List.ItemID="1276694845" List.ParentItemID="1276694845">
+			<list name="abilities" overrideParent="True">
+				<instance_reference name="ability" value="abilities\timed_abilities\regicide_mode\regicide_king_treason" List.ItemID="-700921205" />
+				<instance_reference name="ability" value="abilities\toggle_abilities\civ_core\core_formation_line" List.ItemID="686796374" />
+				<instance_reference name="ability" value="abilities\toggle_abilities\civ_core\core_formation_spread" List.ItemID="656906688" />
+				<instance_reference name="ability" value="abilities\toggle_abilities\civ_core\core_formation_wedge" List.ItemID="-1473549325" />
+				<instance_reference name="ability" value="abilities\modal_abilities\core\military_neutralize_holy_site" List.ItemID="-1809742398" />
+				<instance_reference name="ability" value="abilities\always_on_abilities\core\military_charge" List.ItemID="207950666" />
+				<instance_reference name="ability" value="abilities\always_on_abilities\sultanate\infantry_block_stone_wall_construction_sul" List.ItemID="823454577" />
+			</list>
+		</template_reference>
+		<template_reference name="squadexts" value="sbpextensions\squad_type_ext" List.ItemID="-1459898680" List.ParentItemID="-1459898680">
+			<list name="squad_race_type_list" overrideParent="True">
+				<instance_reference name="squad_race_type" value="racebps\sultanate" List.ItemID="-1214704800" />
+			</list>
+		</template_reference>
+	</list>
+	<uniqueid name="pbgid" value="183713" />
+	<instance_reference name="parent_pbg" value="sbps\races\core\unit_king_1" mod="1ff2a908da9e434c98e779358e4b6aea" />
+</instance>

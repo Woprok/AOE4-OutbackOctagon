@@ -43,7 +43,7 @@
 			<float name="death_seconds" value="19" />
 			<bool name="delete_when_dead" value="True" />
 			<bool name="force_attacker_memory" value="False" />
-			<float name="hitpoints" value="200" />
+			<float name="hitpoints" value="250" />
 			<bool name="is_invincible" value="False" />
 			<bool name="is_salvagable_wreck" value="False" />
 			<instance_reference name="rebuilt_entity" value="" />
@@ -67,8 +67,8 @@
 			<bool name="not_default_attackable" value="False" />
 			<enum_table name="armor_scaler_by_damage_type">
 				<float name="True Damage" value="0" />
-				<float name="Melee" value="0" />
-				<float name="Ranged" value="0" />
+				<float name="Melee" value="1" />
+				<float name="Ranged" value="2" />
 				<float name="Fire" value="0" />
 			</enum_table>
 			<template_reference name="self_destruct_action_tree" value="state_tree_reference_info">
@@ -296,7 +296,7 @@
 			<bool name="ghost_enable" value="False" />
 			<locstring name="help_text" value="0" />
 			<string name="hotkey_name" value="" />
-			<file name="icon_name" value="" />
+			<file name="icon_name" value="races\common\units\vip" />
 			<enum name="kill_type" value="infantry" />
 			<bool name="minimap_enable" value="True" />
 			<bool name="minimap_team_only" value="False" />
@@ -309,8 +309,8 @@
 			<enum name="selection_type" value="squad_select" />
 			<locstring name="tooltip_txt" value="0" />
 			<int name="ui_priority" value="0" />
-			<file name="minimap_icon" value="" />
-			<float name="minimap_icon_scale" value="0.5" />
+			<file name="minimap_icon" value="minimap\teamleader" />
+			<float name="minimap_icon_scale" value="1" />
 			<file name="portrait_icon" value="" />
 			<locstring name="brief_text" value="0" />
 			<string name="extra_text_deprecated" value="" />
@@ -358,7 +358,7 @@
 			</group>
 			<enum name="decorator" value="" />
 			<int name="map_layer" value="0" />
-			<enum name="map_mark" value="" />
+			<enum name="map_mark" value="CustomStructure" />
 			<file name="portrait_name" value="" />
 			<group name="ui_codex_info">
 				<int name="priority" value="0" />
@@ -557,6 +557,63 @@
 						<instance_reference name="statetree_tier_requirements_pbg" value="" />
 						<instance_reference name="statetree_tier_pgb_upgrade_target_entity" value="" />
 						<instance_reference name="statetree_tier_pgb_upgrade_target_squad" value="" />
+						<string name="tier_attachment_action" value="" />
+						<template_reference name="blueprint_conversion_parameters" value="blueprint_conversion_parameters">
+							<bool name="reissue_commands" value="False" />
+							<bool name="continue_state_trees" value="True" />
+							<bool name="remove_from_pending_deaths" value="False" />
+						</template_reference>
+						<string name="inventory_category_to_refresh_on_tier_up" value="" />
+					</group>
+					<group name="tier" List.ItemID="-1372731930">
+						<list name="tier_requirements">
+						</list>
+						<instance_reference name="attachments" value="attachments\attachment_lists\races\core\units\unit_king_1" />
+						<template_reference name="statetree_tier_reached_actions" value="state_tree_reference_info">
+							<state_tree_node name="ActionTree_OpeningBranch" value="tier_unit_exposure_dca" />
+							<bool name="start_suspended" value="False" />
+						</template_reference>
+						<instance_reference name="statetree_tier_requirements_pbg" value="upgrade\dev\ages\feudal_age" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_entity" value="ebps\races\core\units\unit_king_2" mod="1ff2a908da9e434c98e779358e4b6aea" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_squad" value="sbps\races\core\unit_king_2" mod="1ff2a908da9e434c98e779358e4b6aea" />
+						<string name="tier_attachment_action" value="" />
+						<template_reference name="blueprint_conversion_parameters" value="blueprint_conversion_parameters">
+							<bool name="reissue_commands" value="False" />
+							<bool name="continue_state_trees" value="True" />
+							<bool name="remove_from_pending_deaths" value="False" />
+						</template_reference>
+						<string name="inventory_category_to_refresh_on_tier_up" value="" />
+					</group>
+					<group name="tier" List.ItemID="920532629">
+						<list name="tier_requirements">
+						</list>
+						<instance_reference name="attachments" value="attachments\attachment_lists\races\core\units\unit_king_1" />
+						<template_reference name="statetree_tier_reached_actions" value="state_tree_reference_info">
+							<state_tree_node name="ActionTree_OpeningBranch" value="tier_unit_exposure_dca" />
+							<bool name="start_suspended" value="False" />
+						</template_reference>
+						<instance_reference name="statetree_tier_requirements_pbg" value="upgrade\dev\ages\castle_age" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_entity" value="ebps\races\core\units\unit_king_3" mod="1ff2a908da9e434c98e779358e4b6aea" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_squad" value="sbps\races\core\unit_king_3" mod="1ff2a908da9e434c98e779358e4b6aea" />
+						<string name="tier_attachment_action" value="" />
+						<template_reference name="blueprint_conversion_parameters" value="blueprint_conversion_parameters">
+							<bool name="reissue_commands" value="False" />
+							<bool name="continue_state_trees" value="True" />
+							<bool name="remove_from_pending_deaths" value="False" />
+						</template_reference>
+						<string name="inventory_category_to_refresh_on_tier_up" value="" />
+					</group>
+					<group name="tier" List.ItemID="1892503180">
+						<list name="tier_requirements">
+						</list>
+						<instance_reference name="attachments" value="attachments\attachment_lists\races\core\units\unit_king_1" />
+						<template_reference name="statetree_tier_reached_actions" value="state_tree_reference_info">
+							<state_tree_node name="ActionTree_OpeningBranch" value="tier_unit_exposure_dca" />
+							<bool name="start_suspended" value="False" />
+						</template_reference>
+						<instance_reference name="statetree_tier_requirements_pbg" value="upgrade\dev\ages\imperial_age" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_entity" value="ebps\races\core\units\unit_king_4" mod="1ff2a908da9e434c98e779358e4b6aea" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_squad" value="sbps\races\core\unit_king_4" mod="1ff2a908da9e434c98e779358e4b6aea" />
 						<string name="tier_attachment_action" value="" />
 						<template_reference name="blueprint_conversion_parameters" value="blueprint_conversion_parameters">
 							<bool name="reissue_commands" value="False" />

@@ -1,0 +1,32 @@
+<instance version="4" description="" template="sbps">
+	<list name="extensions">
+		<template_reference name="squadexts" value="sbpextensions\squad_loadout_ext" List.ItemID="-2128166355" List.ParentItemID="-2128166355">
+			<list name="unit_list">
+				<group name="loadout_data" List.ItemID="-353089523" List.ParentItemID="-353089523">
+					<instance_reference name="type" value="ebps\races\abbasid\units\unit_king_1_abb" mod="1ff2a908da9e434c98e779358e4b6aea" overrideParent="True" />
+				</group>
+			</list>
+		</template_reference>
+		<template_reference name="squadexts" value="sbpextensions\squad_ability_ext" List.ItemID="1276694845" List.ParentItemID="1276694845">
+			<list name="abilities" overrideParent="True">
+				<instance_reference name="ability" value="abilities\timed_abilities\regicide_mode\regicide_king_treason" List.ItemID="-1326173002" />
+				<instance_reference name="ability" value="abilities\toggle_abilities\civ_core\core_formation_line" List.ItemID="-2115350456" />
+				<instance_reference name="ability" value="abilities\toggle_abilities\civ_core\core_formation_spread" List.ItemID="2076210961" />
+				<instance_reference name="ability" value="abilities\toggle_abilities\civ_core\core_formation_wedge" List.ItemID="-950843620" />
+				<instance_reference name="ability" value="abilities\modal_abilities\core\military_neutralize_holy_site" List.ItemID="1634299746" />
+				<instance_reference name="ability" value="abilities\always_on_abilities\core\military_charge" List.ItemID="483684579" />
+			</list>
+		</template_reference>
+		<template_reference name="squadexts" value="sbpextensions\squad_type_ext" List.ItemID="-1459898680" List.ParentItemID="-1459898680">
+			<list name="squad_race_type_list" overrideParent="True">
+				<instance_reference name="squad_race_type" value="racebps\abbasid" List.ItemID="-858040198" />
+			</list>
+		</template_reference>
+		<template_reference name="squadexts" value="sbpextensions\squad_targeting_system_ext" List.ItemID="325774612" List.ListAction="Append">
+			<bool name="allow_squad_scan_close_enemies" value="False" />
+			<int name="history_size" value="2" />
+		</template_reference>
+	</list>
+	<uniqueid name="pbgid" value="199718" />
+	<instance_reference name="parent_pbg" value="sbps\races\core\unit_king_1" mod="1ff2a908da9e434c98e779358e4b6aea" />
+</instance>
