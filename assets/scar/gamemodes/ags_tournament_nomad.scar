@@ -30,7 +30,8 @@ function AGS_Tournament_Nomad_AdjustSettings()
 	AGS_GLOBAL_SETTINGS.StartingResources = AGS_GS_RESOURCES_NORMAL
 	AGS_GLOBAL_SETTINGS.StartingVillagers = 3 --Is ignored as the Prefab is active.
 	AGS_GLOBAL_SETTINGS.StartingKings = 1 -- Is ignored as the Prefab is active. But it will still be set by Regicide to 1.
-	
+	AGS_GLOBAL_SETTINGS.ScatteredScout = true -- Enables Scout
+	AGS_GLOBAL_SETTINGS.StartingScouts = 1
 	-- Winconditions:
 	AGS_GLOBAL_SETTINGS.Conquest = false
 	AGS_GLOBAL_SETTINGS.Regicide = true

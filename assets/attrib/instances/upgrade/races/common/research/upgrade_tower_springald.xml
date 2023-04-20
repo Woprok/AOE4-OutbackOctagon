@@ -12,8 +12,8 @@
 				<float name="popcap" value="0" />
 				<float name="food" value="0" />
 				<float name="wood" value="0" />
-				<float name="stone" value="250" />
-				<float name="gold" value="100" />
+				<float name="stone" value="125" />
+				<float name="gold" value="50" />
 				<float name="militia_hre" value="0" />
 			</enum_table>
 			<float name="time_seconds" value="30" />

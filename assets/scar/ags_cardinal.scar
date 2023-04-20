@@ -73,6 +73,7 @@ import("ags_global_settings.scar")
 -- Start conditions are creating or destroying entities.
 import("startconditions/ags_start_scattered.scar")
 import("startconditions/ags_starting_king.scar")
+import("startconditions/ags_starting_scout.scar")
 
 -- Conditions based on expected priority.
 import("conditions/ags_treaty.scar") 
