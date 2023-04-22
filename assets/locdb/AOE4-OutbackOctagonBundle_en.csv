@@ -401,7 +401,7 @@
 400,,,,,,Overview
 401,,,,,,Rules
 402,,,,,,Changes will be shown during the loading screen.
-403,,,,,,"Regicide, Religious & Wonder victory.\nNomad 3 Villagers start.\n3 minute treaty.\nKing scales with the ages.\nEmplamcement cost for non-Mongols doubled.\nStone Towers removed.\nStone Walls & Gates moved to Castle Age.\nBugfixes for Treason and other small issues.\nBalance changes:\nOutpost requires TC to be built.\nChinese Landmark TC +100% built time.\nHRE +100 gold and Mongol +100 wood."
+403,,,,,,"Regicide, Religious & Wonder victory.\nNomad 3 Villagers + 1 Scout start.\n3 minute treaty.\nKing scales with the ages. (+75HP, +2 ranged armor, +0.06 speed)\nKing has additional move ability. (400 food for 15 secs, 120 cooldown)\nKing kills grant 50 population.\nStone Walls & Gates moved to Castle Age.\nStone Towers removed.\nOutpost requires TC to be built.\nCannon emplacement cost for non-Mongols doubled.\nChinese Landmark TC +100% built time.\nHRE +100 gold, Mongol +100 wood."
 404,,,screen_name_king,,,Hardened King
 405,,,screen_name_king,,,King
 406,,,screen_name_king,,,Veteran King
